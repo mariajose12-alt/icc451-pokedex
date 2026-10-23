@@ -1,5 +1,32 @@
 import 'package:flutter/material.dart';
 
+/*
+import 'package:pokedex/core/network/api_config.dart';
+import 'package:pokedex/core/network/network_exceptions.dart';
+import 'package:pokedex/core/network/poke_api_client.dart';
+
+// MAIN PARA PRUEBAS CON LA CONEXION A LA API Y SUS RESPUESTAS
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final client = PokeApiClient(
+    url: ApiConfig.graphqlUrl,
+    timeout: ApiConfig.requestTimeout,
+  );
+
+  try {
+    final data = await client.query(
+      r'query { pokemon(limit: 3, order_by: {id: asc}) { id name } }',
+    );
+    debugPrint('OK: $data');
+  } on PokeApiException catch (e) {
+    debugPrint('Error tipado: $e');
+  }
+
+  runApp(const MaterialApp(home: Scaffold(body: Center(child: Text('Prueba')))));
+}
+*/
+
 void main() {
   runApp(const MyApp());
 }
