@@ -1,4 +1,3 @@
-
 /// Errores de infraestructura al hablar con PokeAPI
 /// La capa data los traduce a fallos del dominio
 sealed class PokeApiException implements Exception {
