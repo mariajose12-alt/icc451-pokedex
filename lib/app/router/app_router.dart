@@ -1,5 +1,10 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pokedex/core/di/service_locator.dart';
 import 'package:pokedex/features/favorites/presentation/favorites_page.dart';
+import 'package:pokedex/features/pokemon/domain/repositories/pokemon_repository.dart';
+import 'package:pokedex/features/pokemon/presentation/bloc/catalog_bloc.dart';
+import 'package:pokedex/features/pokemon/presentation/bloc/catalog_event.dart';
 import 'package:pokedex/features/pokemon/presentation/pages/catalog_page.dart';
 
 import 'app_shell.dart';
@@ -23,7 +28,14 @@ final GoRouter appRouter = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.catalog,
-              builder: (context, state) => const CatalogPage(),
+              builder: (context, state) {
+                return BlocProvider(
+                  create: (context) =>
+                      CatalogBloc(repository: getIt<PokemonRepository>())
+                        ..add(const CatalogStarted()),
+                  child: const CatalogPage(),
+                );
+              },
             ),
           ],
         ),

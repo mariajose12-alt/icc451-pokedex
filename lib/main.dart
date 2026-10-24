@@ -34,6 +34,8 @@ import 'core/di/app_bloc_observer.dart';
 import 'core/di/service_locator.dart';
 import 'core/network/api_config.dart';
 import 'core/network/poke_api_client.dart';
+import 'features/pokemon/data/fake_pokemon_repository.dart';
+import 'features/pokemon/domain/repositories/pokemon_repository.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,6 +55,10 @@ void main() {
   // Base de datos
 
   // Repositorios
+  // TEMPORAL (T-016): repositorio falso. En T-017 se reemplaza por el real.
+  getIt.registerSingleton<PokemonRepository>(
+    FakePokemonRepository(scenario: FakeScenario.success),
+  );
 
   runApp(const PokedexApp());
 }

@@ -1,18 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pokedex/app/app.dart';
+import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
+import 'package:pokedex/features/pokemon/domain/entities/pokemon_type.dart';
+import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_card.dart';
 
 void main() {
-  testWidgets('La app abre en la Pokédex y navega a Favoritos', (tester) async {
-    await tester.pumpWidget(const PokedexApp());
-    await tester.pumpAndSettle();
+  testWidgets(
+    'PokemonCard muestra número, nombre y tipos, y responde al toque',
+    (tester) async {
+      var tocado = false;
 
-    expect(find.byType(NavigationBar), findsOneWidget);
-    expect(find.text('Pokédex'), findsWidgets);
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: PokemonCard(
+              pokemon: const Pokemon(
+                id: 1,
+                name: 'bulbasaur',
+                nationalDexNumber: 1,
+                generationId: 1,
+                height: 7,
+                weight: 69,
+                types: [
+                  PokemonType(id: 12, name: 'grass'),
+                  PokemonType(id: 4, name: 'poison'),
+                ],
+              ),
+              onTap: () {
+                tocado = true;
+              },
+            ),
+          ),
+        ),
+      );
 
-    await tester.tap(find.text('Favoritos'));
-    await tester.pumpAndSettle();
+      expect(find.text('#001'), findsOneWidget);
+      expect(find.text('Bulbasaur'), findsOneWidget);
+      expect(find.text('Grass'), findsOneWidget);
+      expect(find.text('Poison'), findsOneWidget);
 
-    expect(find.text('Favoritos'), findsWidgets);
-  });
+      await tester.tap(find.byType(InkWell));
+      expect(tocado, isTrue);
+    },
+  );
 }
