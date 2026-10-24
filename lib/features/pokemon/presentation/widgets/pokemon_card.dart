@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
+import 'package:pokedex/l10n/app_localizations.dart';
 
 import 'type_badge.dart';
 
@@ -14,6 +15,7 @@ class PokemonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
 
     // Textos que se muestran.
     final number = '#${pokemon.nationalDexNumber.toString().padLeft(3, '0')}';
@@ -26,12 +28,15 @@ class PokemonCard extends StatelessWidget {
     for (final type in pokemon.types) {
       typeNames.add(type.name);
     }
-    final spokenLabel =
-        '$name, Pokédex número ${pokemon.nationalDexNumber}, '
-        'tipos: ${typeNames.join(', ')}';
+    final spokenLabel = l10n.pokemonSemanticLabel(
+      name,
+      pokemon.nationalDexNumber,
+      typeNames.join(', '),
+    );
 
-    // Imagen oficial; si no existe, el sprite; si tampoco, el icono de respaldo.
-    final imageUrl = pokemon.artworkUrl ?? pokemon.spriteUrl;
+    // En el listado se usa el sprite pequeño (descarga mucho menos y cabe
+    // el catálogo offline completo); el artwork oficial se reserva para el detalle.
+    final imageUrl = pokemon.spriteUrl ?? pokemon.artworkUrl;
 
     return Semantics(
       button: true,
@@ -54,7 +59,8 @@ class PokemonCard extends StatelessWidget {
                       : CachedNetworkImage(
                           imageUrl: imageUrl,
                           fit: BoxFit.contain,
-                          // Decodifica a un tamaño acorde al contenedor (RNF-REN-04).
+                          // Mantiene nítido el pixel art
+                          filterQuality: FilterQuality.none,
                           memCacheWidth: 240,
                           placeholder: (context, url) => const Center(
                             child: SizedBox(

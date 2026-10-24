@@ -6,6 +6,8 @@ import 'package:pokedex/features/pokemon/presentation/bloc/catalog_event.dart';
 import 'package:pokedex/features/pokemon/presentation/bloc/catalog_state.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/catalog_message_view.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_card.dart';
+import 'package:pokedex/l10n/app_localizations.dart';
+import 'package:pokedex/features/pokemon/presentation/widgets/catalog_skeleton.dart';
 
 /// Pantalla del catálogo. Solo conoce el Bloc: nunca la red ni la base.
 class CatalogPage extends StatelessWidget {
@@ -13,26 +15,25 @@ class CatalogPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final colors = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Pokédex')),
+      appBar: AppBar(title: Text(l10n.navPokedex)),
       body: BlocBuilder<CatalogBloc, CatalogState>(
         builder: (context, state) {
           switch (state) {
             // Cargando por primera vez.
             case CatalogInitial() || CatalogLoading():
-              return const Center(child: CircularProgressIndicator());
+              return const CatalogSkeleton();
 
             // Sin datos y sin nada en curso (RF-CAT-04, PA-15).
             case CatalogEmpty():
               return CatalogMessageView(
                 icon: Icons.cloud_download_outlined,
-                title: 'Aún no hay Pokémon guardados',
-                message:
-                    'Conéctate a Internet para descargar el catálogo. '
-                    'Después podrás usarlo sin conexión.',
-                actionLabel: 'Actualizar',
+                title: l10n.catalogEmptyTitle,
+                message: l10n.catalogEmptyMessage,
+                actionLabel: l10n.refresh,
                 onAction: () {
                   context.read<CatalogBloc>().add(
                     const CatalogRefreshRequested(),
@@ -43,19 +44,17 @@ class CatalogPage extends StatelessWidget {
             // Sin datos y la actualización falló.
             case CatalogFailure(:final failure):
               final message = switch (failure) {
-                NoConnectionFailure() => 'No hay conexión a Internet. Revisa tu red e inténtalo de nuevo.',
-                TimeoutFailure() =>
-                  'La solicitud tardó demasiado. Inténtalo de nuevo.',
-                RateLimitFailure() => 'Se hicieron demasiadas solicitudes. Espera un momento e inténtalo de nuevo.',
-                ServiceFailure() =>
-                  'El servicio no está disponible en este momento.',
-                UnknownFailure() => 'Ocurrió un error inesperado.',
+                NoConnectionFailure() => l10n.errorNoConnection,
+                TimeoutFailure() => l10n.errorTimeout,
+                RateLimitFailure() => l10n.errorRateLimit,
+                ServiceFailure() => l10n.errorService,
+                UnknownFailure() => l10n.errorUnknown,
               };
               return CatalogMessageView(
                 icon: Icons.cloud_off_outlined,
-                title: 'No se pudo cargar el catálogo',
+                title: l10n.catalogErrorTitle,
                 message: message,
-                actionLabel: 'Reintentar',
+                actionLabel: l10n.retry,
                 onAction: () {
                   context.read<CatalogBloc>().add(
                     const CatalogRefreshRequested(),
@@ -79,9 +78,7 @@ class CatalogPage extends StatelessWidget {
                         iconColor: colors.onErrorContainer,
                         textColor: colors.onErrorContainer,
                         leading: const Icon(Icons.cloud_off_outlined),
-                        title: const Text(
-                          'No se pudo actualizar. Mostrando los datos guardados.',
-                        ),
+                        title: Text(l10n.catalogRefreshFailedBanner),
                         trailing: TextButton(
                           style: TextButton.styleFrom(
                             foregroundColor: colors.onErrorContainer,
@@ -91,7 +88,7 @@ class CatalogPage extends StatelessWidget {
                               const CatalogRefreshRequested(),
                             );
                           },
-                          child: const Text('Reintentar'),
+                          child: Text(l10n.retry),
                         ),
                       ),
                     ),

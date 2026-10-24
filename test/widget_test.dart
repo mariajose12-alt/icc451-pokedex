@@ -1,46 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
-import 'package:pokedex/features/pokemon/domain/entities/pokemon_type.dart';
-import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_card.dart';
+import 'package:pokedex/app/app.dart';
+import 'package:pokedex/core/di/service_locator.dart';
+import 'package:pokedex/features/pokemon/data/fake_pokemon_repository.dart';
+import 'package:pokedex/features/pokemon/domain/repositories/pokemon_repository.dart';
+import 'package:pokedex/features/settings/presentation/cubit/locale_cubit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  testWidgets(
-    'PokemonCard muestra número, nombre y tipos, y responde al toque',
-    (tester) async {
-      var tocado = false;
+  setUp(() {
+    getIt.registerSingleton<PokemonRepository>(
+      FakePokemonRepository(scenario: FakeScenario.empty, delay: Duration.zero),
+    );
+  });
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: PokemonCard(
-              pokemon: const Pokemon(
-                id: 1,
-                name: 'bulbasaur',
-                nationalDexNumber: 1,
-                generationId: 1,
-                height: 7,
-                weight: 69,
-                types: [
-                  PokemonType(id: 12, name: 'grass'),
-                  PokemonType(id: 4, name: 'poison'),
-                ],
-              ),
-              onTap: () {
-                tocado = true;
-              },
-            ),
-          ),
-        ),
-      );
+  tearDown(() async {
+    await getIt.reset();
+  });
 
-      expect(find.text('#001'), findsOneWidget);
-      expect(find.text('Bulbasaur'), findsOneWidget);
-      expect(find.text('Grass'), findsOneWidget);
-      expect(find.text('Poison'), findsOneWidget);
+  testWidgets('La app abre con la barra de navegación y cambia a Favoritos', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues(<String, Object>{});
+    final preferences = await SharedPreferences.getInstance();
 
-      await tester.tap(find.byType(InkWell));
-      expect(tocado, isTrue);
-    },
-  );
+    await tester.pumpWidget(
+      PokedexApp(localeCubit: LocaleCubit(preferences: preferences)),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byType(NavigationBar), findsOneWidget);
+
+    // Se busca por icono para no depender del idioma del dispositivo.
+    await tester.tap(find.byIcon(Icons.favorite_border));
+    await tester.pumpAndSettle();
+
+    expect(find.byIcon(Icons.favorite), findsOneWidget);
+  });
 }

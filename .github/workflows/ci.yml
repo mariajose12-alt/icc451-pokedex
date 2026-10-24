@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - run: flutter pub get
+
+      # Genera el código de Drift. Si subes los *.g.dart a Git, puedes quitar este paso.
+      - run: dart run build_runner build --delete-conflicting-outputs
+
+      # No se revisa lib/l10n porque es código generado.
+      - run: dart format --output=none --set-exit-if-changed lib/app lib/core lib/features test
+
+      - run: flutter analyze
+
+      - run: flutter test

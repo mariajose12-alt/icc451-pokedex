@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pokedex/l10n/app_localizations.dart';
 
 /// Estructura común de las pantallas principales: indicador de conectividad
 /// arriba (T-013) y barra de navegación abajo.
@@ -10,6 +11,8 @@ class AppShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Scaffold(
       body: SafeArea(
         bottom: false,
@@ -29,16 +32,16 @@ class AppShell extends StatelessWidget {
             initialLocation: index == navigationShell.currentIndex,
           );
         },
-        destinations: const [
+        destinations: [
           NavigationDestination(
             icon: Icon(Icons.catching_pokemon_outlined),
             selectedIcon: Icon(Icons.catching_pokemon),
-            label: 'Pokédex',
+            label: l10n.navPokedex,
           ),
           NavigationDestination(
-            icon: Icon(Icons.favorite_border),
-            selectedIcon: Icon(Icons.favorite),
-            label: 'Favoritos',
+            icon: const Icon(Icons.favorite_border),
+            selectedIcon: const Icon(Icons.favorite),
+            label: l10n.navFavorites,
           ),
         ],
       ),
