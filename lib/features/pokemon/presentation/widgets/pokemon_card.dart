@@ -1,11 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:pokedex/core/widgets/pixel_panel.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
 
 import 'type_badge.dart';
 
-/// Tarjeta de un Pokémon en el catálogo: imagen, número, nombre y tipos.
+/// Tarjeta del Pokémon en modo lista: sprite a la izquierda y datos a la derecha.
 class PokemonCard extends StatelessWidget {
   const PokemonCard({required this.pokemon, required this.onTap, super.key});
 
@@ -15,7 +16,7 @@ class PokemonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     // Textos que se muestran.
     final number = '#${pokemon.nationalDexNumber.toString().padLeft(3, '0')}';
@@ -34,8 +35,8 @@ class PokemonCard extends StatelessWidget {
       typeNames.join(', '),
     );
 
-    // En el listado se usa el sprite pequeño (descarga mucho menos y cabe
-    // el catálogo offline completo); el artwork oficial se reserva para el detalle.
+    // En el listado se usa el sprite pequeño (descarga mucho menos y cabe todo
+    // el catálogo offline); el artwork oficial se reserva para el detalle.
     final imageUrl = pokemon.spriteUrl ?? pokemon.artworkUrl;
 
     return Semantics(
@@ -43,63 +44,64 @@ class PokemonCard extends StatelessWidget {
       onTap: onTap,
       label: spokenLabel,
       excludeSemantics: true,
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 80,
-                  height: 80,
-                  child: imageUrl == null
-                      ? const Icon(Icons.catching_pokemon, size: 40)
-                      : CachedNetworkImage(
-                          imageUrl: imageUrl,
-                          fit: BoxFit.contain,
-                          // Mantiene nítido el pixel art
-                          filterQuality: FilterQuality.none,
-                          memCacheWidth: 240,
-                          placeholder: (context, url) => const Center(
-                            child: SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            ),
-                          ),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.catching_pokemon, size: 40),
+      child: PixelPanel(
+        onTap: onTap,
+        child: Row(
+          children: [
+            SizedBox(
+              width: 80,
+              height: 80,
+              child: imageUrl == null
+                  ? const Icon(Icons.catching_pokemon, size: 40)
+                  : CachedNetworkImage(
+                      imageUrl: imageUrl,
+                      fit: BoxFit.contain,
+                      // Mantiene nítido el pixel art.
+                      filterQuality: FilterQuality.none,
+                      // Decodifica a un tamaño acorde al contenedor (RNF-REN-04).
+                      memCacheWidth: 240,
+                      placeholder: (context, url) => const Center(
+                        child: SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(strokeWidth: 2),
                         ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                      ),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.catching_pokemon, size: 40),
+                    ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    number,
+                    style: theme.textTheme.labelMedium?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                      fontVariations: const [FontVariation('wght', 700)],
+                    ),
+                  ),
+                  Text(
+                    name,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontVariations: const [FontVariation('wght', 700)],
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Wrap(
+                    spacing: 4,
+                    runSpacing: 4,
                     children: [
-                      Text(
-                        number,
-                        style: theme.textTheme.labelMedium?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                      Text(name, style: theme.textTheme.titleMedium),
-                      const SizedBox(height: 6),
-                      Wrap(
-                        spacing: 6,
-                        runSpacing: 6,
-                        children: [
-                          for (final type in pokemon.types)
-                            TypeBadge(typeName: type.name),
-                        ],
-                      ),
+                      for (final type in pokemon.types)
+                        TypeBadge(typeName: type.name),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

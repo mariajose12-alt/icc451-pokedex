@@ -5,9 +5,9 @@ import 'package:pokedex/features/pokemon/presentation/bloc/catalog_bloc.dart';
 import 'package:pokedex/features/pokemon/presentation/bloc/catalog_event.dart';
 import 'package:pokedex/features/pokemon/presentation/bloc/catalog_state.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/catalog_message_view.dart';
-import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_card.dart';
-import 'package:pokedex/l10n/app_localizations.dart';
+import 'package:pokedex/features/pokemon/presentation/widgets/catalog_results.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/catalog_skeleton.dart';
+import 'package:pokedex/l10n/app_localizations.dart';
 
 /// Pantalla del catálogo. Solo conoce el Bloc: nunca la red ni la base.
 class CatalogPage extends StatelessWidget {
@@ -15,7 +15,7 @@ class CatalogPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final colors = Theme.of(context).colorScheme;
 
     return Scaffold(
@@ -92,32 +92,7 @@ class CatalogPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                  Expanded(
-                    child: Center(
-                      // En pantallas anchas la lista no se estira (RF-CAT-06).
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 640),
-                        child: RefreshIndicator(
-                          onRefresh: () async {
-                            context.read<CatalogBloc>().add(
-                              const CatalogRefreshRequested(),
-                            );
-                          },
-                          child: ListView.builder(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            padding: const EdgeInsets.all(8),
-                            itemCount: pokemon.length,
-                            itemBuilder: (context, index) {
-                              return PokemonCard(
-                                pokemon: pokemon[index],
-                                onTap: () {},
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  Expanded(child: CatalogResults(pokemon: pokemon)),
                 ],
               );
           }

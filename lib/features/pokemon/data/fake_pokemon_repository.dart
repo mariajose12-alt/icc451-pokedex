@@ -41,18 +41,17 @@ class FakePokemonRepository implements PokemonRepository {
 
   static const List<Pokemon> _sample = [
     Pokemon(
-      id: 1,
-      name: 'bulbasaur',
-      nationalDexNumber: 1,
-      generationId: 1,
-      height: 7,
-      weight: 69,
+      id: 252,
+      name: 'treecko',
+      nationalDexNumber: 252,
+      generationId: 3,
+      height: 5,
+      weight: 50,
       types: [
         PokemonType(id: 12, name: 'grass'),
-        PokemonType(id: 4, name: 'poison'),
       ],
       artworkUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png',
-      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
+      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/252.png',
     ),
     Pokemon(
       id: 4,
@@ -66,13 +65,15 @@ class FakePokemonRepository implements PokemonRepository {
       spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png',
     ),
     Pokemon(
-      id: 5,
-      name: 'charmeleon',
-      nationalDexNumber: 5,
-      generationId: 1,
-      height: 11,
-      weight: 190,
-      types: [PokemonType(id: 10, name: 'fire')],
+      id: 405,
+      name: 'luxray',
+      nationalDexNumber: 405,
+      generationId: 4,
+      height: 14,
+      weight: 420,
+      types: [PokemonType(id: 13, name: 'electric')],
+      artworkUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/405.png',
+      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/405.png',
     ),
   ];
 

@@ -1,6 +1,5 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -37,27 +36,22 @@ class AppLocalizationsEs extends AppLocalizations {
   String get catalogEmptyTitle => 'Aún no hay Pokémon guardados';
 
   @override
-  String get catalogEmptyMessage =>
-      'Conéctate a Internet para descargar el catálogo. Después podrás usarlo sin conexión.';
+  String get catalogEmptyMessage => 'Conéctate a Internet para descargar el catálogo. Después podrás usarlo sin conexión.';
 
   @override
   String get catalogErrorTitle => 'No se pudo cargar el catálogo';
 
   @override
-  String get catalogRefreshFailedBanner =>
-      'No se pudo actualizar. Mostrando los datos guardados.';
+  String get catalogRefreshFailedBanner => 'No se pudo actualizar. Mostrando los datos guardados.';
 
   @override
-  String get errorNoConnection =>
-      'No hay conexión a Internet. Revisa tu red e inténtalo de nuevo.';
+  String get errorNoConnection => 'No hay conexión a Internet. Revisa tu red e inténtalo de nuevo.';
 
   @override
-  String get errorTimeout =>
-      'La solicitud tardó demasiado. Inténtalo de nuevo.';
+  String get errorTimeout => 'La solicitud tardó demasiado. Inténtalo de nuevo.';
 
   @override
-  String get errorRateLimit =>
-      'Se hicieron demasiadas solicitudes. Espera un momento e inténtalo de nuevo.';
+  String get errorRateLimit => 'Se hicieron demasiadas solicitudes. Espera un momento e inténtalo de nuevo.';
 
   @override
   String get errorService => 'El servicio no está disponible en este momento.';
@@ -75,4 +69,15 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get languageSystem => 'Sistema';
+
+  @override
+  String pokemonCount(int count) {
+    return '$count Pokémon';
+  }
+
+  @override
+  String get viewGrid => 'Cuadrícula';
+
+  @override
+  String get viewList => 'Lista';
 }

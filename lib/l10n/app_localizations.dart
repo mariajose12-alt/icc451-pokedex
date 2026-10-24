@@ -62,17 +62,15 @@ import 'app_localizations_es.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale)
-    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
-  static AppLocalizations of(BuildContext context) {
-    return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
+  static AppLocalizations? of(BuildContext context) {
+    return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -84,143 +82,159 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
-      <LocalizationsDelegate<dynamic>>[
-        delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
+    delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('es'),
+    Locale('es')
   ];
 
   /// No description provided for @appTitle.
   ///
-  /// In es, this message translates to:
+  /// In en, this message translates to:
   /// **'Pokédex'**
   String get appTitle;
 
   /// No description provided for @navPokedex.
   ///
-  /// In es, this message translates to:
+  /// In en, this message translates to:
   /// **'Pokédex'**
   String get navPokedex;
 
   /// No description provided for @navFavorites.
   ///
-  /// In es, this message translates to:
-  /// **'Favoritos'**
+  /// In en, this message translates to:
+  /// **'Favorites'**
   String get navFavorites;
 
   /// No description provided for @navTrivia.
   ///
-  /// In es, this message translates to:
+  /// In en, this message translates to:
   /// **'Trivia'**
   String get navTrivia;
 
   /// No description provided for @navSettings.
   ///
-  /// In es, this message translates to:
-  /// **'Ajustes'**
+  /// In en, this message translates to:
+  /// **'Settings'**
   String get navSettings;
 
   /// No description provided for @loading.
   ///
-  /// In es, this message translates to:
-  /// **'Cargando'**
+  /// In en, this message translates to:
+  /// **'Loading'**
   String get loading;
 
   /// No description provided for @retry.
   ///
-  /// In es, this message translates to:
-  /// **'Reintentar'**
+  /// In en, this message translates to:
+  /// **'Retry'**
   String get retry;
 
   /// No description provided for @refresh.
   ///
-  /// In es, this message translates to:
-  /// **'Actualizar'**
+  /// In en, this message translates to:
+  /// **'Refresh'**
   String get refresh;
 
   /// No description provided for @catalogEmptyTitle.
   ///
-  /// In es, this message translates to:
-  /// **'Aún no hay Pokémon guardados'**
+  /// In en, this message translates to:
+  /// **'No Pokémon saved yet'**
   String get catalogEmptyTitle;
 
   /// No description provided for @catalogEmptyMessage.
   ///
-  /// In es, this message translates to:
-  /// **'Conéctate a Internet para descargar el catálogo. Después podrás usarlo sin conexión.'**
+  /// In en, this message translates to:
+  /// **'Connect to the Internet to download the catalog. After that you can use it offline.'**
   String get catalogEmptyMessage;
 
   /// No description provided for @catalogErrorTitle.
   ///
-  /// In es, this message translates to:
-  /// **'No se pudo cargar el catálogo'**
+  /// In en, this message translates to:
+  /// **'The catalog could not be loaded'**
   String get catalogErrorTitle;
 
   /// No description provided for @catalogRefreshFailedBanner.
   ///
-  /// In es, this message translates to:
-  /// **'No se pudo actualizar. Mostrando los datos guardados.'**
+  /// In en, this message translates to:
+  /// **'Could not update. Showing saved data.'**
   String get catalogRefreshFailedBanner;
 
   /// No description provided for @errorNoConnection.
   ///
-  /// In es, this message translates to:
-  /// **'No hay conexión a Internet. Revisa tu red e inténtalo de nuevo.'**
+  /// In en, this message translates to:
+  /// **'No Internet connection. Check your network and try again.'**
   String get errorNoConnection;
 
   /// No description provided for @errorTimeout.
   ///
-  /// In es, this message translates to:
-  /// **'La solicitud tardó demasiado. Inténtalo de nuevo.'**
+  /// In en, this message translates to:
+  /// **'The request took too long. Try again.'**
   String get errorTimeout;
 
   /// No description provided for @errorRateLimit.
   ///
-  /// In es, this message translates to:
-  /// **'Se hicieron demasiadas solicitudes. Espera un momento e inténtalo de nuevo.'**
+  /// In en, this message translates to:
+  /// **'Too many requests. Wait a moment and try again.'**
   String get errorRateLimit;
 
   /// No description provided for @errorService.
   ///
-  /// In es, this message translates to:
-  /// **'El servicio no está disponible en este momento.'**
+  /// In en, this message translates to:
+  /// **'The service is not available right now.'**
   String get errorService;
 
   /// No description provided for @errorUnknown.
   ///
-  /// In es, this message translates to:
-  /// **'Ocurrió un error inesperado.'**
+  /// In en, this message translates to:
+  /// **'An unexpected error occurred.'**
   String get errorUnknown;
 
   /// No description provided for @pokemonSemanticLabel.
   ///
-  /// In es, this message translates to:
-  /// **'{name}, Pokédex número {number}, tipos: {types}'**
+  /// In en, this message translates to:
+  /// **'{name}, Pokédex number {number}, types: {types}'**
   String pokemonSemanticLabel(String name, int number, String types);
 
   /// No description provided for @languageTitle.
   ///
-  /// In es, this message translates to:
-  /// **'Idioma'**
+  /// In en, this message translates to:
+  /// **'Language'**
   String get languageTitle;
 
   /// No description provided for @languageSystem.
   ///
-  /// In es, this message translates to:
-  /// **'Sistema'**
+  /// In en, this message translates to:
+  /// **'System'**
   String get languageSystem;
+
+  /// No description provided for @pokemonCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Pokemon'**
+  String pokemonCount(int count);
+
+  /// No description provided for @viewGrid.
+  ///
+  /// In en, this message translates to:
+  /// **'Grid'**
+  String get viewGrid;
+
+  /// No description provided for @viewList.
+  ///
+  /// In en, this message translates to:
+  /// **'List'**
+  String get viewList;
 }
 
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -229,26 +243,25 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['en', 'es'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['en', 'es'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
+
+
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'en':
-      return AppLocalizationsEn();
-    case 'es':
-      return AppLocalizationsEs();
+    case 'en': return AppLocalizationsEn();
+    case 'es': return AppLocalizationsEs();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.',
+    'that was used.'
   );
 }

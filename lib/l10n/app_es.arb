@@ -26,5 +26,13 @@
     }
   },
   "languageTitle": "Idioma",
-  "languageSystem": "Sistema"
+  "languageSystem": "Sistema",
+  "pokemonCount": "{count} Pokémon",
+  "@pokemonCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "viewGrid": "Cuadrícula",
+  "viewList": "Lista"
 }

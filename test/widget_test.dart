@@ -8,10 +8,19 @@ import 'package:pokedex/features/settings/presentation/cubit/locale_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  setUp(() {
-    getIt.registerSingleton<PokemonRepository>(
-      FakePokemonRepository(scenario: FakeScenario.empty, delay: Duration.zero),
-    );
+  late SharedPreferences preferences;
+
+  setUp(() async {
+    SharedPreferences.setMockInitialValues(<String, Object>{});
+    preferences = await SharedPreferences.getInstance();
+    getIt
+      ..registerSingleton<SharedPreferences>(preferences)
+      ..registerSingleton<PokemonRepository>(
+        FakePokemonRepository(
+          scenario: FakeScenario.empty,
+          delay: Duration.zero,
+        ),
+      );
   });
 
   tearDown(() async {
@@ -21,9 +30,6 @@ void main() {
   testWidgets('La app abre con la barra de navegación y cambia a Favoritos', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues(<String, Object>{});
-    final preferences = await SharedPreferences.getInstance();
-
     await tester.pumpWidget(
       PokedexApp(localeCubit: LocaleCubit(preferences: preferences)),
     );
