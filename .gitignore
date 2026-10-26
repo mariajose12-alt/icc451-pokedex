@@ -48,6 +48,7 @@ app.*.map.json
 .widget_preview/
 
 # Artefactos generados dentro de android/ (no versionar)
+/android/
 /android/build/
 /android/.gradle/
 /android/local.properties
