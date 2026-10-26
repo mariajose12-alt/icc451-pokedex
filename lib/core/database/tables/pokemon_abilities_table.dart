@@ -6,7 +6,7 @@ import 'pokemon_table.dart';
 @DataClassName('PokemonAbilityEntry')
 class PokemonAbilities extends Table {
   IntColumn get pokemonId =>
-      integer().references(Pokemon, #id, onDelete: KeyAction.cascade)();
+      integer().references(Pokemons, #id, onDelete: KeyAction.cascade)();
 
   IntColumn get abilityId =>
       integer().references(Abilities, #id, onDelete: KeyAction.cascade)();

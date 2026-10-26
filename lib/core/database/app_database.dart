@@ -11,7 +11,7 @@ part 'app_database.g.dart';
 
 @DriftDatabase(
   tables: [
-    Pokemon,
+    Pokemons,
     PokeTypes,
     Abilities,
     PokemonTypes,
@@ -28,5 +28,15 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   int get schemaVersion => 1;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+    // Crea todas las tablas la primera vez.
+    onCreate: (m) => m.createAll(),
+    // Se ejecuta cada vez que se abre la base de datos.
+    beforeOpen: (details) async {
+      await customStatement('PRAGMA foreign_keys = ON');
+    },
+  );
 
 }
