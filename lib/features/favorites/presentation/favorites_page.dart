@@ -9,9 +9,6 @@ class FavoritesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.navFavorites)),
-      body: Center(child: Text(l10n.navFavorites)),
-    );
+    return Scaffold(body: Center(child: Text(l10n.navFavorites)));
   }
 }

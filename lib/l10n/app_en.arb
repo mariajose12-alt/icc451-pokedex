@@ -34,5 +34,28 @@
     }
   },
   "viewGrid": "Grid",
-  "viewList": "List"
+  "viewList": "List",
+  "indicatorOnline": "Online",
+  "indicatorOffline": "Offline",
+  "indicatorUnavailable": "Service unavailable",
+  "indicatorSyncing": "Syncing…",
+  "indicatorChecking": "Checking…",
+  "indicatorDetailOnline": "Remote data · {sync}",
+  "@indicatorDetailOnline": { "placeholders": { "sync": { "type": "String" } } },
+  "indicatorDetailOffline": "Local data · {sync}",
+  "@indicatorDetailOffline": { "placeholders": { "sync": { "type": "String" } } },
+  "indicatorDetailUnavailable": "Network active, API not responding · local data · {sync}",
+  "@indicatorDetailUnavailable": { "placeholders": { "sync": { "type": "String" } } },
+  "indicatorDetailSyncing": "Online · you can keep browsing",
+  "indicatorDetailChecking": "Checking the service",
+  "indicatorLastSync": "last sync {time}",
+  "@indicatorLastSync": { "placeholders": { "time": { "type": "String" } } },
+  "indicatorNeverSynced": "not synced yet",
+  "indicatorSemantics": "Connection status: {status}. {detail}",
+  "@indicatorSemantics": {
+    "placeholders": {
+      "status": { "type": "String" },
+      "detail": { "type": "String" }
+    }
+  }
 }

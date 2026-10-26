@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
 /*
@@ -28,13 +31,17 @@ Future<void> main() async {
 */
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedex/core/sync/fake_sync_info_source.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/app.dart';
+import 'core/connectivity/api_connectivity_monitor.dart';
+import 'core/connectivity/connectivity_monitor.dart';
 import 'core/di/app_bloc_observer.dart';
 import 'core/di/service_locator.dart';
 import 'core/network/api_config.dart';
 import 'core/network/poke_api_client.dart';
+import 'core/sync/sync_info.dart';
 import 'features/pokemon/data/fake_pokemon_repository.dart';
 import 'features/pokemon/domain/repositories/pokemon_repository.dart';
 import 'features/settings/presentation/cubit/locale_cubit.dart';
@@ -58,6 +65,16 @@ Future<void> main() async {
     PokeApiClient(url: ApiConfig.graphqlUrl, timeout: ApiConfig.requestTimeout),
   );
 
+  // Conectividad
+  getIt.registerSingleton<ConnectivityMonitor>(
+    ApiConnectivityMonitor(
+      connectivity: Connectivity(),
+      client: getIt<PokeApiClient>(),
+    ),
+  );
+  // Sin await: la app no debe esperar a la red para abrirse (OF-03).
+  unawaited(getIt<ConnectivityMonitor>().start());
+
   // Base de datos
 
   // Repositorios
@@ -65,6 +82,9 @@ Future<void> main() async {
   getIt.registerSingleton<PokemonRepository>(
     FakePokemonRepository(scenario: FakeScenario.success),
   );
+
+  // TEMPORAL (T-014): fuente falsa de sincronización.
+  getIt.registerSingleton<SyncInfoSource>(FakeSyncInfoSource());
 
   runApp(PokedexApp(localeCubit: LocaleCubit(preferences: preferences)));
 }

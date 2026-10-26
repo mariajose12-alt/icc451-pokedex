@@ -1,6 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pokedex/core/connectivity/connectivity_monitor.dart';
+import 'package:pokedex/core/connectivity/indicator/connectivity_indicator_cubit.dart';
 import 'package:pokedex/core/di/service_locator.dart';
+import 'package:pokedex/core/sync/sync_info.dart';
 import 'package:pokedex/features/favorites/presentation/favorites_page.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/pokemon_repository.dart';
 import 'package:pokedex/features/pokemon/presentation/bloc/catalog_bloc.dart';
@@ -23,7 +26,13 @@ final GoRouter appRouter = GoRouter(
   routes: [
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
-        return AppShell(navigationShell: navigationShell);
+        return BlocProvider<ConnectivityIndicatorCubit>(
+          create: (context) => ConnectivityIndicatorCubit(
+            monitor: getIt<ConnectivityMonitor>(),
+            syncSource: getIt<SyncInfoSource>(),
+          ),
+          child: AppShell(navigationShell: navigationShell),
+        );
       },
       branches: [
         StatefulShellBranch(

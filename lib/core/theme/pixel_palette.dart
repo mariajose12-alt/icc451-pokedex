@@ -28,6 +28,9 @@ abstract final class PixelPalette {
   /// Lente azul de la Pokédex.
   static const Color lens = Color(0xFF48A0F8);
 
+  /// Verde: servicio disponible. Contraste alto sobre el panel.
+  static const Color success = Color(0xFF5CD66C);
+
   static const Color text = Color(0xFFFFFFFF);
   static const Color textMuted = Color(0xFFA8B3D0);
 }

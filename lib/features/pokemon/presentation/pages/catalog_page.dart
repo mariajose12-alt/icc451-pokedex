@@ -19,7 +19,6 @@ class CatalogPage extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.navPokedex)),
       body: BlocBuilder<CatalogBloc, CatalogState>(
         builder: (context, state) {
           switch (state) {
