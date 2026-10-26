@@ -6,6 +6,10 @@ import 'tables/poke_types_table.dart';
 import 'tables/pokemon_abilities_table.dart';
 import 'tables/pokemon_table.dart';
 import 'tables/pokemon_types_table.dart';
+import 'tables/favorites_table.dart';
+import 'tables/trivia_results_table.dart';
+import 'tables/trivia_answers_table.dart';
+import 'tables/sync_metadata_table.dart';
 
 part 'app_database.g.dart';
 
@@ -16,6 +20,10 @@ part 'app_database.g.dart';
     Abilities,
     PokemonTypes,
     PokemonAbilities,
+    Favorites,
+    TriviaResults,
+    TriviaAnswers,
+    SyncMetadata,
   ],
 )
 class AppDatabase extends _$AppDatabase {
