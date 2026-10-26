@@ -1,17 +1,46 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pokedex/app/app.dart';
+import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
+import 'package:pokedex/features/pokemon/domain/entities/pokemon_type.dart';
+import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_card.dart';
 
 void main() {
-  testWidgets('La app arranca y muestra el título', (tester) async {
-    await tester.pumpWidget(const PokedexApp());
+  testWidgets(
+    'PokemonCard muestra número, nombre y tipos, y responde al toque',
+    (tester) async {
+      var tocado = false;
 
-    expect(find.text('Pokédex'), findsOneWidget);
-  });
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: PokemonCard(
+              pokemon: const Pokemon(
+                id: 1,
+                name: 'bulbasaur',
+                nationalDexNumber: 1,
+                generationId: 1,
+                height: 7,
+                weight: 69,
+                types: [
+                  PokemonType(id: 12, name: 'grass'),
+                  PokemonType(id: 4, name: 'poison'),
+                ],
+              ),
+              onTap: () {
+                tocado = true;
+              },
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('#001'), findsOneWidget);
+      expect(find.text('Bulbasaur'), findsOneWidget);
+      expect(find.text('Grass'), findsOneWidget);
+      expect(find.text('Poison'), findsOneWidget);
+
+      await tester.tap(find.byType(InkWell));
+      expect(tocado, isTrue);
+    },
+  );
 }
