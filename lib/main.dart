@@ -28,6 +28,7 @@ Future<void> main() async {
 */
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/app.dart';
 import 'core/di/app_bloc_observer.dart';
@@ -36,12 +37,17 @@ import 'core/network/api_config.dart';
 import 'core/network/poke_api_client.dart';
 import 'features/pokemon/data/fake_pokemon_repository.dart';
 import 'features/pokemon/domain/repositories/pokemon_repository.dart';
+import 'features/settings/presentation/cubit/locale_cubit.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Observa todos los cambios de estado de los Blocs.
   Bloc.observer = AppBlocObserver();
+
+  // Preferencias del usuario
+  final preferences = await SharedPreferences.getInstance();
+  getIt.registerSingleton<SharedPreferences>(preferences);
 
   // Registro de dependencias
   // Orden: de abajo hacia arriba (red/base de datos -> fuentes de datos
@@ -60,5 +66,5 @@ void main() {
     FakePokemonRepository(scenario: FakeScenario.success),
   );
 
-  runApp(const PokedexApp());
+  runApp(PokedexApp(localeCubit: LocaleCubit(preferences: preferences)));
 }

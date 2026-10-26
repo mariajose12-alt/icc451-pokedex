@@ -5,7 +5,9 @@ import 'package:pokedex/features/favorites/presentation/favorites_page.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/pokemon_repository.dart';
 import 'package:pokedex/features/pokemon/presentation/bloc/catalog_bloc.dart';
 import 'package:pokedex/features/pokemon/presentation/bloc/catalog_event.dart';
+import 'package:pokedex/features/pokemon/presentation/cubit/catalog_view_mode_cubit.dart';
 import 'package:pokedex/features/pokemon/presentation/pages/catalog_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app_shell.dart';
 
@@ -29,10 +31,19 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: AppRoutes.catalog,
               builder: (context, state) {
-                return BlocProvider(
-                  create: (context) =>
-                      CatalogBloc(repository: getIt<PokemonRepository>())
-                        ..add(const CatalogStarted()),
+                return MultiBlocProvider(
+                  providers: [
+                    BlocProvider<CatalogBloc>(
+                      create: (context) =>
+                          CatalogBloc(repository: getIt<PokemonRepository>())
+                            ..add(const CatalogStarted()),
+                    ),
+                    BlocProvider<CatalogViewModeCubit>(
+                      create: (context) => CatalogViewModeCubit(
+                        preferences: getIt<SharedPreferences>(),
+                      ),
+                    ),
+                  ],
                   child: const CatalogPage(),
                 );
               },

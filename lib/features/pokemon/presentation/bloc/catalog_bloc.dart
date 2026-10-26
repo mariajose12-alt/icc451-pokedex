@@ -1,3 +1,4 @@
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/core/errors/failures.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
@@ -11,7 +12,8 @@ import 'catalog_state.dart';
 class CatalogBloc extends Bloc<CatalogEvent, CatalogState> {
   CatalogBloc({required this._repository}) : super(const CatalogInitial()) {
     on<CatalogStarted>(_onStarted);
-    on<CatalogRefreshRequested>(_onRefreshRequested);
+    // droppable() -> si ya hay un refresh en curso, ignora los nuevos.
+    on<CatalogRefreshRequested>(_onRefreshRequested, transformer: droppable());
   }
 
   final PokemonRepository _repository;
