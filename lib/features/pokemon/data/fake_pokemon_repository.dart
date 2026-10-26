@@ -47,9 +47,7 @@ class FakePokemonRepository implements PokemonRepository {
       generationId: 3,
       height: 5,
       weight: 50,
-      types: [
-        PokemonType(id: 12, name: 'grass'),
-      ],
+      types: [PokemonType(id: 12, name: 'grass')],
       artworkUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png',
       spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/252.png',
     ),

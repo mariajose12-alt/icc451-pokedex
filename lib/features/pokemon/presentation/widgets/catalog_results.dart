@@ -63,9 +63,9 @@ class CatalogResults extends StatelessWidget {
                         ],
                         selected: <CatalogViewMode>{mode},
                         onSelectionChanged: (selection) {
-                          context
-                              .read<CatalogViewModeCubit>()
-                              .select(selection.first);
+                          context.read<CatalogViewModeCubit>().select(
+                            selection.first,
+                          );
                         },
                       ),
                     ],
@@ -74,9 +74,9 @@ class CatalogResults extends StatelessWidget {
                 Expanded(
                   child: RefreshIndicator(
                     onRefresh: () async {
-                      context
-                          .read<CatalogBloc>()
-                          .add(const CatalogRefreshRequested());
+                      context.read<CatalogBloc>().add(
+                        const CatalogRefreshRequested(),
+                      );
                     },
                     // Ambas formas construyen sus elementos de forma diferida
                     // (RNF-REN-01).
@@ -86,11 +86,11 @@ class CatalogResults extends StatelessWidget {
                             padding: const EdgeInsets.all(12),
                             gridDelegate:
                                 SliverGridDelegateWithMaxCrossAxisExtent(
-                              maxCrossAxisExtent: 220,
-                              mainAxisExtent: 290 * textScale,
-                              crossAxisSpacing: 4,
-                              mainAxisSpacing: 4,
-                            ),
+                                  maxCrossAxisExtent: 220,
+                                  mainAxisExtent: 290 * textScale,
+                                  crossAxisSpacing: 4,
+                                  mainAxisSpacing: 4,
+                                ),
                             itemCount: pokemon.length,
                             itemBuilder: (context, index) {
                               return PokemonGridCard(
