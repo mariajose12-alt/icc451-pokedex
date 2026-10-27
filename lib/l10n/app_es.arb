@@ -1,0 +1,38 @@
+{
+  "@@locale": "es",
+  "appTitle": "Pokédex",
+  "navPokedex": "Pokédex",
+  "navFavorites": "Favoritos",
+  "navTrivia": "Trivia",
+  "navSettings": "Ajustes",
+  "loading": "Cargando",
+  "retry": "Reintentar",
+  "refresh": "Actualizar",
+  "catalogEmptyTitle": "Aún no hay Pokémon guardados",
+  "catalogEmptyMessage": "Conéctate a Internet para descargar el catálogo. Después podrás usarlo sin conexión.",
+  "catalogErrorTitle": "No se pudo cargar el catálogo",
+  "catalogRefreshFailedBanner": "No se pudo actualizar. Mostrando los datos guardados.",
+  "errorNoConnection": "No hay conexión a Internet. Revisa tu red e inténtalo de nuevo.",
+  "errorTimeout": "La solicitud tardó demasiado. Inténtalo de nuevo.",
+  "errorRateLimit": "Se hicieron demasiadas solicitudes. Espera un momento e inténtalo de nuevo.",
+  "errorService": "El servicio no está disponible en este momento.",
+  "errorUnknown": "Ocurrió un error inesperado.",
+  "pokemonSemanticLabel": "{name}, Pokédex número {number}, tipos: {types}",
+  "@pokemonSemanticLabel": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "number": { "type": "int" },
+      "types": { "type": "String" }
+    }
+  },
+  "languageTitle": "Idioma",
+  "languageSystem": "Sistema",
+  "pokemonCount": "{count} Pokémon",
+  "@pokemonCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "viewGrid": "Cuadrícula",
+  "viewList": "Lista"
+}
