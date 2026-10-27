@@ -71,4 +71,11 @@ class CatalogoDao extends DatabaseAccessor<AppDatabase>
       await into(syncMetadata).insertOnConflictUpdate(syncState);
     });
   }
+
+  // Guarda la ruta local de la imagen de un Pokémon después de descargarla (T-009).
+  Future<int> saveArtworkLocalPath(int pokemonId, String ruta) {
+    return (update(pokemons)..where((p) => p.id.equals(pokemonId))).write(
+      PokemonsCompanion(artworkLocalPath: Value(ruta)),
+    );
+  }
 }

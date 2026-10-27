@@ -78,4 +78,17 @@ void main() {
     expect(estado!.cursorOrOffset, '25');
     expect(estado.status, 'ok');
   });
+
+  test('guarda la ruta local de la imagen de un Pokémon', () async {
+    await guardarPagina();
+
+    final filas = await db.catalogoDao.saveArtworkLocalPath(
+      25,
+      '/data/pokedexImages/25.png',
+    );
+    final pokemon = await db.catalogoDao.watchPokemons().first;
+
+    expect(filas, 1);
+    expect(pokemon.first.artworkLocalPath, '/data/pokedexImages/25.png');
+  });
 }
