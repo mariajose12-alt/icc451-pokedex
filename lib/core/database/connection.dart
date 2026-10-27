@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path/path.dart' as p;
@@ -9,7 +10,6 @@ import 'package:path_provider/path_provider.dart';
 
 QueryExecutor openConnection() {
   return LazyDatabase(() async {
-
     // Carpeta privada de la app en el telefono
     final carpeta = await getApplicationDocumentsDirectory();
     final archivo = File(p.join(carpeta.path, 'pokedex.sqlite'));

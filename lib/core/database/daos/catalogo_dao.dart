@@ -30,16 +30,16 @@ class CatalogoDao extends DatabaseAccessor<AppDatabase>
   // Tipos de un Pokémon, en orden de slot (el 1 es el principal).
   Stream<List<PokemonTypeEntry>> watchTypesOf(int pokemonId) {
     return (select(pokemonTypes)
-      ..where((t) => t.pokemonId.equals(pokemonId))
-      ..orderBy([(t) => OrderingTerm.asc(t.slot)]))
+          ..where((t) => t.pokemonId.equals(pokemonId))
+          ..orderBy([(t) => OrderingTerm.asc(t.slot)]))
         .watch();
   }
 
   // Estado de sincronización de un recurso. Lo lee el indicador (IND-04).
   Stream<SyncMetadataEntry?> watchSyncState(String resourceKey) {
-    return (select(syncMetadata)
-      ..where((s) => s.resourceKey.equals(resourceKey)))
-        .watchSingleOrNull();
+    return (select(
+      syncMetadata,
+    )..where((s) => s.resourceKey.equals(resourceKey))).watchSingleOrNull();
   }
 
   // Guarda una página completa en una sola transacción (PS-07, PA-09).
@@ -62,9 +62,9 @@ class CatalogoDao extends DatabaseAccessor<AppDatabase>
       // Reemplaza los tipos de los Pokémon de esta página. Solo borra filas
       // de la tabla de relación, nunca de pokemons.
       final ids = pokemons.map((p) => p.id.value).toList();
-      await (delete(this.pokemonTypes)
-        ..where((t) => t.pokemonId.isIn(ids)))
-          .go();
+      await (delete(
+        this.pokemonTypes,
+      )..where((t) => t.pokemonId.isIn(ids))).go();
       await batch((b) => b.insertAll(this.pokemonTypes, pokemonTypes));
 
       // Cursor y estado de la página, en la misma transacción.

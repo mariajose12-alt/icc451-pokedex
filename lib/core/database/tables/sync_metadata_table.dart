@@ -4,7 +4,6 @@ import 'package:drift/drift.dart';
 // El indicador global lo lee para mostrar la vigencia de los datos IND-04
 @DataClassName('SyncMetadataEntry')
 class SyncMetadata extends Table {
-
   //Identificador estable del recurso
   TextColumn get resourceKey => text()();
 

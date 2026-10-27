@@ -29,7 +29,6 @@ part 'app_database.g.dart';
   daos: [CatalogoDao],
 )
 class AppDatabase extends _$AppDatabase {
-
   // Constructor principal
   AppDatabase(super.executor);
 
@@ -48,5 +47,4 @@ class AppDatabase extends _$AppDatabase {
       await customStatement('PRAGMA foreign_keys = ON');
     },
   );
-
 }

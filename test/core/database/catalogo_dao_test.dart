@@ -17,9 +17,7 @@ void main() {
   // Página de prueba: un Pokémon con un tipo.
   Future<void> guardarPagina() {
     return db.catalogoDao.savePage(
-      types: [
-        PokeTypesCompanion.insert(id: const Value(13), name: 'electric'),
-      ],
+      types: [PokeTypesCompanion.insert(id: const Value(13), name: 'electric')],
       pokemons: [
         PokemonsCompanion.insert(
           id: const Value(25),
@@ -41,15 +39,17 @@ void main() {
     );
   }
 
-  test('guardar la misma página tres veces no duplica registros (PA-13)',
-          () async {
-        await guardarPagina();
-        await guardarPagina();
-        await guardarPagina();
+  test(
+    'guardar la misma página tres veces no duplica registros (PA-13)',
+    () async {
+      await guardarPagina();
+      await guardarPagina();
+      await guardarPagina();
 
-        expect(await db.catalogoDao.watchCount().first, 1);
-        expect(await db.catalogoDao.watchTypesOf(25).first, hasLength(1));
-      });
+      expect(await db.catalogoDao.watchCount().first, 1);
+      expect(await db.catalogoDao.watchTypesOf(25).first, hasLength(1));
+    },
+  );
 
   test('el stream emite cuando se guarda una página (OF-16)', () async {
     final emisiones = <List<PokemonEntry>>[];
