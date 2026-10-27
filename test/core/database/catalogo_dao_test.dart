@@ -33,7 +33,7 @@ void main() {
       syncState: SyncMetadataCompanion(
         resourceKey: const Value('catalog'),
         status: const Value('ok'),
-        lastSuccesfulAt: Value(DateTime(2026, 10, 26)),
+        lastSuccessfulAt: Value(DateTime(2026, 10, 26)),
         cursorOrOffset: const Value('25'),
       ),
     );

@@ -2449,13 +2449,13 @@ class $SyncMetadataTable extends SyncMetadata
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _lastSuccesfulAtMeta = const VerificationMeta(
-    'lastSuccesfulAt',
+  static const VerificationMeta _lastSuccessfulAtMeta = const VerificationMeta(
+    'lastSuccessfulAt',
   );
   @override
-  late final GeneratedColumn<DateTime> lastSuccesfulAt =
+  late final GeneratedColumn<DateTime> lastSuccessfulAt =
       GeneratedColumn<DateTime>(
-        'last_succesful_at',
+        'last_successful_at',
         aliasedName,
         true,
         type: DriftSqlType.dateTime,
@@ -2484,7 +2484,7 @@ class $SyncMetadataTable extends SyncMetadata
   @override
   List<GeneratedColumn> get $columns => [
     resourceKey,
-    lastSuccesfulAt,
+    lastSuccessfulAt,
     status,
     cursorOrOffset,
   ];
@@ -2511,12 +2511,12 @@ class $SyncMetadataTable extends SyncMetadata
     } else if (isInserting) {
       context.missing(_resourceKeyMeta);
     }
-    if (data.containsKey('last_succesful_at')) {
+    if (data.containsKey('last_successful_at')) {
       context.handle(
-        _lastSuccesfulAtMeta,
-        lastSuccesfulAt.isAcceptableOrUnknown(
-          data['last_succesful_at']!,
-          _lastSuccesfulAtMeta,
+        _lastSuccessfulAtMeta,
+        lastSuccessfulAt.isAcceptableOrUnknown(
+          data['last_successful_at']!,
+          _lastSuccessfulAtMeta,
         ),
       );
     }
@@ -2550,9 +2550,9 @@ class $SyncMetadataTable extends SyncMetadata
         DriftSqlType.string,
         data['${effectivePrefix}resource_key'],
       )!,
-      lastSuccesfulAt: attachedDatabase.typeMapping.read(
+      lastSuccessfulAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
-        data['${effectivePrefix}last_succesful_at'],
+        data['${effectivePrefix}last_successful_at'],
       ),
       status: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -2574,12 +2574,12 @@ class $SyncMetadataTable extends SyncMetadata
 class SyncMetadataEntry extends DataClass
     implements Insertable<SyncMetadataEntry> {
   final String resourceKey;
-  final DateTime? lastSuccesfulAt;
+  final DateTime? lastSuccessfulAt;
   final String status;
   final String? cursorOrOffset;
   const SyncMetadataEntry({
     required this.resourceKey,
-    this.lastSuccesfulAt,
+    this.lastSuccessfulAt,
     required this.status,
     this.cursorOrOffset,
   });
@@ -2587,8 +2587,8 @@ class SyncMetadataEntry extends DataClass
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['resource_key'] = Variable<String>(resourceKey);
-    if (!nullToAbsent || lastSuccesfulAt != null) {
-      map['last_succesful_at'] = Variable<DateTime>(lastSuccesfulAt);
+    if (!nullToAbsent || lastSuccessfulAt != null) {
+      map['last_successful_at'] = Variable<DateTime>(lastSuccessfulAt);
     }
     map['status'] = Variable<String>(status);
     if (!nullToAbsent || cursorOrOffset != null) {
@@ -2600,9 +2600,9 @@ class SyncMetadataEntry extends DataClass
   SyncMetadataCompanion toCompanion(bool nullToAbsent) {
     return SyncMetadataCompanion(
       resourceKey: Value(resourceKey),
-      lastSuccesfulAt: lastSuccesfulAt == null && nullToAbsent
+      lastSuccessfulAt: lastSuccessfulAt == null && nullToAbsent
           ? const Value.absent()
-          : Value(lastSuccesfulAt),
+          : Value(lastSuccessfulAt),
       status: Value(status),
       cursorOrOffset: cursorOrOffset == null && nullToAbsent
           ? const Value.absent()
@@ -2617,7 +2617,9 @@ class SyncMetadataEntry extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return SyncMetadataEntry(
       resourceKey: serializer.fromJson<String>(json['resourceKey']),
-      lastSuccesfulAt: serializer.fromJson<DateTime?>(json['lastSuccesfulAt']),
+      lastSuccessfulAt: serializer.fromJson<DateTime?>(
+        json['lastSuccessfulAt'],
+      ),
       status: serializer.fromJson<String>(json['status']),
       cursorOrOffset: serializer.fromJson<String?>(json['cursorOrOffset']),
     );
@@ -2627,7 +2629,7 @@ class SyncMetadataEntry extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'resourceKey': serializer.toJson<String>(resourceKey),
-      'lastSuccesfulAt': serializer.toJson<DateTime?>(lastSuccesfulAt),
+      'lastSuccessfulAt': serializer.toJson<DateTime?>(lastSuccessfulAt),
       'status': serializer.toJson<String>(status),
       'cursorOrOffset': serializer.toJson<String?>(cursorOrOffset),
     };
@@ -2635,14 +2637,14 @@ class SyncMetadataEntry extends DataClass
 
   SyncMetadataEntry copyWith({
     String? resourceKey,
-    Value<DateTime?> lastSuccesfulAt = const Value.absent(),
+    Value<DateTime?> lastSuccessfulAt = const Value.absent(),
     String? status,
     Value<String?> cursorOrOffset = const Value.absent(),
   }) => SyncMetadataEntry(
     resourceKey: resourceKey ?? this.resourceKey,
-    lastSuccesfulAt: lastSuccesfulAt.present
-        ? lastSuccesfulAt.value
-        : this.lastSuccesfulAt,
+    lastSuccessfulAt: lastSuccessfulAt.present
+        ? lastSuccessfulAt.value
+        : this.lastSuccessfulAt,
     status: status ?? this.status,
     cursorOrOffset: cursorOrOffset.present
         ? cursorOrOffset.value
@@ -2653,9 +2655,9 @@ class SyncMetadataEntry extends DataClass
       resourceKey: data.resourceKey.present
           ? data.resourceKey.value
           : this.resourceKey,
-      lastSuccesfulAt: data.lastSuccesfulAt.present
-          ? data.lastSuccesfulAt.value
-          : this.lastSuccesfulAt,
+      lastSuccessfulAt: data.lastSuccessfulAt.present
+          ? data.lastSuccessfulAt.value
+          : this.lastSuccessfulAt,
       status: data.status.present ? data.status.value : this.status,
       cursorOrOffset: data.cursorOrOffset.present
           ? data.cursorOrOffset.value
@@ -2667,7 +2669,7 @@ class SyncMetadataEntry extends DataClass
   String toString() {
     return (StringBuffer('SyncMetadataEntry(')
           ..write('resourceKey: $resourceKey, ')
-          ..write('lastSuccesfulAt: $lastSuccesfulAt, ')
+          ..write('lastSuccessfulAt: $lastSuccessfulAt, ')
           ..write('status: $status, ')
           ..write('cursorOrOffset: $cursorOrOffset')
           ..write(')'))
@@ -2676,33 +2678,33 @@ class SyncMetadataEntry extends DataClass
 
   @override
   int get hashCode =>
-      Object.hash(resourceKey, lastSuccesfulAt, status, cursorOrOffset);
+      Object.hash(resourceKey, lastSuccessfulAt, status, cursorOrOffset);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is SyncMetadataEntry &&
           other.resourceKey == this.resourceKey &&
-          other.lastSuccesfulAt == this.lastSuccesfulAt &&
+          other.lastSuccessfulAt == this.lastSuccessfulAt &&
           other.status == this.status &&
           other.cursorOrOffset == this.cursorOrOffset);
 }
 
 class SyncMetadataCompanion extends UpdateCompanion<SyncMetadataEntry> {
   final Value<String> resourceKey;
-  final Value<DateTime?> lastSuccesfulAt;
+  final Value<DateTime?> lastSuccessfulAt;
   final Value<String> status;
   final Value<String?> cursorOrOffset;
   final Value<int> rowid;
   const SyncMetadataCompanion({
     this.resourceKey = const Value.absent(),
-    this.lastSuccesfulAt = const Value.absent(),
+    this.lastSuccessfulAt = const Value.absent(),
     this.status = const Value.absent(),
     this.cursorOrOffset = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   SyncMetadataCompanion.insert({
     required String resourceKey,
-    this.lastSuccesfulAt = const Value.absent(),
+    this.lastSuccessfulAt = const Value.absent(),
     required String status,
     this.cursorOrOffset = const Value.absent(),
     this.rowid = const Value.absent(),
@@ -2710,14 +2712,14 @@ class SyncMetadataCompanion extends UpdateCompanion<SyncMetadataEntry> {
        status = Value(status);
   static Insertable<SyncMetadataEntry> custom({
     Expression<String>? resourceKey,
-    Expression<DateTime>? lastSuccesfulAt,
+    Expression<DateTime>? lastSuccessfulAt,
     Expression<String>? status,
     Expression<String>? cursorOrOffset,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (resourceKey != null) 'resource_key': resourceKey,
-      if (lastSuccesfulAt != null) 'last_succesful_at': lastSuccesfulAt,
+      if (lastSuccessfulAt != null) 'last_successful_at': lastSuccessfulAt,
       if (status != null) 'status': status,
       if (cursorOrOffset != null) 'cursor_or_offset': cursorOrOffset,
       if (rowid != null) 'rowid': rowid,
@@ -2726,14 +2728,14 @@ class SyncMetadataCompanion extends UpdateCompanion<SyncMetadataEntry> {
 
   SyncMetadataCompanion copyWith({
     Value<String>? resourceKey,
-    Value<DateTime?>? lastSuccesfulAt,
+    Value<DateTime?>? lastSuccessfulAt,
     Value<String>? status,
     Value<String?>? cursorOrOffset,
     Value<int>? rowid,
   }) {
     return SyncMetadataCompanion(
       resourceKey: resourceKey ?? this.resourceKey,
-      lastSuccesfulAt: lastSuccesfulAt ?? this.lastSuccesfulAt,
+      lastSuccessfulAt: lastSuccessfulAt ?? this.lastSuccessfulAt,
       status: status ?? this.status,
       cursorOrOffset: cursorOrOffset ?? this.cursorOrOffset,
       rowid: rowid ?? this.rowid,
@@ -2746,8 +2748,8 @@ class SyncMetadataCompanion extends UpdateCompanion<SyncMetadataEntry> {
     if (resourceKey.present) {
       map['resource_key'] = Variable<String>(resourceKey.value);
     }
-    if (lastSuccesfulAt.present) {
-      map['last_succesful_at'] = Variable<DateTime>(lastSuccesfulAt.value);
+    if (lastSuccessfulAt.present) {
+      map['last_successful_at'] = Variable<DateTime>(lastSuccessfulAt.value);
     }
     if (status.present) {
       map['status'] = Variable<String>(status.value);
@@ -2765,7 +2767,7 @@ class SyncMetadataCompanion extends UpdateCompanion<SyncMetadataEntry> {
   String toString() {
     return (StringBuffer('SyncMetadataCompanion(')
           ..write('resourceKey: $resourceKey, ')
-          ..write('lastSuccesfulAt: $lastSuccesfulAt, ')
+          ..write('lastSuccessfulAt: $lastSuccessfulAt, ')
           ..write('status: $status, ')
           ..write('cursorOrOffset: $cursorOrOffset, ')
           ..write('rowid: $rowid')
@@ -3422,10 +3424,11 @@ class $$PokemonsTableTableManager
                   getPrefetchedDataCallback: (items) async {
                     return [
                       if (pokemonTypesRefs)
-                        await $_getPrefetchedData<
+                        await $_getPrefetchedDataByColumns<
                           PokemonEntry,
                           $PokemonsTable,
-                          PokemonTypeEntry
+                          PokemonTypeEntry,
+                          $PokemonTypesTable
                         >(
                           currentTable: table,
                           referencedTable: $$PokemonsTableReferences
@@ -3436,17 +3439,16 @@ class $$PokemonsTableTableManager
                                 table,
                                 p0,
                               ).pokemonTypesRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.pokemonId == item.id,
-                              ),
+                          currentColumn: 'id',
+                          referencedColumn: 'pokemon_id',
                           typedResults: items,
                         ),
                       if (pokemonAbilitiesRefs)
-                        await $_getPrefetchedData<
+                        await $_getPrefetchedDataByColumns<
                           PokemonEntry,
                           $PokemonsTable,
-                          PokemonAbilityEntry
+                          PokemonAbilityEntry,
+                          $PokemonAbilitiesTable
                         >(
                           currentTable: table,
                           referencedTable: $$PokemonsTableReferences
@@ -3457,17 +3459,16 @@ class $$PokemonsTableTableManager
                                 table,
                                 p0,
                               ).pokemonAbilitiesRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.pokemonId == item.id,
-                              ),
+                          currentColumn: 'id',
+                          referencedColumn: 'pokemon_id',
                           typedResults: items,
                         ),
                       if (favoritesRefs)
-                        await $_getPrefetchedData<
+                        await $_getPrefetchedDataByColumns<
                           PokemonEntry,
                           $PokemonsTable,
-                          FavoriteEntry
+                          FavoriteEntry,
+                          $FavoritesTable
                         >(
                           currentTable: table,
                           referencedTable: $$PokemonsTableReferences
@@ -3478,17 +3479,16 @@ class $$PokemonsTableTableManager
                                 table,
                                 p0,
                               ).favoritesRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.pokemonId == item.id,
-                              ),
+                          currentColumn: 'id',
+                          referencedColumn: 'pokemon_id',
                           typedResults: items,
                         ),
                       if (triviaAnswersRefs)
-                        await $_getPrefetchedData<
+                        await $_getPrefetchedDataByColumns<
                           PokemonEntry,
                           $PokemonsTable,
-                          TriviaAnswersEntry
+                          TriviaAnswersEntry,
+                          $TriviaAnswersTable
                         >(
                           currentTable: table,
                           referencedTable: $$PokemonsTableReferences
@@ -3499,10 +3499,8 @@ class $$PokemonsTableTableManager
                                 table,
                                 p0,
                               ).triviaAnswersRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.pokemonId == item.id,
-                              ),
+                          currentColumn: 'id',
+                          referencedColumn: 'pokemon_id',
                           typedResults: items,
                         ),
                     ];
@@ -3720,10 +3718,11 @@ class $$PokeTypesTableTableManager
               getPrefetchedDataCallback: (items) async {
                 return [
                   if (pokemonTypesRefs)
-                    await $_getPrefetchedData<
+                    await $_getPrefetchedDataByColumns<
                       TypeEntry,
                       $PokeTypesTable,
-                      PokemonTypeEntry
+                      PokemonTypeEntry,
+                      $PokemonTypesTable
                     >(
                       currentTable: table,
                       referencedTable: $$PokeTypesTableReferences
@@ -3734,8 +3733,8 @@ class $$PokeTypesTableTableManager
                             table,
                             p0,
                           ).pokemonTypesRefs,
-                      referencedItemsForCurrentItem: (item, referencedItems) =>
-                          referencedItems.where((e) => e.typeId == item.id),
+                      currentColumn: 'id',
+                      referencedColumn: 'type_id',
                       typedResults: items,
                     ),
                 ];
@@ -3981,10 +3980,11 @@ class $$AbilitiesTableTableManager
               getPrefetchedDataCallback: (items) async {
                 return [
                   if (pokemonAbilitiesRefs)
-                    await $_getPrefetchedData<
+                    await $_getPrefetchedDataByColumns<
                       AbilityEntry,
                       $AbilitiesTable,
-                      PokemonAbilityEntry
+                      PokemonAbilityEntry,
+                      $PokemonAbilitiesTable
                     >(
                       currentTable: table,
                       referencedTable: $$AbilitiesTableReferences
@@ -3995,8 +3995,8 @@ class $$AbilitiesTableTableManager
                             table,
                             p0,
                           ).pokemonAbilitiesRefs,
-                      referencedItemsForCurrentItem: (item, referencedItems) =>
-                          referencedItems.where((e) => e.abilityId == item.id),
+                      currentColumn: 'id',
+                      referencedColumn: 'ability_id',
                       typedResults: items,
                     ),
                 ];
@@ -5248,10 +5248,11 @@ class $$TriviaResultsTableTableManager
               getPrefetchedDataCallback: (items) async {
                 return [
                   if (triviaAnswersRefs)
-                    await $_getPrefetchedData<
+                    await $_getPrefetchedDataByColumns<
                       TriviaResultEntry,
                       $TriviaResultsTable,
-                      TriviaAnswersEntry
+                      TriviaAnswersEntry,
+                      $TriviaAnswersTable
                     >(
                       currentTable: table,
                       referencedTable: $$TriviaResultsTableReferences
@@ -5262,10 +5263,8 @@ class $$TriviaResultsTableTableManager
                             table,
                             p0,
                           ).triviaAnswersRefs,
-                      referencedItemsForCurrentItem: (item, referencedItems) =>
-                          referencedItems.where(
-                            (e) => e.triviaResultId == item.id,
-                          ),
+                      currentColumn: 'id',
+                      referencedColumn: 'trivia_result_id',
                       typedResults: items,
                     ),
                 ];
@@ -5673,7 +5672,7 @@ typedef $$TriviaAnswersTableProcessedTableManager =
 typedef $$SyncMetadataTableCreateCompanionBuilder =
     SyncMetadataCompanion Function({
       required String resourceKey,
-      Value<DateTime?> lastSuccesfulAt,
+      Value<DateTime?> lastSuccessfulAt,
       required String status,
       Value<String?> cursorOrOffset,
       Value<int> rowid,
@@ -5681,7 +5680,7 @@ typedef $$SyncMetadataTableCreateCompanionBuilder =
 typedef $$SyncMetadataTableUpdateCompanionBuilder =
     SyncMetadataCompanion Function({
       Value<String> resourceKey,
-      Value<DateTime?> lastSuccesfulAt,
+      Value<DateTime?> lastSuccessfulAt,
       Value<String> status,
       Value<String?> cursorOrOffset,
       Value<int> rowid,
@@ -5701,8 +5700,8 @@ class $$SyncMetadataTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<DateTime> get lastSuccesfulAt => $composableBuilder(
-    column: $table.lastSuccesfulAt,
+  ColumnFilters<DateTime> get lastSuccessfulAt => $composableBuilder(
+    column: $table.lastSuccessfulAt,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -5731,8 +5730,8 @@ class $$SyncMetadataTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<DateTime> get lastSuccesfulAt => $composableBuilder(
-    column: $table.lastSuccesfulAt,
+  ColumnOrderings<DateTime> get lastSuccessfulAt => $composableBuilder(
+    column: $table.lastSuccessfulAt,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -5761,8 +5760,8 @@ class $$SyncMetadataTableAnnotationComposer
     builder: (column) => column,
   );
 
-  GeneratedColumn<DateTime> get lastSuccesfulAt => $composableBuilder(
-    column: $table.lastSuccesfulAt,
+  GeneratedColumn<DateTime> get lastSuccessfulAt => $composableBuilder(
+    column: $table.lastSuccessfulAt,
     builder: (column) => column,
   );
 
@@ -5811,13 +5810,13 @@ class $$SyncMetadataTableTableManager
           updateCompanionCallback:
               ({
                 Value<String> resourceKey = const Value.absent(),
-                Value<DateTime?> lastSuccesfulAt = const Value.absent(),
+                Value<DateTime?> lastSuccessfulAt = const Value.absent(),
                 Value<String> status = const Value.absent(),
                 Value<String?> cursorOrOffset = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SyncMetadataCompanion(
                 resourceKey: resourceKey,
-                lastSuccesfulAt: lastSuccesfulAt,
+                lastSuccessfulAt: lastSuccessfulAt,
                 status: status,
                 cursorOrOffset: cursorOrOffset,
                 rowid: rowid,
@@ -5825,13 +5824,13 @@ class $$SyncMetadataTableTableManager
           createCompanionCallback:
               ({
                 required String resourceKey,
-                Value<DateTime?> lastSuccesfulAt = const Value.absent(),
+                Value<DateTime?> lastSuccessfulAt = const Value.absent(),
                 required String status,
                 Value<String?> cursorOrOffset = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SyncMetadataCompanion.insert(
                 resourceKey: resourceKey,
-                lastSuccesfulAt: lastSuccesfulAt,
+                lastSuccessfulAt: lastSuccessfulAt,
                 status: status,
                 cursorOrOffset: cursorOrOffset,
                 rowid: rowid,

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:pokedex/core/async/current_then_changes.dart';
+
 import 'sync_info.dart';
 
 /// TEMPORAL: fuente falsa hasta que exista el sincronizador (T-014).
@@ -16,9 +18,11 @@ class FakeSyncInfoSource implements SyncInfoSource {
   SyncInfo get current => _current;
 
   @override
-  Stream<SyncInfo> watch() async* {
-    yield _current;
-    yield* _controller.stream;
+  Stream<SyncInfo> watch() {
+    return currentThenChanges(
+      current: () => _current,
+      changes: _controller.stream,
+    );
   }
 
   /// Sirve para simular una sincronización en una prueba o demo.

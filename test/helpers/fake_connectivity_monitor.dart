@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:pokedex/core/async/current_then_changes.dart';
 import 'package:pokedex/core/connectivity/connectivity_monitor.dart';
 import 'package:pokedex/core/connectivity/service_availability.dart';
 
@@ -18,9 +19,11 @@ class FakeConnectivityMonitor implements ConnectivityMonitor {
   ServiceAvailability get current => _current;
 
   @override
-  Stream<ServiceAvailability> watch() async* {
-    yield _current;
-    yield* _controller.stream;
+  Stream<ServiceAvailability> watch() {
+    return currentThenChanges(
+      current: () => _current,
+      changes: _controller.stream,
+    );
   }
 
   void emit(ServiceAvailability value) {
@@ -36,6 +39,8 @@ class FakeConnectivityMonitor implements ConnectivityMonitor {
 
   @override
   Future<void> dispose() async {
-    await _controller.close();
+    // Sin await a propósito: en testWidgets el futuro de close() puede no
+    // completarse hasta que se procesen microtareas, y el test se colgaría.
+    unawaited(_controller.close());
   }
 }

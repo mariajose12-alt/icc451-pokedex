@@ -2,39 +2,8 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-
-/*
-import 'package:pokedex/core/network/api_config.dart';
-import 'package:pokedex/core/network/network_exceptions.dart';
-import 'package:pokedex/core/network/poke_api_client.dart';
-
-// MAIN PARA PRUEBAS CON LA CONEXION A LA API Y SUS RESPUESTAS
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  final client = PokeApiClient(
-    url: ApiConfig.graphqlUrl,
-    timeout: ApiConfig.requestTimeout,
-  );
-
-  try {
-    final data = await client.query(
-      r'query { pokemon(limit: 3, order_by: {id: asc}) { id name } }',
-    );
-    debugPrint('OK: $data');
-  } on PokeApiException catch (e) {
-    debugPrint('Error tipado: $e');
-  }
-
-  runApp(const MaterialApp(home: Scaffold(body: Center(child: Text('Prueba')))));
-}
-*/
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokedex/core/sync/fake_sync_info_source.dart';
-import 'package:pokedex/features/pokemon/data/repositories/fake_pokemon_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'app/app.dart';
 import 'core/connectivity/api_connectivity_monitor.dart';
 import 'core/connectivity/connectivity_monitor.dart';
@@ -45,6 +14,13 @@ import 'core/network/poke_api_client.dart';
 import 'core/sync/sync_info.dart';
 import 'features/pokemon/domain/repositories/pokemon_repository.dart';
 import 'features/settings/presentation/cubit/locale_cubit.dart';
+import 'core/database/app_database.dart';
+import 'core/sync/drift_sync_info_source.dart';
+import 'core/sync/sync_status.dart';
+import 'features/pokemon/data/datasources/local/pokemon_local_datasource.dart';
+import 'features/pokemon/data/datasources/remote/pokemon_remote_datasource.dart';
+import 'features/pokemon/data/repositories/offline_first_pokemon_repository.dart';
+import 'features/pokemon/data/sync/catalog_sync_coordinator.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -76,15 +52,33 @@ Future<void> main() async {
   unawaited(getIt<ConnectivityMonitor>().start());
 
   // Base de datos
+  // Abre el archivo pokedex.sqlite del teléfono (se crea la primera vez).
+  final database = AppDatabase.archivo();
+  getIt.registerSingleton<AppDatabase>(database);
+
+  // Fuentes de datos: una habla con la API y otra con la base local.
+  final remote = PokemonRemoteDataSource(client: getIt<PokeApiClient>());
+  final local = PokemonLocalDataSource(dao: database.catalogoDao);
+
+  // Sincronizador: descarga el catálogo a la base, por páginas (T-014).
+  final coordinator = CatalogSyncCoordinator(remote: remote, local: local);
+  getIt.registerSingleton<CatalogSyncCoordinator>(coordinator);
 
   // Repositorios
-  // TEMPORAL (T-016): repositorio falso. En T-017 se reemplaza por el real.
+  // Repositorio real: la pantalla lee de la base y la red solo la escribe.
   getIt.registerSingleton<PokemonRepository>(
-    FakePokemonRepository(scenario: FakeScenario.success),
+    OfflineFirstPokemonRepository(local: local, sync: coordinator),
   );
 
-  // TEMPORAL (T-014): fuente falsa de sincronización.
-  getIt.registerSingleton<SyncInfoSource>(FakeSyncInfoSource());
+  // Información de sincronización para el indicador (reemplaza a la falsa).
+  getIt.registerSingleton<SyncInfoSource>(
+    DriftSyncInfoSource(
+      dao: database.catalogoDao,
+      resourceKey: SyncResources.catalog,
+      runningChanges: coordinator.runningChanges,
+      initiallyRunning: coordinator.isRunning,
+    ),
+  );
 
   runApp(PokedexApp(localeCubit: LocaleCubit(preferences: preferences)));
 }

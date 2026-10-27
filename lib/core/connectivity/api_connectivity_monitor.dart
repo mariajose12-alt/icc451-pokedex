@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
+import 'package:pokedex/core/async/current_then_changes.dart';
 import 'package:pokedex/core/network/network_exceptions.dart';
 import 'package:pokedex/core/network/poke_api_client.dart';
 
@@ -44,10 +45,12 @@ class ApiConnectivityMonitor implements ConnectivityMonitor {
   ServiceAvailability get current => _current;
 
   @override
-  Stream<ServiceAvailability> watch() async* {
+  Stream<ServiceAvailability> watch() {
     // Primero el estado actual, para que quien se suscriba no espere.
-    yield _current;
-    yield* _controller.stream;
+    return currentThenChanges(
+      current: () => _current,
+      changes: _controller.stream,
+    );
   }
 
   @override

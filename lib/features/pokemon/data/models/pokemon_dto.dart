@@ -1,6 +1,5 @@
 /// Copia fiel de lo que devuelve PokeAPI para un Pokémon.
 /// Solo la capa data conoce estas clases (ARQ-04).
-
 class PokemonTypeDto {
   const PokemonTypeDto({
     required this.slot,

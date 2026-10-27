@@ -1,4 +1,4 @@
-# ADR-0006: Indicador global con forma de lente y luces de Pokédex
+# ADR-0010: Indicador global con forma de lente y luces de Pokédex
 
 - **Estado:** Aceptado
 - **Fecha:** 2026-10-26
@@ -25,7 +25,7 @@ La interfaz de la app imita una Pokédex (estilo pixelado, carcasa roja). María
    | Verificando | reloj de arena | ninguna | Verificando… |
 
 4. **El color nunca es la única señal** (IND-05): cada estado comunica lo mismo con el icono, el texto y la posición de la luz (izquierda, centro o derecha). Además, una etiqueta `Semantics` con región «en vivo» se lee de corrido y avisa de los cambios.
-5. **Dos dimensiones separadas** (PF §7.4): un `ConnectivityIndicatorCubit` recibe la disponibilidad del servicio (del monitor, ver [ADR-0007](0007-monitor-de-conectividad-verificacion-activa.md)) y la información de sincronización (`SyncInfoSource`: si sincroniza y cuándo fue la última vez) por canales distintos. «Sincronizando» solo se muestra si el servicio está Online, para no presentar estados contradictorios.
+5. **Dos dimensiones separadas** (PF §7.4): un `ConnectivityIndicatorCubit` recibe la disponibilidad del servicio (del monitor, ver [ADR-0011](0011-monitor-de-conectividad-verificacion-activa.md)) y la información de sincronización (`SyncInfoSource`: si sincroniza y cuándo fue la última vez) por canales distintos. «Sincronizando» solo se muestra si el servicio está Online, para no presentar estados contradictorios.
 6. **Ventana de estabilidad de 1200 ms** (IND-06): un cambio de disponibilidad solo se muestra si se mantiene durante ese tiempo. Si la red cae y vuelve antes, el usuario no ve nada. La **primera respuesta real se muestra sin esperar**, porque no hay un estado anterior que pueda parpadear. El valor es un parámetro del Cubit y se puede ajustar.
 7. **Sincronización no intrusiva** (IND-07): el lente late despacio (ciclo de 1,4 s) mientras se sincroniza. No hay barras ni bloqueos, y la navegación sigue funcionando. Si el sistema tiene activada la opción de reducir animaciones, el lente se queda quieto.
 8. **Se retira la barra de título de cada pantalla.** El indicador pasa a ser el único encabezado, y la pestaña activa de la navegación inferior (icono y texto) identifica la pantalla.
@@ -50,6 +50,6 @@ La interfaz de la app imita una Pokédex (estilo pixelado, carcasa roja). María
 - Ocupa una altura fija (unos 70 dp) en todas las pantallas principales.
 - La ventana de 1200 ms retrasa hasta ese tiempo la visibilidad de un cambio real.
 - Con el texto del sistema al 200 % la fila de título y luces se aprieta. Debe comprobarse en el emulador (DoD 7, RNF-ACC-04).
-- Mientras no exista el sincronizador (T-014), la información de sincronización viene de una fuente falsa: la hora de la última sincronización aparece como «sin sincronizar».
+- La hora de la última sincronización depende de que el sincronizador (T-014) haya terminado al menos una vez; hasta entonces aparece como «sin sincronizar». «Sincronizando» sale de la memoria del sincronizador, no de la base ([ADR-0012](0012-sincronizador-en-la-capa-data.md)).
 
 **Requisitos relacionados:** IND-01 a IND-07, RNF-ACC-01 a RNF-ACC-05, PA-07, PA-08.
