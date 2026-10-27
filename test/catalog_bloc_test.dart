@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pokedex/core/errors/failures.dart';
-import 'package:pokedex/features/pokemon/data/fake_pokemon_repository.dart';
+import 'package:pokedex/features/pokemon/data/repositories/fake_pokemon_repository.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/pokemon_repository.dart';
 import 'package:pokedex/features/pokemon/presentation/bloc/catalog_bloc.dart';

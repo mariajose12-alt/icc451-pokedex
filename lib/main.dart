@@ -32,6 +32,7 @@ Future<void> main() async {
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/core/sync/fake_sync_info_source.dart';
+import 'package:pokedex/features/pokemon/data/repositories/fake_pokemon_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/app.dart';
@@ -42,7 +43,6 @@ import 'core/di/service_locator.dart';
 import 'core/network/api_config.dart';
 import 'core/network/poke_api_client.dart';
 import 'core/sync/sync_info.dart';
-import 'features/pokemon/data/fake_pokemon_repository.dart';
 import 'features/pokemon/domain/repositories/pokemon_repository.dart';
 import 'features/settings/presentation/cubit/locale_cubit.dart';
 
