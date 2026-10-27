@@ -10,6 +10,7 @@ import 'tables/favorites_table.dart';
 import 'tables/trivia_results_table.dart';
 import 'tables/trivia_answers_table.dart';
 import 'tables/sync_metadata_table.dart';
+import 'daos/catalogo_dao.dart';
 
 part 'app_database.g.dart';
 
@@ -25,6 +26,7 @@ part 'app_database.g.dart';
     TriviaAnswers,
     SyncMetadata,
   ],
+  daos: [CatalogoDao],
 )
 class AppDatabase extends _$AppDatabase {
 

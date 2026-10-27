@@ -2788,6 +2788,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $TriviaResultsTable triviaResults = $TriviaResultsTable(this);
   late final $TriviaAnswersTable triviaAnswers = $TriviaAnswersTable(this);
   late final $SyncMetadataTable syncMetadata = $SyncMetadataTable(this);
+  late final CatalogoDao catalogoDao = CatalogoDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
