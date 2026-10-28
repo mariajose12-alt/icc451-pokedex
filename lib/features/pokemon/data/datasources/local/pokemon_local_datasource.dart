@@ -38,6 +38,25 @@ class PokemonLocalDataSource {
     return int.tryParse(state.cursorOrOffset ?? '') ?? 0;
   }
 
+  /// Hay que sincronizar? Es true si nunca se sincronizó, si la última vez
+  /// quedó a medias o falló, o si la última sincronización completa tiene
+  /// [maxAge] o más (PS-03).
+  Future<bool> isStale(Duration maxAge) async {
+    final state = await _dao.readSyncState(SyncResources.catalog);
+
+    // Sin registro, o la última no terminó bien: falta descargar.
+    if (state == null || state.status != SyncStatus.ok) {
+      return true;
+    }
+
+    final lastSuccess = state.lastSuccessfulAt;
+    if (lastSuccess == null) {
+      return true;
+    }
+
+    return DateTime.now().difference(lastSuccess) >= maxAge;
+  }
+
   /// Guarda una página y su cursor en una sola transacción.
   /// Si [isLast] es true, el recurso queda como `ok` con la fecha de ahora.
   Future<void> savePage(List<PokemonDto> items, {required bool isLast}) {

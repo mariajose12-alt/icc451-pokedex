@@ -83,7 +83,7 @@ class FakePokemonRepository implements PokemonRepository {
   }
 
   @override
-  Future<void> refreshCatalog() async {
+  Future<void> refreshCatalog({bool onlyIfStale = false}) async {
     await Future<void>.delayed(delay);
 
     switch (scenario) {

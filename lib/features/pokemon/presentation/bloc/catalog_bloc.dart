@@ -51,8 +51,8 @@ class CatalogBloc extends Bloc<CatalogEvent, CatalogState> {
     _isRefreshing = true;
     emit(_currentState);
 
-    // Pide la actualización sin esperarla: la pantalla no se bloquea (OF-03).
-    add(const CatalogRefreshRequested());
+    // Automática: se omite si los datos locales siguen vigentes (PS-03).
+    add(const CatalogRefreshRequested(onlyIfStale: true));
 
     // Observa la base local: cada cambio produce un estado nuevo (OF-16).
     await emit.forEach<List<Pokemon>>(
@@ -73,7 +73,7 @@ class CatalogBloc extends Bloc<CatalogEvent, CatalogState> {
     emit(_currentState);
 
     try {
-      await _repository.refreshCatalog();
+      await _repository.refreshCatalog(onlyIfStale: event.onlyIfStale);
     } on Failure catch (failure) {
       _failure = failure;
     } catch (_) {

@@ -15,7 +15,7 @@ class _CountingRepository implements PokemonRepository {
   Stream<List<Pokemon>> watchCatalog() => const Stream<List<Pokemon>>.empty();
 
   @override
-  Future<void> refreshCatalog() async {
+  Future<void> refreshCatalog({bool onlyIfStale = false}) async {
     refreshCalls++;
     await Future<void>.delayed(const Duration(milliseconds: 50));
   }

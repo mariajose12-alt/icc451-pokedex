@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pokedex/core/widgets/pixel_panel.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
+import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_image.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
 
 import 'type_badge.dart';
@@ -51,25 +51,11 @@ class PokemonCard extends StatelessWidget {
             SizedBox(
               width: 80,
               height: 80,
-              child: imageUrl == null
-                  ? const Icon(Icons.catching_pokemon, size: 40)
-                  : CachedNetworkImage(
-                      imageUrl: imageUrl,
-                      fit: BoxFit.contain,
-                      // Mantiene nítido el pixel art.
-                      filterQuality: FilterQuality.none,
-                      // Decodifica a un tamaño acorde al contenedor (RNF-REN-04).
-                      memCacheWidth: 240,
-                      placeholder: (context, url) => const Center(
-                        child: SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        ),
-                      ),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.catching_pokemon, size: 40),
-                    ),
+              child: PokemonImage(
+                url: imageUrl,
+                iconSize: 40,
+                memCacheWidth: 240,
+              ),
             ),
             const SizedBox(width: 12),
             Expanded(

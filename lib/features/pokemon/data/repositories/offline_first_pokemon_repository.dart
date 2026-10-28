@@ -10,16 +10,29 @@ import 'package:pokedex/features/pokemon/domain/repositories/pokemon_repository.
 ///  - Actualizar: la red solo escribe en la base; la pantalla se entera
 ///    porque el stream de lectura emite de nuevo.
 class OfflineFirstPokemonRepository implements PokemonRepository {
-  OfflineFirstPokemonRepository({required this._local, required this._sync});
+  OfflineFirstPokemonRepository({
+    required this._local,
+    required this._sync,
+    this.catalogMaxAge = defaultCatalogMaxAge,
+  });
+
+  /// Vigencia del catálogo (PS-03): pasado este tiempo se considera viejo.
+  static const Duration defaultCatalogMaxAge = Duration(hours: 24);
 
   final PokemonLocalDataSource _local;
   final CatalogSyncCoordinator _sync;
+  final Duration catalogMaxAge;
 
   @override
   Stream<List<Pokemon>> watchCatalog() => _local.watchCatalog();
 
   @override
-  Future<void> refreshCatalog() async {
+  Future<void> refreshCatalog({bool onlyIfStale = false}) async {
+    // Actualización automática con datos vigentes: no se gasta ninguna llamada.
+    if (onlyIfStale && !await _local.isStale(catalogMaxAge)) {
+      return;
+    }
+
     try {
       await _sync.sync();
     } on PokeApiException catch (error) {

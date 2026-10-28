@@ -11,5 +11,9 @@ abstract interface class PokemonRepository {
   /// Pide a la fuente remota que actualice el catálogo local.
   /// Completa cuando termina y lanza un [Failure] si no se pudo.
   /// Un fallo nunca borra los datos locales válidos (OF-04).
-  Future<void> refreshCatalog();
+  ///
+  /// Si [onlyIfStale] es true (actualización automática), no hace nada
+  /// cuando los datos locales todavía están vigentes (PS-03). Con false
+  /// (actualización manual) siempre sincroniza.
+  Future<void> refreshCatalog({bool onlyIfStale = false});
 }
