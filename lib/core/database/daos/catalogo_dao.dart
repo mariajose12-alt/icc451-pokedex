@@ -1,12 +1,21 @@
 import 'package:drift/drift.dart';
-
-import '../app_database.dart';
-import '../tables/poke_types_table.dart';
-import '../tables/pokemon_table.dart';
-import '../tables/pokemon_types_table.dart';
-import '../tables/sync_metadata_table.dart';
+import 'package:pokedex/core/database/app_database.dart';
+import 'package:pokedex/core/database/tables/poke_types_table.dart';
+import 'package:pokedex/core/database/tables/pokemon_table.dart';
+import 'package:pokedex/core/database/tables/pokemon_types_table.dart';
+import 'package:pokedex/core/database/tables/sync_metadata_table.dart';
 
 part 'catalogo_dao.g.dart';
+
+// Un Pokémon junto con sus tipos, ya ordenados por slot
+// (el 1 es el principal). Es lo que necesita la lista del catálogo:
+// así no hace falta una consulta por tarjeta para pedir los tipos.
+class PokemonWithTypes {
+  PokemonWithTypes({required this.pokemon, required this.types});
+
+  final PokemonEntry pokemon;
+  final List<TypeEntry> types;
+}
 
 // DAO del catálogo: lecturas reactivas para la UI y escrituras por página
 // para la sincronización (ADR-0003).
@@ -18,6 +27,45 @@ class CatalogoDao extends DatabaseAccessor<AppDatabase>
   // Emite la lista completa cada vez que cambia la tabla (OF-16).
   Stream<List<PokemonEntry>> watchPokemons() {
     return (select(pokemons)..orderBy([(p) => OrderingTerm.asc(p.id)])).watch();
+  }
+
+  // Catálogo completo con los tipos de cada Pokémon, en UNA consulta.
+  // Pasos:
+  //  1. Une pokemons con pokemon_types y con poke_types (LEFT JOIN: un
+  //     Pokémon sin tipos guardados no desaparece de la lista).
+  //  2. Ordena por id y, dentro de cada Pokémon, por slot.
+  //  3. La consulta devuelve una fila por cada (Pokémon, tipo); aquí se
+  //     agrupan para obtener un elemento por Pokémon.
+  // Drift vuelve a emitir cuando cambia cualquiera de las tres tablas.
+  Stream<List<PokemonWithTypes>> watchCatalogWithTypes() {
+    final query =
+        select(pokemons).join([
+          leftOuterJoin(
+            pokemonTypes,
+            pokemonTypes.pokemonId.equalsExp(pokemons.id),
+          ),
+          leftOuterJoin(pokeTypes, pokeTypes.id.equalsExp(pokemonTypes.typeId)),
+        ])..orderBy([
+          OrderingTerm.asc(pokemons.id),
+          OrderingTerm.asc(pokemonTypes.slot),
+        ]);
+
+    return query.watch().map((rows) {
+      // El mapa conserva el orden de inserción, que ya es el orden por id.
+      final byId = <int, PokemonWithTypes>{};
+      for (final row in rows) {
+        final pokemon = row.readTable(pokemons);
+        final type = row.readTableOrNull(pokeTypes);
+        final item = byId.putIfAbsent(
+          pokemon.id,
+          () => PokemonWithTypes(pokemon: pokemon, types: <TypeEntry>[]),
+        );
+        if (type != null) {
+          item.types.add(type);
+        }
+      }
+      return byId.values.toList();
+    });
   }
 
   // Número de Pokémon guardados. Sirve para el umbral offline (RF-TRV-05).
@@ -40,6 +88,21 @@ class CatalogoDao extends DatabaseAccessor<AppDatabase>
     return (select(
       syncMetadata,
     )..where((s) => s.resourceKey.equals(resourceKey))).watchSingleOrNull();
+  }
+
+  // Lectura única del estado. El sincronizador la usa para saber
+  // desde dónde reanudar. getSingleOrNull devuelve null si no hay fila.
+  Future<SyncMetadataEntry?> readSyncState(String resourceKey) {
+    return (select(
+      syncMetadata,
+    )..where((s) => s.resourceKey.equals(resourceKey))).getSingleOrNull();
+  }
+
+  // Guarda solo el estado (por ejemplo, "failed") sin tocar el
+  // catálogo. Solo se actualizan las columnas que vengan con valor: lo que
+  // se deje como Value.absent() (cursor, fecha) se conserva.
+  Future<void> saveSyncState(SyncMetadataCompanion state) {
+    return into(syncMetadata).insertOnConflictUpdate(state);
   }
 
   // Guarda una página completa en una sola transacción (PS-07, PA-09).

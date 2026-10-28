@@ -1,7 +1,7 @@
 # ADR-0003: Sincronización con cursor por id, páginas de 250 y upsert
 
-- **Estado:** Propuesto (pendiente de implementar y validar con Almy en T-011 y T-014)
-- **Fecha:** 2026-10-22
+- **Estado:** Aceptado (el cursor se validó en la consola el 2026-10-26; implementado en T-014, ver [ADR-0012](0012-sincronizador-en-la-capa-data.md))
+- **Fecha:** 2026-10-22 · **Actualizado:** 2026-10-26
 - **Decidido por:** María y Almy
 
 ## Contexto
@@ -12,16 +12,29 @@ PokeAPI documenta un límite de 100 solicitudes por hora por IP. La consulta del
 
 1. **Paginación por cursor de id:** cada consulta pide los Pokémon con `id > último id procesado`, ordenados por `id` ascendente, en **páginas de 250**. El catálogo completo son 5 llamadas.
 2. **El conteo total viaja en la misma petición** (`pokemon_aggregate`): sirve para el progreso, para saber si el catálogo local es parcial y para no gastar una llamada extra.
-3. **Una transacción por página:** se guardan los Pokémon, sus tipos y el nuevo `lastSyncedId` (en `sync_metadata`) en la misma transacción. Una interrupción nunca deja datos a medias.
+3. **Una transacción por página:** se guardan los Pokémon, sus tipos y el nuevo cursor (`cursor_or_offset` en `sync_metadata`) en la misma transacción. Una interrupción nunca deja datos a medias.
 4. **Upsert por clave estable** (`insertOnConflictUpdate`) y nunca `insertOrReplace`, para no borrar filas relacionadas.
-5. **Reanudación:** si hay un `lastSyncedId` guardado y el estado no es completo, se continúa desde ahí.
+5. **Reanudación:** si el estado guardado es `syncing` o `failed`, se continúa desde el cursor guardado; si es `ok`, la siguiente actualización empieza de nuevo y el upsert refresca lo existente.
 6. **Disparadores:** inicio de la app, recuperación de conectividad, apertura del detalle, intervalo periódico y actualización manual.
 
-Pendiente de definir (se registrará en un ADR propio): valores del backoff exponencial y su límite de intentos, intervalo periódico, control de concurrencia por recurso y mecanismo de detección de alteraciones locales (OF-19, PS-12).
+Definido en otros documentos:
+
+- La verificación de la disponibilidad del servicio: [ADR-0011](0011-monitor-de-conectividad-verificacion-activa.md).
+- Vigencia de los datos, backoff y límite de intentos, intervalo periódico, concurrencia por recurso y detección de alteraciones locales (PS-03, PS-04, PS-10, PS-12, OF-19): (persistencia-y-sincronizacion.md). Varios valores siguen pendientes de confirmar.
+
+## Verificación
+
+El 2026-10-26 se probó la consulta del catálogo en la consola de PokeAPI GraphQL con las variables `{"lastId": 3, "pageSize": 2}`.
+
+- Devolvió los Pokémon con id **4 y 5**, en orden ascendente: el filtro `id: {_gt: $lastId}` funciona como cursor.
+- `pokemon_aggregate` informó **1025** Pokémon base en la misma petición.
+- Las imágenes llegaron como texto con `sprites(path: ...)`; `pokemonsprites` llega como lista de un elemento y `pokemonspecy` como objeto.
+
+Pendiente de comprobar: la última página (`lastId: 1020` debería devolver 5 Pokémon) y cómo señala PokeAPI el límite de solicitudes (se asume HTTP 429).
 
 ## Alternativas consideradas
 
-1. **Una sola llamada con los 1025 Pokémon.** Mínimo de cuota, pero sin progreso visible, sin reanudación y con una transacción grande que bloquea más tiempo.
+1. **Una sola llamada con los 1025 Pokémon.** Mínimo de cuota, pero sin progreso visible, sin reanudación y con una transacción grande que bloquea más tiempo. Funciona (se comprobó que `limit: 2000` devuelve los 1025) y queda como plan alternativo si el filtro por cursor dejara de estar disponible.
 2. **Paginación por `offset`.** Más simple, pero si el orden cambia entre páginas puede repetir o saltarse registros. El cursor por id es estable.
 3. **Descarga bajo demanda por Pokémon.** Gasta muchas llamadas y deja el catálogo vacío sin red.
 

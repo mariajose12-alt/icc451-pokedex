@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pokedex/core/errors/failures.dart';
-import 'package:pokedex/features/pokemon/data/fake_pokemon_repository.dart';
+import 'package:pokedex/features/pokemon/data/repositories/fake_pokemon_repository.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/pokemon_repository.dart';
 import 'package:pokedex/features/pokemon/presentation/bloc/catalog_bloc.dart';
@@ -15,7 +15,7 @@ class _CountingRepository implements PokemonRepository {
   Stream<List<Pokemon>> watchCatalog() => const Stream<List<Pokemon>>.empty();
 
   @override
-  Future<void> refreshCatalog() async {
+  Future<void> refreshCatalog({bool onlyIfStale = false}) async {
     refreshCalls++;
     await Future<void>.delayed(const Duration(milliseconds: 50));
   }

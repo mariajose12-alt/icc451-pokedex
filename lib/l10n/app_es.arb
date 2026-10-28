@@ -34,5 +34,28 @@
     }
   },
   "viewGrid": "Cuadrícula",
-  "viewList": "Lista"
+  "viewList": "Lista",
+  "indicatorOnline": "En línea",
+  "indicatorOffline": "Sin conexión",
+  "indicatorUnavailable": "Servicio no disponible",
+  "indicatorSyncing": "Sincronizando…",
+  "indicatorChecking": "Verificando…",
+  "indicatorDetailOnline": "Datos remotos · {sync}",
+  "@indicatorDetailOnline": { "placeholders": { "sync": { "type": "String" } } },
+  "indicatorDetailOffline": "Datos locales · {sync}",
+  "@indicatorDetailOffline": { "placeholders": { "sync": { "type": "String" } } },
+  "indicatorDetailUnavailable": "Red activa, API sin respuesta · datos locales · {sync}",
+  "@indicatorDetailUnavailable": { "placeholders": { "sync": { "type": "String" } } },
+  "indicatorDetailSyncing": "En línea · puedes seguir navegando",
+  "indicatorDetailChecking": "Comprobando el servicio",
+  "indicatorLastSync": "última sync {time}",
+  "@indicatorLastSync": { "placeholders": { "time": { "type": "String" } } },
+  "indicatorNeverSynced": "sin sincronizar",
+  "indicatorSemantics": "Estado de conexión: {status}. {detail}",
+  "@indicatorSemantics": {
+    "placeholders": {
+      "status": { "type": "String" },
+      "detail": { "type": "String" }
+    }
+  }
 }

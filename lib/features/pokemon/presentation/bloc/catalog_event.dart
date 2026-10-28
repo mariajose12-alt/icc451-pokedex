@@ -8,7 +8,11 @@ final class CatalogStarted extends CatalogEvent {
   const CatalogStarted();
 }
 
-/// El usuario pidió actualizar («Reintentar» o arrastrar hacia abajo).
+/// Se pidió actualizar. Por defecto es manual («Reintentar» o arrastrar hacia
+/// abajo) y siempre sincroniza. Si [onlyIfStale] es true, es la actualización
+/// automática del inicio y se omite cuando los datos están vigentes (PS-03).
 final class CatalogRefreshRequested extends CatalogEvent {
-  const CatalogRefreshRequested();
+  const CatalogRefreshRequested({this.onlyIfStale = false});
+
+  final bool onlyIfStale;
 }

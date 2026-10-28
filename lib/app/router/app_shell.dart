@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pokedex/core/connectivity/indicator/connectivity_indicator.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
 
 /// Estructura común de las pantallas principales: indicador de conectividad
@@ -18,7 +19,8 @@ class AppShell extends StatelessWidget {
         bottom: false,
         child: Column(
           children: [
-            // T-013: aquí va el indicador global de conectividad (IND-01).
+            // Indicador global de conectividad (IND-01).
+            const ConnectivityIndicator(),
             Expanded(child: navigationShell),
           ],
         ),

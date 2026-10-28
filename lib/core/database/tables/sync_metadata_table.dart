@@ -8,7 +8,7 @@ class SyncMetadata extends Table {
   TextColumn get resourceKey => text()();
 
   // Null si no sincronizó con exito
-  DateTimeColumn get lastSuccesfulAt => dateTime().nullable()();
+  DateTimeColumn get lastSuccessfulAt => dateTime().nullable()();
 
   // Estado de la ultima operación: "ok", "syncing", o "failed"
   TextColumn get status => text()();

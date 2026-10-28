@@ -232,6 +232,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'List'**
   String get viewList;
+
+  /// No description provided for @indicatorOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'Online'**
+  String get indicatorOnline;
+
+  /// No description provided for @indicatorOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline'**
+  String get indicatorOffline;
+
+  /// No description provided for @indicatorUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Service unavailable'**
+  String get indicatorUnavailable;
+
+  /// No description provided for @indicatorSyncing.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing…'**
+  String get indicatorSyncing;
+
+  /// No description provided for @indicatorChecking.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking…'**
+  String get indicatorChecking;
+
+  /// No description provided for @indicatorDetailOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'Remote data · {sync}'**
+  String indicatorDetailOnline(String sync);
+
+  /// No description provided for @indicatorDetailOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Local data · {sync}'**
+  String indicatorDetailOffline(String sync);
+
+  /// No description provided for @indicatorDetailUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Network active, API not responding · local data · {sync}'**
+  String indicatorDetailUnavailable(String sync);
+
+  /// No description provided for @indicatorDetailSyncing.
+  ///
+  /// In en, this message translates to:
+  /// **'Online · you can keep browsing'**
+  String get indicatorDetailSyncing;
+
+  /// No description provided for @indicatorDetailChecking.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking the service'**
+  String get indicatorDetailChecking;
+
+  /// No description provided for @indicatorLastSync.
+  ///
+  /// In en, this message translates to:
+  /// **'last sync {time}'**
+  String indicatorLastSync(String time);
+
+  /// No description provided for @indicatorNeverSynced.
+  ///
+  /// In en, this message translates to:
+  /// **'not synced yet'**
+  String get indicatorNeverSynced;
+
+  /// No description provided for @indicatorSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection status: {status}. {detail}'**
+  String indicatorSemantics(String status, String detail);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

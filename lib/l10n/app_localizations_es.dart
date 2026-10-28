@@ -80,4 +80,53 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get viewList => 'Lista';
+
+  @override
+  String get indicatorOnline => 'En línea';
+
+  @override
+  String get indicatorOffline => 'Sin conexión';
+
+  @override
+  String get indicatorUnavailable => 'Servicio no disponible';
+
+  @override
+  String get indicatorSyncing => 'Sincronizando…';
+
+  @override
+  String get indicatorChecking => 'Verificando…';
+
+  @override
+  String indicatorDetailOnline(String sync) {
+    return 'Datos remotos · $sync';
+  }
+
+  @override
+  String indicatorDetailOffline(String sync) {
+    return 'Datos locales · $sync';
+  }
+
+  @override
+  String indicatorDetailUnavailable(String sync) {
+    return 'Red activa, API sin respuesta · datos locales · $sync';
+  }
+
+  @override
+  String get indicatorDetailSyncing => 'En línea · puedes seguir navegando';
+
+  @override
+  String get indicatorDetailChecking => 'Comprobando el servicio';
+
+  @override
+  String indicatorLastSync(String time) {
+    return 'última sync $time';
+  }
+
+  @override
+  String get indicatorNeverSynced => 'sin sincronizar';
+
+  @override
+  String indicatorSemantics(String status, String detail) {
+    return 'Estado de conexión: $status. $detail';
+  }
 }
