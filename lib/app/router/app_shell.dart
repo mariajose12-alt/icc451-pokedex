@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pokedex/app/router/pokedex_nav_bar.dart';
 import 'package:pokedex/core/connectivity/indicator/connectivity_indicator.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
 
 /// Estructura común de las pantallas principales: indicador de conectividad
 /// arriba (T-013) y barra de navegación abajo.
 class AppShell extends StatelessWidget {
-  const AppShell({required this.navigationShell, super.key});
+  const AppShell({required this.navigationShell, this.toolsMenu, super.key});
 
   final StatefulNavigationShell navigationShell;
+
+  /// Herramientas de prueba (simulador de caída). null en producción.
+  final Widget? toolsMenu;
 
   @override
   Widget build(BuildContext context) {
@@ -20,31 +24,33 @@ class AppShell extends StatelessWidget {
         child: Column(
           children: [
             // Indicador global de conectividad (IND-01).
-            const ConnectivityIndicator(),
-            Expanded(child: navigationShell),
+            ConnectivityIndicator(trailing: toolsMenu),
+            Expanded(key: const ValueKey('shell-body'), child: navigationShell),
           ],
         ),
       ),
-      bottomNavigationBar: NavigationBar(
+      bottomNavigationBar: PokedexNavBar(
         selectedIndex: navigationShell.currentIndex,
-        onDestinationSelected: (index) {
+        onSelected: (index) {
           // Tocar la pestaña activa vuelve a su pantalla inicial.
           navigationShell.goBranch(
             index,
             initialLocation: index == navigationShell.currentIndex,
           );
         },
-        destinations: [
-          NavigationDestination(
-            icon: Icon(Icons.catching_pokemon_outlined),
-            selectedIcon: Icon(Icons.catching_pokemon),
+        items: [
+          PokedexNavItem(
+            icon: Icons.catching_pokemon_outlined,
+            selectedIcon: Icons.catching_pokemon,
             label: l10n.navPokedex,
           ),
-          NavigationDestination(
-            icon: const Icon(Icons.favorite_border),
-            selectedIcon: const Icon(Icons.favorite),
+          /*
+          PokedexNavItem(
+            icon: Icons.favorite_border,
+            selectedIcon: Icons.favorite,
             label: l10n.navFavorites,
           ),
+          */
         ],
       ),
     );

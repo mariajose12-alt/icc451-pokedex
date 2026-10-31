@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedex/core/network/api_outage_simulator.dart';
+import 'package:pokedex/core/network/simulated_outage_poke_api_client.dart';
+import 'package:pokedex/features/pokemon/data/sync/catalog_sync_scheduler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app/app.dart';
 import 'core/connectivity/api_connectivity_monitor.dart';
@@ -21,6 +24,7 @@ import 'features/pokemon/data/datasources/local/pokemon_local_datasource.dart';
 import 'features/pokemon/data/datasources/remote/pokemon_remote_datasource.dart';
 import 'features/pokemon/data/repositories/offline_first_pokemon_repository.dart';
 import 'features/pokemon/data/sync/catalog_sync_coordinator.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,8 +41,22 @@ Future<void> main() async {
   // -> repositorios). Cada sección se agrega en su tarea.
 
   // Red
+  // Simulador de caída de la API (PA-08). Solo se registra en debug, o en
+  // release si se compila con --dart-define=API_SIMULATOR=true.
+  const simulatorEnabled = bool.fromEnvironment(
+    'API_SIMULATOR',
+    defaultValue: kDebugMode,
+  );
+  final outageSimulator = ApiOutageSimulator();
+  if (simulatorEnabled) {
+    getIt.registerSingleton<ApiOutageSimulator>(outageSimulator);
+  }
   getIt.registerSingleton<PokeApiClient>(
-    PokeApiClient(url: ApiConfig.graphqlUrl, timeout: ApiConfig.requestTimeout),
+    SimulatedOutagePokeApiClient(
+      url: ApiConfig.graphqlUrl,
+      timeout: ApiConfig.requestTimeout,
+      simulator: outageSimulator,
+    ),
   );
 
   // Conectividad
@@ -79,6 +97,15 @@ Future<void> main() async {
       initiallyRunning: coordinator.isRunning,
     ),
   );
+
+  // Programador: decide cuándo se actualiza solo (reconexión y periódica).
+  // Va al final porque necesita el monitor y el repositorio ya registrados.
+  final scheduler = CatalogSyncScheduler(
+    monitor: getIt<ConnectivityMonitor>(),
+    repository: getIt<PokemonRepository>(),
+  );
+  getIt.registerSingleton<CatalogSyncScheduler>(scheduler);
+  scheduler.start();
 
   runApp(PokedexApp(localeCubit: LocaleCubit(preferences: preferences)));
 }

@@ -129,4 +129,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String indicatorSemantics(String status, String detail) {
     return 'Estado de conexión: $status. $detail';
   }
+
+  @override
+  String get catalogRefreshFailedTitle => 'No se pudo actualizar';
+
+  @override
+  String get catalogRefreshFailedMessage => 'Se muestran los datos guardados. Inténtalo de nuevo.';
+
+  @override
+  String get debugSimulateOutage => 'Simular caída de la API (solo pruebas)';
 }
