@@ -12,7 +12,12 @@ import 'pokedex_lights.dart';
 /// Indicador global de conectividad (PF §7), con forma de lente y luces
 /// de Pokédex. Va fijo arriba en el AppShell.
 class ConnectivityIndicator extends StatelessWidget {
-  const ConnectivityIndicator({super.key});
+  const ConnectivityIndicator({this.trailing, super.key});
+
+  /// Widget opcional al final de la banda (por ejemplo, el menú de tres
+  /// puntos). Va fuera del texto que leen los lectores de pantalla, para
+  /// seguir siendo un botón independiente.
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -132,6 +137,74 @@ class ConnectivityIndicator extends StatelessWidget {
                     ],
                   ),
                 ),
+              ),
+            ),
+          ),
+        ); // Paso 4: dibujar. El lector de pantalla lee una sola frase (IND-05)
+        // y avisa cuando cambia (liveRegion). El menú del final queda fuera
+        // de esa frase: es un botón aparte.
+        return Material(
+          // Rojo de la carcasa de la Pokédex.
+          color: PixelPalette.shell,
+          child: DecoratedBox(
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: PixelPalette.shellDark, width: 4),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Semantics(
+                      container: true,
+                      liveRegion: true,
+                      label: l10n.indicatorSemantics(title, detail),
+                      child: ExcludeSemantics(
+                        child: Row(
+                          children: [
+                            // Lente: su icono dice el estado; late al sincronizar.
+                            PokedexLens(icon: icon, pulsing: isSyncing),
+                            const SizedBox(width: 14),
+                            // Con el texto al 200 % esta columna se parte en
+                            // líneas y no se pierde contenido (RNF-ACC-04).
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      PokedexLeds(lit: lit),
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: Text(
+                                          title,
+                                          style: textTheme.titleSmall?.copyWith(
+                                            color: PixelPalette.text,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    detail,
+                                    style: textTheme.bodySmall?.copyWith(
+                                      color: PixelPalette.text,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (trailing != null) trailing!,
+                ],
               ),
             ),
           ),

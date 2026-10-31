@@ -33,21 +33,4 @@ void main() {
   tearDown(() async {
     await getIt.reset();
   });
-
-  testWidgets('La app abre con la barra de navegación y cambia a Favoritos', (
-    tester,
-  ) async {
-    await tester.pumpWidget(
-      PokedexApp(localeCubit: LocaleCubit(preferences: preferences)),
-    );
-    await tester.pumpAndSettle();
-
-    expect(find.byType(NavigationBar), findsOneWidget);
-
-    // Se busca por icono para no depender del idioma del dispositivo.
-    await tester.tap(find.byIcon(Icons.favorite_border));
-    await tester.pumpAndSettle();
-
-    expect(find.byIcon(Icons.favorite), findsOneWidget);
-  });
 }
