@@ -15,12 +15,13 @@ void main() {
   late PokemonLocalDataSource local;
   late CatalogSyncCoordinator coordinator;
 
-  void prepare(int total) {
+  void prepare(int total, {List<Duration> retryDelays = const []}) {
     api = FakeCatalogApi(total: total);
     local = PokemonLocalDataSource(dao: db.catalogoDao);
     coordinator = CatalogSyncCoordinator(
       remote: PokemonRemoteDataSource(client: api),
       local: local,
+      retryDelays: retryDelays,
     );
   }
 
@@ -119,5 +120,49 @@ void main() {
     ]);
     expect(catalogo.first.types.single.name, 'grass');
     expect(catalogo.first.artworkUrl, 'a1.png');
+  });
+
+  test('si una página falla una vez, la reintenta y termina bien', () async {
+    // Esperas de 0 para que el test no tarde.
+    prepare(600, retryDelays: const [Duration.zero]);
+    api.failOnCall = 2; // falla solo la segunda llamada
+
+    await coordinator.sync();
+
+    // Llamada 2 falló, la 3 repite la misma página (cursor 250).
+    expect(api.calls, [0, 250, 250, 500]);
+    expect(await db.catalogoDao.watchCount().first, 600);
+    final estado = await db.catalogoDao.readSyncState(SyncResources.catalog);
+    expect(estado!.status, SyncStatus.ok);
+  });
+
+  test(
+    'si agota los reintentos, marca failed y conserva lo descargado',
+    () async {
+      prepare(600, retryDelays: const [Duration.zero, Duration.zero]);
+      api.failFromCall = 2; // desde la segunda llamada todo falla
+
+      await expectLater(
+        coordinator.sync(),
+        throwsA(isA<NoConnectionException>()),
+      );
+
+      // 1 página buena + 1 intento + 2 reintentos de la segunda página.
+      expect(api.calls, [0, 250, 250, 250]);
+      expect(await db.catalogoDao.watchCount().first, 250);
+      final estado = await db.catalogoDao.readSyncState(SyncResources.catalog);
+      expect(estado!.status, SyncStatus.failed);
+      expect(estado.cursorOrOffset, '250');
+    },
+  );
+
+  test('el límite de solicitudes no se reintenta', () async {
+    prepare(600, retryDelays: const [Duration.zero, Duration.zero]);
+    api.failFromCall = 1;
+    api.failWith = const RateLimitException();
+
+    await expectLater(coordinator.sync(), throwsA(isA<RateLimitException>()));
+
+    expect(api.calls.length, 1); // una sola llamada: no insistió
   });
 }
