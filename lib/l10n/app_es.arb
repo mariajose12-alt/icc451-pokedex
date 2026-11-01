@@ -57,5 +57,8 @@
       "status": { "type": "String" },
       "detail": { "type": "String" }
     }
-  }
+  },
+  "catalogRefreshFailedTitle": "No se pudo actualizar",
+  "catalogRefreshFailedMessage": "Se muestran los datos guardados. Inténtalo de nuevo.",
+  "debugSimulateOutage": "Simular caída de la API (solo pruebas)"
 }

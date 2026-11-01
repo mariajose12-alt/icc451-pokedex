@@ -14,6 +14,12 @@ class FakeCatalogApi implements PokeApiClient {
   /// Número de llamada (1, 2, 3...) en la que debe fallar. null = nunca.
   int? failOnCall;
 
+  /// Desde esta llamada en adelante TODAS fallan. null = nunca.
+  int? failFromCall;
+
+  /// Qué error se lanza cuando toca fallar.
+  PokeApiException failWith = const NoConnectionException();
+
   @override
   final String url = 'fake';
 
@@ -29,8 +35,12 @@ class FakeCatalogApi implements PokeApiClient {
     final pageSize = variables['pageSize'] as int;
     calls.add(lastId);
 
-    if (failOnCall == calls.length) {
-      throw const NoConnectionException();
+    final callNumber = calls.length;
+    final from = failFromCall;
+    final failsNow =
+        failOnCall == callNumber || (from != null && callNumber >= from);
+    if (failsNow) {
+      throw failWith;
     }
 
     final items = <Map<String, dynamic>>[];

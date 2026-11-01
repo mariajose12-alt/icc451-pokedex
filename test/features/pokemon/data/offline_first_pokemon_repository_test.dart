@@ -24,6 +24,9 @@ void main() {
     coordinator = CatalogSyncCoordinator(
       remote: PokemonRemoteDataSource(client: api),
       local: local,
+      // Sin reintentos: estos tests prueban la política de vigencia y la
+      // reanudación, no el backoff (ese se prueba en el test del coordinador).
+      retryDelays: const [],
     );
     return OfflineFirstPokemonRepository(
       local: local,

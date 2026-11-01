@@ -1,8 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pokedex/app/router/tools_menu_button.dart';
 import 'package:pokedex/core/connectivity/connectivity_monitor.dart';
 import 'package:pokedex/core/connectivity/indicator/connectivity_indicator_cubit.dart';
 import 'package:pokedex/core/di/service_locator.dart';
+import 'package:pokedex/core/network/api_outage_simulator.dart';
 import 'package:pokedex/core/sync/sync_info.dart';
 import 'package:pokedex/features/favorites/presentation/favorites_page.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/pokemon_repository.dart';
@@ -31,7 +33,15 @@ final GoRouter appRouter = GoRouter(
             monitor: getIt<ConnectivityMonitor>(),
             syncSource: getIt<SyncInfoSource>(),
           ),
-          child: AppShell(navigationShell: navigationShell),
+          child: AppShell(
+            navigationShell: navigationShell,
+            toolsMenu: getIt.isRegistered<ApiOutageSimulator>()
+                ? ToolsMenuButton(
+                    simulator: getIt<ApiOutageSimulator>(),
+                    monitor: getIt<ConnectivityMonitor>(),
+                  )
+                : null,
+          ),
         );
       },
       branches: [

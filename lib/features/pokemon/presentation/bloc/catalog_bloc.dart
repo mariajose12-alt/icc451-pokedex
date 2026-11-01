@@ -59,6 +59,10 @@ class CatalogBloc extends Bloc<CatalogEvent, CatalogState> {
       _repository.watchCatalog(),
       onData: (pokemon) {
         _pokemon = pokemon;
+        // Si la base cambió, alguna sync guardó datos (también las que
+        // lanza el programador sin pasar por el Bloc): el aviso de fallo
+        // anterior ya no es cierto.
+        _failure = null;
         return _currentState;
       },
     );

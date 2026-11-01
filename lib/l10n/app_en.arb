@@ -57,5 +57,8 @@
       "status": { "type": "String" },
       "detail": { "type": "String" }
     }
-  }
+  },
+  "catalogRefreshFailedTitle": "Update failed",
+  "catalogRefreshFailedMessage": "Showing saved data. Try again.",
+  "debugSimulateOutage": "Simulate API outage (testing only)"
 }

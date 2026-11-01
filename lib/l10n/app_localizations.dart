@@ -310,6 +310,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Connection status: {status}. {detail}'**
   String indicatorSemantics(String status, String detail);
+
+  /// No description provided for @catalogRefreshFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update failed'**
+  String get catalogRefreshFailedTitle;
+
+  /// No description provided for @catalogRefreshFailedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing saved data. Try again.'**
+  String get catalogRefreshFailedMessage;
+
+  /// No description provided for @debugSimulateOutage.
+  ///
+  /// In en, this message translates to:
+  /// **'Simulate API outage (testing only)'**
+  String get debugSimulateOutage;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

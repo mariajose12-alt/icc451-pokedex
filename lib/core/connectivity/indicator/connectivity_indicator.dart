@@ -12,7 +12,12 @@ import 'pokedex_lights.dart';
 /// Indicador global de conectividad (PF §7), con forma de lente y luces
 /// de Pokédex. Va fijo arriba en el AppShell.
 class ConnectivityIndicator extends StatelessWidget {
-  const ConnectivityIndicator({super.key});
+  const ConnectivityIndicator({this.trailing, super.key});
+
+  /// Widget opcional al final de la banda (por ejemplo, el menú de tres
+  /// puntos). Va fuera del texto que leen los lectores de pantalla, para
+  /// seguir siendo un botón independiente.
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
