@@ -3,6 +3,7 @@ import 'package:pokedex/core/widgets/pixel_panel.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_image.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
+import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_detail_image.dart';
 
 import 'type_badge.dart';
 
@@ -48,13 +49,17 @@ class PokemonCard extends StatelessWidget {
         onTap: onTap,
         child: Row(
           children: [
-            SizedBox(
-              width: 80,
-              height: 80,
-              child: PokemonImage(
-                url: imageUrl,
-                iconSize: 40,
-                memCacheWidth: 240,
+            Hero(
+              // Misma etiqueta que en el detalle: Flutter une las dos imágenes.
+              tag: PokemonDetailImage.heroTag(pokemon.id),
+              child: SizedBox(
+                width: 80,
+                height: 80,
+                child: PokemonImage(
+                  url: imageUrl,
+                  iconSize: 40,
+                  memCacheWidth: 240,
+                ),
               ),
             ),
             const SizedBox(width: 12),

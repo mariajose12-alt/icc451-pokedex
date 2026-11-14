@@ -26,6 +26,13 @@ class PokemonLocalDataSource {
     });
   }
 
+  /// Un Pokémon guardado, con tipos, como entidad del dominio.
+  /// Emite null si no existe y vuelve a emitir cuando la base cambia.
+  Stream<Pokemon?> watchPokemon(int id) {
+    // row?.toDomain(): si no hay fila, queda null; si hay, se convierte.
+    return _dao.watchPokemonWithTypes(id).map((row) => row?.toDomain());
+  }
+
   /// Id desde el cual hay que pedir la siguiente página.
   ///  - Nunca se sincronizó, o la última vez terminó bien: 0 (se empieza de
   ///    nuevo y el upsert actualiza lo que ya existe).

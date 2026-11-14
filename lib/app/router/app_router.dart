@@ -1,5 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pokedex/app/router/app_routes.dart';
+import 'package:pokedex/features/pokemon/presentation/cubit/pokemon_detail_cubit.dart';
+import 'package:pokedex/features/pokemon/presentation/pages/pokemon_detail_page.dart';
 import 'package:pokedex/app/router/tools_menu_button.dart';
 import 'package:pokedex/core/connectivity/connectivity_monitor.dart';
 import 'package:pokedex/core/connectivity/indicator/connectivity_indicator_cubit.dart';
@@ -15,12 +18,6 @@ import 'package:pokedex/features/pokemon/presentation/pages/catalog_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app_shell.dart';
-
-/// Rutas de las pestañas principales.
-abstract final class AppRoutes {
-  static const String catalog = '/catalog';
-  static const String favorites = '/favorites';
-}
 
 /// Router de la aplicación. Cada pestaña es una rama con su propio estado.
 final GoRouter appRouter = GoRouter(
@@ -66,6 +63,26 @@ final GoRouter appRouter = GoRouter(
                   child: const CatalogPage(),
                 );
               },
+              routes: [
+                // Detalle: /catalog/:id. Se abre encima del catálogo, dentro
+                // del shell (el indicador de conectividad sigue visible).
+                GoRoute(
+                  path: AppRoutes.pokemonDetailSegment,
+                  builder: (context, state) {
+                    // Si el id no es un número, -1 no existe en la base y la
+                    // pantalla muestra "Pokémon no encontrado".
+                    final id =
+                        int.tryParse(state.pathParameters['id'] ?? '') ?? -1;
+                    return BlocProvider<PokemonDetailCubit>(
+                      create: (context) => PokemonDetailCubit(
+                        repository: getIt<PokemonRepository>(),
+                        pokemonId: id,
+                      ),
+                      child: const PokemonDetailPage(),
+                    );
+                  },
+                ),
+              ],
             ),
           ],
         ),

@@ -4,6 +4,7 @@ import 'package:pokedex/core/widgets/pixel_panel.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_image.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
+import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_detail_image.dart';
 
 import 'type_badge.dart';
 
@@ -64,13 +65,16 @@ class PokemonGridCard extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
-                  height: 112,
-                  width: double.infinity,
-                  child: PokemonImage(
-                    url: imageUrl,
-                    iconSize: 56,
-                    memCacheWidth: 320,
+                Hero(
+                  tag: PokemonDetailImage.heroTag(pokemon.id),
+                  child: SizedBox(
+                    height: 112,
+                    width: double.infinity,
+                    child: PokemonImage(
+                      url: imageUrl,
+                      iconSize: 56,
+                      memCacheWidth: 320,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 6),

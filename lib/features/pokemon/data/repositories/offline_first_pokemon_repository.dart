@@ -39,4 +39,7 @@ class OfflineFirstPokemonRepository implements PokemonRepository {
       throw error.toFailure();
     }
   }
+
+  @override
+  Stream<Pokemon?> watchPokemon(int id) => _local.watchPokemon(id);
 }

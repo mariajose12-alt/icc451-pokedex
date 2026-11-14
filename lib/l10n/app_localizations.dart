@@ -328,6 +328,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Simulate API outage (testing only)'**
   String get debugSimulateOutage;
+
+  /// No description provided for @detailNotFoundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pokémon not found'**
+  String get detailNotFoundTitle;
+
+  /// No description provided for @detailNotFoundMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This Pokémon is not saved on your device.'**
+  String get detailNotFoundMessage;
+
+  /// No description provided for @detailBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get detailBack;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

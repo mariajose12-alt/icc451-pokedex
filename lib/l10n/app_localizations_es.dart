@@ -138,4 +138,13 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get debugSimulateOutage => 'Simular caída de la API (solo pruebas)';
+
+  @override
+  String get detailNotFoundTitle => 'Pokémon no encontrado';
+
+  @override
+  String get detailNotFoundMessage => 'Este Pokémon no está guardado en tu dispositivo.';
+
+  @override
+  String get detailBack => 'Volver';
 }

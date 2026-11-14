@@ -141,4 +141,43 @@ class CatalogoDao extends DatabaseAccessor<AppDatabase>
       PokemonsCompanion(artworkLocalPath: Value(ruta)),
     );
   }
+
+  // Un solo Pokémon con sus tipos, en UNA consulta (pantalla de detalle).
+  // Mismo JOIN que el catálogo, pero filtrado por id.
+  // Devuelve null si ese Pokémon todavía no está guardado.
+  // Drift vuelve a emitir cuando cambia cualquiera de las tres tablas,
+  // así que si la sincronización modifica este Pokémon, el detalle se entera.
+  Stream<PokemonWithTypes?> watchPokemonWithTypes(int id) {
+    final query =
+        select(pokemons).join([
+            leftOuterJoin(
+              pokemonTypes,
+              pokemonTypes.pokemonId.equalsExp(pokemons.id),
+            ),
+            leftOuterJoin(
+              pokeTypes,
+              pokeTypes.id.equalsExp(pokemonTypes.typeId),
+            ),
+          ])
+          ..where(pokemons.id.equals(id))
+          ..orderBy([OrderingTerm.asc(pokemonTypes.slot)]);
+
+    return query.watch().map((rows) {
+      // Sin filas: ese id no existe en la base.
+      if (rows.isEmpty) {
+        return null;
+      }
+
+      // Todas las filas son del mismo Pokémon (una por cada tipo).
+      final pokemon = rows.first.readTable(pokemons);
+      final types = <TypeEntry>[];
+      for (final row in rows) {
+        final type = row.readTableOrNull(pokeTypes);
+        if (type != null) {
+          types.add(type);
+        }
+      }
+      return PokemonWithTypes(pokemon: pokemon, types: types);
+    });
+  }
 }

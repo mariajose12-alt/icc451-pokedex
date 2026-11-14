@@ -14,6 +14,9 @@ class _RecordingRepository implements PokemonRepository {
   Stream<List<Pokemon>> watchCatalog() => const Stream.empty();
 
   @override
+  Stream<Pokemon?> watchPokemon(int id) => const Stream<Pokemon?>.empty();
+
+  @override
   Future<void> refreshCatalog({bool onlyIfStale = false}) async {
     calls.add(onlyIfStale);
   }

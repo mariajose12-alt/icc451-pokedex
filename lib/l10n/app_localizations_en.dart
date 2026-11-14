@@ -138,4 +138,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get debugSimulateOutage => 'Simulate API outage (testing only)';
+
+  @override
+  String get detailNotFoundTitle => 'Pokémon not found';
+
+  @override
+  String get detailNotFoundMessage => 'This Pokémon is not saved on your device.';
+
+  @override
+  String get detailBack => 'Back';
 }
