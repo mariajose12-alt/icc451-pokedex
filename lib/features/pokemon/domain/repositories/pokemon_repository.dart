@@ -8,6 +8,11 @@ abstract interface class PokemonRepository {
   /// Si todavía no hay datos, emite una lista vacía.
   Stream<List<Pokemon>> watchCatalog();
 
+  /// Observa un Pokémon guardado en la base local (OF-16).
+  /// Emite null si todavía no está guardado, y un valor nuevo cada vez que
+  /// sus datos cambian en la base.
+  Stream<Pokemon?> watchPokemon(int id);
+
   /// Pide a la fuente remota que actualice el catálogo local.
   /// Completa cuando termina y lanza un [Failure] si no se pudo.
   /// Un fallo nunca borra los datos locales válidos (OF-04).

@@ -103,4 +103,17 @@ class FakePokemonRepository implements PokemonRepository {
         throw const ServiceFailure();
     }
   }
+
+  @override
+  Stream<Pokemon?> watchPokemon(int id) {
+    // Busca el id en el catálogo de ejemplo; si no está, emite null.
+    return watchCatalog().map((catalog) {
+      for (final pokemon in catalog) {
+        if (pokemon.id == id) {
+          return pokemon;
+        }
+      }
+      return null;
+    });
+  }
 }
