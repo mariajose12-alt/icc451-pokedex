@@ -7,7 +7,8 @@ import 'package:pokedex/features/pokemon/presentation/bloc/catalog_bloc.dart';
 import 'package:pokedex/features/pokemon/presentation/bloc/catalog_event.dart';
 import 'package:pokedex/features/pokemon/presentation/cubit/catalog_view_mode_cubit.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
-
+import 'package:go_router/go_router.dart';
+import 'package:pokedex/app/router/app_routes.dart';
 import 'pokemon_card.dart';
 import 'pokemon_grid_card.dart';
 
@@ -142,9 +143,14 @@ class _CatalogResultsState extends State<CatalogResults> {
                                 ),
                             itemCount: pokemon.length,
                             itemBuilder: (context, index) {
+                              final item = pokemon[index];
                               return PokemonGridCard(
-                                pokemon: pokemon[index],
-                                onTap: () {},
+                                pokemon: item,
+                                // push: abre el detalle encima y "atrás"
+                                // regresa al catálogo en el mismo punto.
+                                onTap: () => context.push(
+                                  AppRoutes.pokemonDetail(item.id),
+                                ),
                               );
                             },
                           )
@@ -154,9 +160,12 @@ class _CatalogResultsState extends State<CatalogResults> {
                             padding: const EdgeInsets.all(12),
                             itemCount: pokemon.length,
                             itemBuilder: (context, index) {
+                              final item = pokemon[index];
                               return PokemonCard(
-                                pokemon: pokemon[index],
-                                onTap: () {},
+                                pokemon: item,
+                                onTap: () => context.push(
+                                  AppRoutes.pokemonDetail(item.id),
+                                ),
                               );
                             },
                           ),
