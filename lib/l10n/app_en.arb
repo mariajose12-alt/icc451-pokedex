@@ -60,5 +60,8 @@
   },
   "catalogRefreshFailedTitle": "Update failed",
   "catalogRefreshFailedMessage": "Showing saved data. Try again.",
-  "debugSimulateOutage": "Simulate API outage (testing only)"
+  "debugSimulateOutage": "Simulate API outage (testing only)",
+  "detailNotFoundTitle": "Pokémon not found",
+  "detailNotFoundMessage": "This Pokémon is not saved on your device.",
+  "detailBack": "Back"
 }
