@@ -9,6 +9,7 @@ import 'package:pokedex/features/pokemon/presentation/cubit/catalog_view_mode_cu
 import 'package:pokedex/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokedex/app/router/app_routes.dart';
+
 import 'pokemon_card.dart';
 import 'pokemon_grid_card.dart';
 

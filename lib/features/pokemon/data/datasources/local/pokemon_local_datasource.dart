@@ -60,7 +60,6 @@ class PokemonLocalDataSource {
     return int.tryParse(state.cursorOrOffset ?? '') ?? 0;
   }
 
-
   /// Hay que sincronizar? Es true si nunca se sincronizó, si la última vez
   /// quedó a medias o falló, o si la última sincronización completa tiene
   /// [maxAge] o más (PS-03).

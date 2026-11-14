@@ -8,10 +8,8 @@ import 'package:pokedex/features/pokemon/presentation/cubit/pokemon_detail_state
 /// Estado del detalle de UN Pokémon. Solo lee de la base local a través del
 /// repositorio (OF-16, OF-17): nunca consume una respuesta remota.
 class PokemonDetailCubit extends Cubit<PokemonDetailState> {
-  PokemonDetailCubit({
-    required this._repository,
-    required this.pokemonId,
-  }) : super(const PokemonDetailLoading()) {
+  PokemonDetailCubit({required this._repository, required this.pokemonId})
+    : super(const PokemonDetailLoading()) {
     // Se empieza a observar apenas se crea el cubit.
     _subscription = _repository.watchPokemon(pokemonId).listen(_onPokemon);
   }

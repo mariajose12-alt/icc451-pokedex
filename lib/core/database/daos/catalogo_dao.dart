@@ -149,18 +149,18 @@ class CatalogoDao extends DatabaseAccessor<AppDatabase>
   // así que si la sincronización modifica este Pokémon, el detalle se entera.
   Stream<PokemonWithTypes?> watchPokemonWithTypes(int id) {
     final query =
-    select(pokemons).join([
-      leftOuterJoin(
-        pokemonTypes,
-        pokemonTypes.pokemonId.equalsExp(pokemons.id),
-      ),
-      leftOuterJoin(
-        pokeTypes,
-        pokeTypes.id.equalsExp(pokemonTypes.typeId),
-      ),
-    ])
-      ..where(pokemons.id.equals(id))
-      ..orderBy([OrderingTerm.asc(pokemonTypes.slot)]);
+        select(pokemons).join([
+            leftOuterJoin(
+              pokemonTypes,
+              pokemonTypes.pokemonId.equalsExp(pokemons.id),
+            ),
+            leftOuterJoin(
+              pokeTypes,
+              pokeTypes.id.equalsExp(pokemonTypes.typeId),
+            ),
+          ])
+          ..where(pokemons.id.equals(id))
+          ..orderBy([OrderingTerm.asc(pokemonTypes.slot)]);
 
     return query.watch().map((rows) {
       // Sin filas: ese id no existe en la base.

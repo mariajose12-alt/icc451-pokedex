@@ -4,6 +4,7 @@ import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_image.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_detail_image.dart';
+
 import 'type_badge.dart';
 
 /// Tarjeta del Pokémon en modo lista: sprite a la izquierda y datos a la derecha.

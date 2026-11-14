@@ -51,8 +51,8 @@ final GoRouter appRouter = GoRouter(
                   providers: [
                     BlocProvider<CatalogBloc>(
                       create: (context) =>
-                      CatalogBloc(repository: getIt<PokemonRepository>())
-                        ..add(const CatalogStarted()),
+                          CatalogBloc(repository: getIt<PokemonRepository>())
+                            ..add(const CatalogStarted()),
                     ),
                     BlocProvider<CatalogViewModeCubit>(
                       create: (context) => CatalogViewModeCubit(
