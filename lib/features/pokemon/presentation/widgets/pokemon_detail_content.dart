@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:pokedex/core/widgets/pixel_panel.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_detail_image.dart';
+import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_detail_metrics.dart';
+import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_type_backdrop.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/type_badge.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
 
-/// Contenido del detalle cuando el Pokémon está guardado: identidad completa
-/// (RF-DET-01). Más adelante se añadirán aquí stats, habilidades, etc.
+/// Contenido del detalle cuando el Pokémon está guardado: header con el color
+/// de sus tipos, identidad (RF-DET-01) y medidas (RF-DET-07). Más adelante se
+/// añadirán aquí stats, habilidades, etc.
 class PokemonDetailContent extends StatelessWidget {
   const PokemonDetailContent({required this.pokemon, super.key});
 
@@ -23,7 +26,8 @@ class PokemonDetailContent extends StatelessWidget {
         ? pokemon.name
         : pokemon.name[0].toUpperCase() + pokemon.name.substring(1);
 
-    // Etiqueta para lectores de pantalla: nombre, número y tipos de una vez.
+    // Nombres de los tipos: sirven para el color del header y para la
+    // etiqueta de lectores de pantalla.
     final typeNames = <String>[];
     for (final type in pokemon.types) {
       typeNames.add(type.name);
@@ -38,51 +42,80 @@ class PokemonDetailContent extends StatelessWidget {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: PixelPanel(
-        padding: const EdgeInsets.all(16),
-        child: Semantics(
-          container: true,
-          label: spokenLabel,
-          excludeSemantics: true,
-          child: Column(
-            children: [
-              // El Hero envuelve la imagen: es lo que "vuela" desde el
-              // catálogo (RF-COM-02).
-              Hero(
-                tag: PokemonDetailImage.heroTag(pokemon.id),
-                child: SizedBox(
-                  height: 240,
-                  width: double.infinity,
-                  child: PokemonDetailImage(pokemon: pokemon),
-                ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                number,
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                  fontVariations: const [FontVariation('wght', 700)],
-                ),
-              ),
-              Text(
-                name,
-                textAlign: TextAlign.center,
-                style: theme.textTheme.headlineMedium?.copyWith(
-                  fontVariations: const [FontVariation('wght', 700)],
-                ),
-              ),
-              const SizedBox(height: 12),
-              // Uno o dos tipos; Wrap los acomoda si no caben en una línea.
-              Wrap(
-                alignment: WrapAlignment.center,
-                spacing: 8,
-                runSpacing: 8,
+        // Sin margen interior: el header de color llega hasta los bordes.
+        padding: EdgeInsets.zero,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Header: color de los tipos detrás y el artwork encima.
+            SizedBox(
+              height: 264,
+              child: Stack(
+                fit: StackFit.expand,
                 children: [
-                  for (final type in pokemon.types)
-                    TypeBadge(typeName: type.name),
+                  PokemonTypeBackdrop(typeNames: typeNames),
+                  Padding(
+                    padding: const EdgeInsets.all(12),
+                    // El Hero envuelve la imagen: es lo que "vuela" desde el
+                    // catálogo (RF-COM-02). El color de fondo se queda quieto.
+                    child: Hero(
+                      tag: PokemonDetailImage.heroTag(pokemon.id),
+                      child: PokemonDetailImage(pokemon: pokemon),
+                    ),
+                  ),
                 ],
               ),
-            ],
-          ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  // Identidad: un solo bloque para el lector de pantalla.
+                  Semantics(
+                    container: true,
+                    label: spokenLabel,
+                    excludeSemantics: true,
+                    child: Column(
+                      children: [
+                        Text(
+                          number,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                            fontVariations: const [FontVariation('wght', 700)],
+                          ),
+                        ),
+                        Text(
+                          name,
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.headlineMedium?.copyWith(
+                            fontVariations: const [FontVariation('wght', 700)],
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        // Uno o dos tipos; Wrap los acomoda si no caben.
+                        Wrap(
+                          alignment: WrapAlignment.center,
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: [
+                            for (final type in pokemon.types)
+                              TypeBadge(typeName: type.name),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  // Medidas (RF-DET-07): fuera del Semantics de arriba para
+                  // que se lean como elementos propios.
+                  PokemonDetailMetrics(
+                    heightDecimeters: pokemon.height,
+                    weightHectograms: pokemon.weight,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

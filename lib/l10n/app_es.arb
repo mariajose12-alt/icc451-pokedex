@@ -63,5 +63,19 @@
   "debugSimulateOutage": "Simular caída de la API (solo pruebas)",
   "detailNotFoundTitle": "Pokémon no encontrado",
   "detailNotFoundMessage": "Este Pokémon no está guardado en tu dispositivo.",
-  "detailBack": "Volver"
+  "detailBack": "Volver",
+  "detailHeight": "Altura",
+  "detailWeight": "Peso",
+  "detailHeightValue": "{value} m",
+  "@detailHeightValue": {
+    "placeholders": {
+      "value": { "type": "String" }
+    }
+  },
+  "detailWeightValue": "{value} kg",
+  "@detailWeightValue": {
+    "placeholders": {
+      "value": { "type": "String" }
+    }
+  }
 }

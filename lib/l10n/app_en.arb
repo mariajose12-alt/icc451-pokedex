@@ -63,5 +63,19 @@
   "debugSimulateOutage": "Simulate API outage (testing only)",
   "detailNotFoundTitle": "Pokémon not found",
   "detailNotFoundMessage": "This Pokémon is not saved on your device.",
-  "detailBack": "Back"
+  "detailBack": "Back",
+  "detailHeight": "Height",
+  "detailWeight": "Weight",
+  "detailHeightValue": "{value} m",
+  "@detailHeightValue": {
+    "placeholders": {
+      "value": { "type": "String" }
+    }
+  },
+  "detailWeightValue": "{value} kg",
+  "@detailWeightValue": {
+    "placeholders": {
+      "value": { "type": "String" }
+    }
+  }
 }
