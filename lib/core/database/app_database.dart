@@ -1,5 +1,4 @@
 import 'package:drift/drift.dart';
-import 'package:pokedex/core/sync/sync_status.dart';
 
 import 'connection.dart';
 import 'tables/pokemon_stats_table.dart';
@@ -13,8 +12,15 @@ import 'tables/favorites_table.dart';
 import 'tables/trivia_results_table.dart';
 import 'tables/trivia_answers_table.dart';
 import 'tables/sync_metadata_table.dart';
+import 'tables/evolution_nodes_table.dart';
+import 'tables/moves_table.dart';
+import 'tables/pokemon_egg_groups_table.dart';
+import 'tables/pokemon_form_types_table.dart';
+import 'tables/pokemon_forms_table.dart';
+import 'tables/pokemon_moves_table.dart';
+import 'tables/version_groups_table.dart';
 import 'daos/catalogo_dao.dart';
-
+import 'daos/detalle_dao.dart';
 part 'app_database.g.dart';
 
 @DriftDatabase(
@@ -26,12 +32,19 @@ part 'app_database.g.dart';
     PokemonAbilities,
     PokemonStats,
     TypeEfficacies,
+    Moves,
+    VersionGroups,
+    PokemonMoves,
+    PokemonEggGroups,
+    EvolutionNodes,
+    PokemonForms,
+    PokemonFormTypes,
     Favorites,
     TriviaResults,
     TriviaAnswers,
     SyncMetadata,
   ],
-  daos: [CatalogoDao],
+  daos: [CatalogoDao, DetalleDao],
 )
 class AppDatabase extends _$AppDatabase {
   // Constructor principal
@@ -41,11 +54,12 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.archivo() : super(openConnection());
 
   // Versión del esquema. Cada vez que cambian las tablas, se sube en 1 y se
-  // describe cómo migrar en onUpgrade.
   //  1: esquema inicial.
   //  2: stats base y efectividades entre tipos (detalle del Pokémon).
+  //  3: datos del detalle bajo demanda: habilidades con nombre es/en,
+  //     movimientos, egg groups, evoluciones y formas.
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -55,26 +69,19 @@ class AppDatabase extends _$AppDatabase {
     // Base que ya existía en una versión anterior: solo se añade lo nuevo.
     // No se borra nada, así que favoritos y catálogo se conservan.
     onUpgrade: (m, from, to) async {
-      if (from < 2) {
-        await m.createTable(pokemonStats);
-        await m.createTable(typeEfficacies);
-
-        // Los Pokémon ya guardados no tienen stats. Se deja el catálogo
-        // marcado como "a medias desde el principio" para que la próxima
-        // sincronización lo descargue de nuevo (el upsert actualiza lo
-        // existente sin duplicar).
-        // Se usa 'syncing' con cursor 0, NO 'failed': con 'failed' el
-        // sincronizador retomaría desde el cursor viejo (1025) y daría el
-        // catálogo por completo sin tener los stats.
-        // lastSuccessfulAt no se toca: el indicador sigue mostrando la fecha.
-        await (update(
-          syncMetadata,
-        )..where((s) => s.resourceKey.equals(SyncResources.catalog))).write(
-          const SyncMetadataCompanion(
-            status: Value(SyncStatus.syncing),
-            cursorOrOffset: Value('0'),
-          ),
-        );
+      if (from < 3) {
+        // Solo se crean tablas y se agregan dos columnas nulas. No hace falta
+        // forzar una nueva sincronización: estos datos se descargan al abrir
+        // cada Pokémon, y los favoritos y el catálogo no se tocan.
+        await m.addColumn(abilities, abilities.nameEs);
+        await m.addColumn(abilities, abilities.nameEn);
+        await m.createTable(moves);
+        await m.createTable(versionGroups);
+        await m.createTable(pokemonMoves);
+        await m.createTable(pokemonEggGroups);
+        await m.createTable(evolutionNodes);
+        await m.createTable(pokemonForms);
+        await m.createTable(pokemonFormTypes);
       }
     },
 

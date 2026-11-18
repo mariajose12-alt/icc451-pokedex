@@ -18,4 +18,7 @@ abstract final class SyncResources {
 
   /// Tabla de efectividades entre tipos (se descarga una vez).
   static const String typeEfficacies = 'type_efficacies';
+
+  /// Clave del estado del detalle de un Pokémon: 'detail:25' (PS-09).
+  static String detail(int pokemonId) => 'detail:$pokemonId';
 }
