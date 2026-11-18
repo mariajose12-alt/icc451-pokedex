@@ -2,6 +2,8 @@ import 'package:pokedex/core/network/network_exceptions.dart';
 import 'package:pokedex/core/network/poke_api_client.dart';
 import 'package:pokedex/features/pokemon/data/models/pokemon_dto.dart';
 import 'package:pokedex/features/pokemon/data/models/type_efficacy_dto.dart';
+import 'package:flutter/foundation.dart';
+import 'package:pokedex/features/pokemon/data/models/pokemon_detail_dto.dart';
 
 import 'pokemon_queries.dart';
 
@@ -45,6 +47,26 @@ class PokemonRemoteDataSource {
     // Igual que en el catálogo: un formato inesperado es un error tipado.
     try {
       return TypeEfficacyDto.listFromJson(data);
+    } on TypeError catch (error) {
+      throw UnexpectedNetworkException('Formato inesperado: $error');
+    } on FormatException catch (error) {
+      throw UnexpectedNetworkException('Formato inesperado: $error');
+    }
+  }
+
+  /// Trae todo el detalle de un Pokémon en una sola llamada (PA-02).
+  Future<PokemonDetailDto> fetchPokemonDetail(int id) async {
+    // PA-02 pide dejar registro en consola de la consulta GraphQL.
+    debugPrint('GraphQL: consultando el detalle del Pokémon $id');
+
+    final data = await _client.query(
+      PokemonQueries.pokemonDetail,
+      variables: <String, dynamic>{'id': id},
+    );
+
+    // Un formato inesperado (o un id que no existe) es un error tipado.
+    try {
+      return PokemonDetailDto.fromJson(data);
     } on TypeError catch (error) {
       throw UnexpectedNetworkException('Formato inesperado: $error');
     } on FormatException catch (error) {

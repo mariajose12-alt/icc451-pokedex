@@ -54,4 +54,91 @@ query TypeEfficacies {
   }
 }
 ''';
+
+  /// Todo el detalle de un Pokémon en UNA llamada (RF-DET-03 al 09).
+  ///  - base: los mismos datos del catálogo. Permite guardar un Pokémon que no
+  ///    estaba (PA-02) y restaurar lo que alguien cambió en la base (PA-16).
+  ///  - Los idiomas se filtran aquí: 7 = español, 9 = inglés. Sin filtro,
+  ///    PokeAPI manda el texto en todos los idiomas.
+  ///  - moves: solo los métodos 1 level-up, 2 egg, 3 tutor y 4 machine, y solo
+  ///    de la forma base. Los de las otras formas se piden al elegirlas.
+  static const String pokemonDetail = r'''
+query PokemonDetail($id: Int!) {
+  base: pokemon(where: {id: {_eq: $id}, is_default: {_eq: true}}) {
+    id
+    name
+    height
+    weight
+    pokemonsprites {
+      artwork: sprites(path: "other.official-artwork.front_default")
+      sprite: sprites(path: "front_default")
+    }
+    pokemontypes {
+      slot
+      type { id name }
+    }
+    pokemonstats {
+      base_stat
+      stat { id }
+    }
+    pokemonspecy { id generation_id }
+    pokemonabilities {
+      is_hidden
+      ability {
+        id
+        name
+        abilitynames(where: {language_id: {_in: [7, 9]}}) { language_id name }
+        abilityeffecttexts(where: {language_id: {_eq: 9}}) { short_effect }
+      }
+    }
+  }
+  species: pokemonspecies(where: {id: {_eq: $id}}) {
+    pokemonegggroups { egggroup { name } }
+    evolutionchain {
+      id
+      pokemonspecies(order_by: {id: asc}) {
+        id
+        name
+        evolves_from_species_id
+        pokemonevolutions {
+          min_level
+          min_happiness
+          time_of_day
+          evolutiontrigger { name }
+          item { name }
+        }
+      }
+    }
+  }
+  forms: pokemon(
+    where: {pokemonspecy: {id: {_eq: $id}}}
+    order_by: {id: asc}
+  ) {
+    id
+    name
+    is_default
+    pokemontypes {
+      slot
+      type { id }
+    }
+    pokemonsprites {
+      sprite: sprites(path: "front_default")
+      shiny: sprites(path: "front_shiny")
+      artwork: sprites(path: "other.official-artwork.front_default")
+      artwork_shiny: sprites(path: "other.official-artwork.front_shiny")
+    }
+  }
+  moves: pokemonmove(
+    where: {
+      pokemon_id: {_eq: $id}
+      movelearnmethod: {id: {_in: [1, 2, 3, 4]}}
+    }
+  ) {
+    level
+    move { id name }
+    movelearnmethod { id }
+    versiongroup { id name }
+  }
+}
+''';
 }
