@@ -8,11 +8,13 @@ class PageCompanions {
     required this.types,
     required this.pokemons,
     required this.pokemonTypes,
+    required this.stats,
   });
 
   final List<PokeTypesCompanion> types;
   final List<PokemonsCompanion> pokemons;
   final List<PokemonTypesCompanion> pokemonTypes;
+  final List<PokemonStatsCompanion> stats;
 }
 
 /// Convierte los DTOs de una página (formato de PokeAPI) en filas para Drift.
@@ -23,6 +25,7 @@ PageCompanions pageToCompanions(List<PokemonDto> items, DateTime now) {
   final typesById = <int, PokeTypesCompanion>{};
   final pokemons = <PokemonsCompanion>[];
   final relations = <PokemonTypesCompanion>[];
+  final stats = <PokemonStatsCompanion>[];
 
   for (final dto in items) {
     pokemons.add(
@@ -54,11 +57,23 @@ PageCompanions pageToCompanions(List<PokemonDto> items, DateTime now) {
         ),
       );
     }
+
+    // Una fila por cada stat del Pokémon (6 en total).
+    for (final stat in dto.stats) {
+      stats.add(
+        PokemonStatsCompanion.insert(
+          pokemonId: dto.id,
+          statId: stat.statId,
+          baseStat: stat.baseStat,
+        ),
+      );
+    }
   }
 
   return PageCompanions(
     types: typesById.values.toList(),
     pokemons: pokemons,
     pokemonTypes: relations,
+    stats: stats,
   );
 }

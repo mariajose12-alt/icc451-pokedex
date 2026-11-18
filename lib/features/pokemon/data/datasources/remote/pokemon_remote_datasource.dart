@@ -1,6 +1,7 @@
 import 'package:pokedex/core/network/network_exceptions.dart';
 import 'package:pokedex/core/network/poke_api_client.dart';
 import 'package:pokedex/features/pokemon/data/models/pokemon_dto.dart';
+import 'package:pokedex/features/pokemon/data/models/type_efficacy_dto.dart';
 
 import 'pokemon_queries.dart';
 
@@ -30,6 +31,20 @@ class PokemonRemoteDataSource {
     // es de infraestructura: se avisa con un error tipado, no con un crash.
     try {
       return CatalogPageDto.fromJson(data);
+    } on TypeError catch (error) {
+      throw UnexpectedNetworkException('Formato inesperado: $error');
+    } on FormatException catch (error) {
+      throw UnexpectedNetworkException('Formato inesperado: $error');
+    }
+  }
+
+  /// Trae la tabla completa de efectividades entre tipos (una llamada).
+  Future<List<TypeEfficacyDto>> fetchTypeEfficacies() async {
+    final data = await _client.query(PokemonQueries.typeEfficacies);
+
+    // Igual que en el catálogo: un formato inesperado es un error tipado.
+    try {
+      return TypeEfficacyDto.listFromJson(data);
     } on TypeError catch (error) {
       throw UnexpectedNetworkException('Formato inesperado: $error');
     } on FormatException catch (error) {

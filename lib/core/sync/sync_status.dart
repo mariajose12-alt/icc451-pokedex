@@ -15,4 +15,7 @@ abstract final class SyncStatus {
 /// Claves de los recursos que se sincronizan (columna `resource_key`).
 abstract final class SyncResources {
   static const String catalog = 'catalog';
+
+  /// Tabla de efectividades entre tipos (se descarga una vez).
+  static const String typeEfficacies = 'type_efficacies';
 }

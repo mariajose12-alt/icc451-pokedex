@@ -30,10 +30,27 @@ query CatalogPage($lastId: Int!, $pageSize: Int!) {
       slot
       type { id name }
     }
+    pokemonstats {
+      base_stat
+      stat { id }
+    }
     pokemonspecy { id generation_id }
   }
   pokemon_aggregate(where: {is_default: {_eq: true}}) {
     aggregate { count }
+  }
+}
+''';
+
+  /// Tabla de efectividades entre tipos. Se pide una vez y se guarda.
+  ///  - damage_factor viene en porcentaje: 0, 50, 100 o 200.
+  ///  - Son unas 324 filas (18 × 18): caben en una sola llamada.
+  static const String typeEfficacies = r'''
+query TypeEfficacies {
+  typeefficacy {
+    damage_type_id
+    target_type_id
+    damage_factor
   }
 }
 ''';

@@ -4,6 +4,8 @@ import 'package:pokedex/core/database/tables/poke_types_table.dart';
 import 'package:pokedex/core/database/tables/pokemon_table.dart';
 import 'package:pokedex/core/database/tables/pokemon_types_table.dart';
 import 'package:pokedex/core/database/tables/sync_metadata_table.dart';
+import 'package:pokedex/core/database/tables/pokemon_stats_table.dart';
+import 'package:pokedex/core/database/tables/type_efficacies_table.dart';
 
 part 'catalogo_dao.g.dart';
 
@@ -11,15 +13,31 @@ part 'catalogo_dao.g.dart';
 // (el 1 es el principal). Es lo que necesita la lista del catálogo:
 // así no hace falta una consulta por tarjeta para pedir los tipos.
 class PokemonWithTypes {
-  PokemonWithTypes({required this.pokemon, required this.types});
+  PokemonWithTypes({
+    required this.pokemon,
+    required this.types,
+    this.stats = const <PokemonStatEntry>[],
+  });
 
   final PokemonEntry pokemon;
   final List<TypeEntry> types;
+
+  // Solo se llena en el detalle; en la lista del catálogo queda vacío.
+  final List<PokemonStatEntry> stats;
 }
 
 // DAO del catálogo: lecturas reactivas para la UI y escrituras por página
 // para la sincronización (ADR-0003).
-@DriftAccessor(tables: [Pokemons, PokeTypes, PokemonTypes, SyncMetadata])
+@DriftAccessor(
+  tables: [
+    Pokemons,
+    PokeTypes,
+    PokemonTypes,
+    PokemonStats,
+    TypeEfficacies,
+    SyncMetadata,
+  ],
+)
 class CatalogoDao extends DatabaseAccessor<AppDatabase>
     with _$CatalogoDaoMixin {
   CatalogoDao(super.db);
@@ -112,6 +130,7 @@ class CatalogoDao extends DatabaseAccessor<AppDatabase>
     required List<PokemonsCompanion> pokemons,
     required List<PokemonTypesCompanion> pokemonTypes,
     required SyncMetadataCompanion syncState,
+    List<PokemonStatsCompanion> stats = const [],
   }) {
     return transaction(() async {
       await batch((b) {
@@ -120,6 +139,9 @@ class CatalogoDao extends DatabaseAccessor<AppDatabase>
         // Upsert, nunca insertOrReplace: borrar una fila dispararía las
         // cascadas hacia tipos y habilidades (ADR-0003).
         b.insertAllOnConflictUpdate(this.pokemons, pokemons);
+        // Los stats van DESPUÉS de los Pokémon (clave foránea). Upsert: si ya
+        // existían, se actualizan sin duplicar (la clave es pokemonId+statId).
+        b.insertAllOnConflictUpdate(pokemonStats, stats);
       });
 
       // Reemplaza los tipos de los Pokémon de esta página. Solo borra filas
@@ -168,16 +190,26 @@ class CatalogoDao extends DatabaseAccessor<AppDatabase>
         return null;
       }
 
-      // Todas las filas son del mismo Pokémon (una por cada tipo).
       final pokemon = rows.first.readTable(pokemons);
       final types = <TypeEntry>[];
+      final stats = <PokemonStatEntry>[];
+      // Ids ya agregados, para no repetir por la multiplicación del JOIN.
+      final seenTypeIds = <int>{};
+      final seenStatIds = <int>{};
+
       for (final row in rows) {
         final type = row.readTableOrNull(pokeTypes);
-        if (type != null) {
+        // Set.add devuelve false si el id ya estaba.
+        if (type != null && seenTypeIds.add(type.id)) {
           types.add(type);
         }
+
+        final stat = row.readTableOrNull(pokemonStats);
+        if (stat != null && seenStatIds.add(stat.statId)) {
+          stats.add(stat);
+        }
       }
-      return PokemonWithTypes(pokemon: pokemon, types: types);
+      return PokemonWithTypes(pokemon: pokemon, types: types, stats: stats);
     });
   }
 }

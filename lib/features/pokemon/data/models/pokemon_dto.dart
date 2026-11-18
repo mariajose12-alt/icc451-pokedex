@@ -22,6 +22,23 @@ class PokemonTypeDto {
   }
 }
 
+/// Un stat base tal como lo devuelve PokeAPI.
+class PokemonStatDto {
+  const PokemonStatDto({required this.statId, required this.baseStat});
+
+  /// 1 hp, 2 attack, 3 defense, 4 special-attack, 5 special-defense, 6 speed.
+  final int statId;
+  final int baseStat;
+
+  factory PokemonStatDto.fromJson(Map<String, dynamic> json) {
+    final stat = json['stat'] as Map<String, dynamic>;
+    return PokemonStatDto(
+      statId: stat['id'] as int,
+      baseStat: json['base_stat'] as int,
+    );
+  }
+}
+
 class PokemonDto {
   const PokemonDto({
     required this.id,
@@ -33,6 +50,7 @@ class PokemonDto {
     required this.types,
     required this.artworkUrl,
     required this.spriteUrl,
+    this.stats = const <PokemonStatDto>[],
   });
 
   final int id;
@@ -49,6 +67,7 @@ class PokemonDto {
   final List<PokemonTypeDto> types;
   final String? artworkUrl;
   final String? spriteUrl;
+  final List<PokemonStatDto> stats;
 
   factory PokemonDto.fromJson(Map<String, dynamic> json) {
     // Tipos: lista de { slot, type { id, name } }.
@@ -70,6 +89,15 @@ class PokemonDto {
     // Especie: es un objeto con el número nacional y la generación.
     final species = json['pokemonspecy'] as Map<String, dynamic>;
 
+    // Stats: lista de { base_stat, stat { id } }. Si la lista no viene, queda
+    // vacía: el Pokémon se guarda igual y el detalle muestra "sin datos".
+    final statsJson =
+        json['pokemonstats'] as List<dynamic>? ?? const <dynamic>[];
+    final stats = <PokemonStatDto>[];
+    for (final item in statsJson) {
+      stats.add(PokemonStatDto.fromJson(item as Map<String, dynamic>));
+    }
+
     return PokemonDto(
       id: json['id'] as int,
       name: json['name'] as String,
@@ -78,6 +106,7 @@ class PokemonDto {
       height: json['height'] as int,
       weight: json['weight'] as int,
       types: types,
+      stats: stats,
       artworkUrl: artwork is String ? artwork : null,
       spriteUrl: sprite is String ? sprite : null,
     );
