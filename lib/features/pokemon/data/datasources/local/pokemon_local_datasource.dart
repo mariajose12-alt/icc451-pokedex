@@ -6,6 +6,9 @@ import 'package:pokedex/features/pokemon/data/models/pokemon_companion_mapper.da
 import 'package:pokedex/features/pokemon/data/models/pokemon_dto.dart';
 import 'package:pokedex/features/pokemon/data/models/pokemon_entry_mapper.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
+import 'package:pokedex/features/pokemon/data/models/type_efficacy_dto.dart';
+import 'package:pokedex/features/pokemon/domain/entities/type_chart.dart';
+import 'package:pokedex/features/pokemon/domain/entities/type_efficacy.dart';
 
 /// Acceso a la base local (Drift) para el catálogo.
 /// Es el único punto donde se mezclan DTOs, filas de Drift y entidades.
@@ -95,6 +98,7 @@ class PokemonLocalDataSource {
       types: rows.types,
       pokemons: rows.pokemons,
       pokemonTypes: rows.pokemonTypes,
+      stats: rows.stats,
       syncState: SyncMetadataCompanion(
         resourceKey: const Value(SyncResources.catalog),
         status: Value(isLast ? SyncStatus.ok : SyncStatus.syncing),
@@ -124,5 +128,67 @@ class PokemonLocalDataSource {
         status: Value(SyncStatus.failed),
       ),
     );
+  }
+
+  /// ¿Ya están descargadas las efectividades? Se exige el estado "ok" Y que
+  /// haya filas: si alguien borra la tabla, se vuelve a descargar.
+  Future<bool> hasEfficacies() async {
+    final state = await _dao.readSyncState(SyncResources.typeEfficacies);
+    if (state == null || state.status != SyncStatus.ok) {
+      return false;
+    }
+    return _dao.hasEfficacies();
+  }
+
+  /// Guarda la tabla de efectividades y deja el recurso en "ok".
+  Future<void> saveEfficacies(List<TypeEfficacyDto> items) {
+    final rows = <TypeEfficaciesCompanion>[];
+    for (final item in items) {
+      rows.add(
+        TypeEfficaciesCompanion.insert(
+          damageTypeId: item.damageTypeId,
+          targetTypeId: item.targetTypeId,
+          damageFactor: item.damageFactor,
+        ),
+      );
+    }
+
+    return _dao.saveEfficacies(
+      rows,
+      SyncMetadataCompanion(
+        resourceKey: const Value(SyncResources.typeEfficacies),
+        status: const Value(SyncStatus.ok),
+        lastSuccessfulAt: Value(DateTime.now()),
+      ),
+    );
+  }
+
+  /// Tabla de efectividades como entidad del dominio. Emite una tabla vacía
+  /// mientras no se haya descargado y otra completa cuando llega.
+  Stream<TypeChart> watchTypeChart() {
+    return _dao.watchTypeEfficacies().map((rows) {
+      final entries = <TypeEfficacy>[];
+      for (final row in rows) {
+        entries.add(
+          TypeEfficacy(
+            damageTypeId: row.damageTypeId,
+            targetTypeId: row.targetTypeId,
+            damageFactor: row.damageFactor,
+          ),
+        );
+      }
+      return TypeChart(entries);
+    });
+  }
+
+  /// Nombre de cada tipo guardado, por id: {12: 'grass', 10: 'fire', ...}.
+  Stream<Map<int, String>> watchTypeNames() {
+    return _dao.watchTypes().map((rows) {
+      final names = <int, String>{};
+      for (final row in rows) {
+        names[row.id] = row.name;
+      }
+      return names;
+    });
   }
 }

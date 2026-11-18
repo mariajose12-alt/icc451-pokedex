@@ -7,6 +7,7 @@ import 'package:pokedex/core/network/api_outage_simulator.dart';
 import 'package:pokedex/core/network/simulated_outage_poke_api_client.dart';
 import 'package:pokedex/features/pokemon/data/sync/catalog_sync_scheduler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'app/app.dart';
 import 'core/connectivity/api_connectivity_monitor.dart';
 import 'core/connectivity/connectivity_monitor.dart';
@@ -15,7 +16,9 @@ import 'core/di/service_locator.dart';
 import 'core/network/api_config.dart';
 import 'core/network/poke_api_client.dart';
 import 'core/sync/sync_info.dart';
+import 'features/pokemon/data/repositories/offline_first_type_chart_repository.dart';
 import 'features/pokemon/domain/repositories/pokemon_repository.dart';
+import 'features/pokemon/domain/repositories/type_chart_repository.dart';
 import 'features/settings/presentation/cubit/locale_cubit.dart';
 import 'core/database/app_database.dart';
 import 'core/sync/drift_sync_info_source.dart';
@@ -24,6 +27,7 @@ import 'features/pokemon/data/datasources/local/pokemon_local_datasource.dart';
 import 'features/pokemon/data/datasources/remote/pokemon_remote_datasource.dart';
 import 'features/pokemon/data/repositories/offline_first_pokemon_repository.dart';
 import 'features/pokemon/data/sync/catalog_sync_coordinator.dart';
+
 import 'package:flutter/foundation.dart' show kDebugMode;
 
 Future<void> main() async {
@@ -86,6 +90,10 @@ Future<void> main() async {
   // Repositorio real: la pantalla lee de la base y la red solo la escribe.
   getIt.registerSingleton<PokemonRepository>(
     OfflineFirstPokemonRepository(local: local, sync: coordinator),
+  );
+
+  getIt.registerSingleton<TypeChartRepository>(
+    OfflineFirstTypeChartRepository(local: local),
   );
 
   // Información de sincronización para el indicador (reemplaza a la falsa).

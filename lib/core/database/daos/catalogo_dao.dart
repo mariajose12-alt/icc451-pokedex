@@ -123,6 +123,39 @@ class CatalogoDao extends DatabaseAccessor<AppDatabase>
     return into(syncMetadata).insertOnConflictUpdate(state);
   }
 
+  // ¿Hay al menos una fila de efectividades? (Mirar solo una basta.)
+  Future<bool> hasEfficacies() async {
+    final rows = await (select(typeEfficacies)..limit(1)).get();
+    return rows.isNotEmpty;
+  }
+
+  // Toda la tabla de efectividades. Emite de nuevo si cambia (por ejemplo,
+  // cuando termina la primera descarga con el detalle ya abierto).
+  Stream<List<TypeEfficacyEntry>> watchTypeEfficacies() {
+    return select(typeEfficacies).watch();
+  }
+
+  // Todos los tipos guardados (id y nombre). Los usa la pantalla de matchups
+  // para poner nombre a cada tipo atacante.
+  Stream<List<TypeEntry>> watchTypes() {
+    return select(pokeTypes).watch();
+  }
+
+  // Guarda toda la tabla y el estado en una sola transacción: o queda la
+  // tabla completa con su estado "ok", o no queda nada.
+  Future<void> saveEfficacies(
+    List<TypeEfficaciesCompanion> rows,
+    SyncMetadataCompanion syncState,
+  ) {
+    return transaction(() async {
+      await batch((b) {
+        // Upsert: la clave es (tipo atacante, tipo defensor), no se duplica.
+        b.insertAllOnConflictUpdate(typeEfficacies, rows);
+      });
+      await into(syncMetadata).insertOnConflictUpdate(syncState);
+    });
+  }
+
   // Guarda una página completa en una sola transacción (PS-07, PA-09).
   // Si la app se cierra a mitad, no queda nada a medias.
   Future<void> savePage({
@@ -164,11 +197,12 @@ class CatalogoDao extends DatabaseAccessor<AppDatabase>
     );
   }
 
-  // Un solo Pokémon con sus tipos, en UNA consulta (pantalla de detalle).
-  // Mismo JOIN que el catálogo, pero filtrado por id.
+  // Un solo Pokémon con sus tipos y sus stats, en UNA consulta (detalle).
+  // El JOIN devuelve una fila por cada combinación (tipo, stat): un Pokémon
+  // con 2 tipos y 6 stats da 12 filas. Por eso, al leerlas, cada tipo y cada
+  // stat se guardan una sola vez.
   // Devuelve null si ese Pokémon todavía no está guardado.
-  // Drift vuelve a emitir cuando cambia cualquiera de las tres tablas,
-  // así que si la sincronización modifica este Pokémon, el detalle se entera.
+  // Drift vuelve a emitir cuando cambia cualquiera de las cuatro tablas.
   Stream<PokemonWithTypes?> watchPokemonWithTypes(int id) {
     final query =
         select(pokemons).join([
@@ -180,9 +214,16 @@ class CatalogoDao extends DatabaseAccessor<AppDatabase>
               pokeTypes,
               pokeTypes.id.equalsExp(pokemonTypes.typeId),
             ),
+            leftOuterJoin(
+              pokemonStats,
+              pokemonStats.pokemonId.equalsExp(pokemons.id),
+            ),
           ])
           ..where(pokemons.id.equals(id))
-          ..orderBy([OrderingTerm.asc(pokemonTypes.slot)]);
+          ..orderBy([
+            OrderingTerm.asc(pokemonTypes.slot),
+            OrderingTerm.asc(pokemonStats.statId),
+          ]);
 
     return query.watch().map((rows) {
       // Sin filas: ese id no existe en la base.

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import 'pokemon_type.dart';
+import 'pokemon_stat.dart';
 
 /// Pokémon del catálogo. Entidad del dominio: no depende de Flutter,
 /// de GraphQL ni de Drift.
@@ -15,6 +16,7 @@ class Pokemon extends Equatable {
     required this.types,
     this.artworkUrl,
     this.spriteUrl,
+    this.stats = const <PokemonStat>[],
   });
 
   final int id;
@@ -33,6 +35,20 @@ class Pokemon extends Equatable {
   /// Tipos ordenados por slot: el primero es el tipo principal.
   final List<PokemonType> types;
 
+  /// Stats base ordenados por statId (hp, ataque, defensa, ataque especial,
+  /// defensa especial, velocidad). Solo los trae el detalle: la lista del
+  /// catálogo no los carga y aquí viene vacío.
+  final List<PokemonStat> stats;
+
+  /// Suma de los stats base (el "total" de RF-DET-02). 0 si no hay stats.
+  int get totalStats {
+    var total = 0;
+    for (final stat in stats) {
+      total += stat.baseStat;
+    }
+    return total;
+  }
+
   @override
   List<Object?> get props => [
     id,
@@ -44,5 +60,6 @@ class Pokemon extends Equatable {
     artworkUrl,
     spriteUrl,
     types,
+    stats,
   ];
 }
