@@ -16,7 +16,11 @@ import 'core/di/service_locator.dart';
 import 'core/network/api_config.dart';
 import 'core/network/poke_api_client.dart';
 import 'core/sync/sync_info.dart';
+import 'features/pokemon/data/datasources/local/pokemon_detail_local_datasource.dart';
+import 'features/pokemon/data/repositories/offline_first_pokemon_detail_repository.dart';
 import 'features/pokemon/data/repositories/offline_first_type_chart_repository.dart';
+import 'features/pokemon/data/sync/pokemon_detail_sync_coordinator.dart';
+import 'features/pokemon/domain/repositories/pokemon_detail_repository.dart';
 import 'features/pokemon/domain/repositories/pokemon_repository.dart';
 import 'features/pokemon/domain/repositories/type_chart_repository.dart';
 import 'features/settings/presentation/cubit/locale_cubit.dart';
@@ -94,6 +98,15 @@ Future<void> main() async {
 
   getIt.registerSingleton<TypeChartRepository>(
     OfflineFirstTypeChartRepository(local: local),
+  );
+
+  // Detalle bajo demanda (PA-02, OF-20): lee de la base y la red solo escribe.
+  final detailLocal = PokemonDetailLocalDataSource(dao: database.detalleDao);
+  getIt.registerSingleton<PokemonDetailRepository>(
+    OfflineFirstPokemonDetailRepository(
+      sync: PokemonDetailSyncCoordinator(remote: remote, local: detailLocal),
+      local: detailLocal,
+    ),
   );
 
   // Información de sincronización para el indicador (reemplaza a la falsa).
