@@ -39,23 +39,26 @@ void main() {
     expect(chart.isEmpty, isTrue);
   });
 
-  test('después de sincronizar, la tabla trae los factores guardados', () async {
-    await pokemonRepository.refreshCatalog();
+  test(
+    'después de sincronizar, la tabla trae los factores guardados',
+    () async {
+      await pokemonRepository.refreshCatalog();
 
-    final chart = await chartRepository.watchTypeChart().first;
+      final chart = await chartRepository.watchTypeChart().first;
 
-    // Las 3 filas del FakeCatalogApi.
-    expect(chart.factor(12, 10), 50);
-    expect(chart.factor(10, 12), 200);
-    expect(chart.factor(1, 8), 0);
-    // Un par que no está guardado es daño normal.
-    expect(chart.factor(2, 2), TypeChart.neutralPercent);
-  });
+      // Las 3 filas del FakeCatalogApi.
+      expect(chart.factor(12, 10), 50);
+      expect(chart.factor(10, 12), 200);
+      expect(chart.factor(1, 8), 0);
+      // Un par que no está guardado es daño normal.
+      expect(chart.factor(2, 2), TypeChart.neutralPercent);
+    },
+  );
 
   test('si la tabla llega con el detalle abierto, el stream avisa', () async {
     final emisiones = <bool>[];
     final sub = chartRepository.watchTypeChart().listen(
-          (chart) => emisiones.add(chart.isEmpty),
+      (chart) => emisiones.add(chart.isEmpty),
     );
 
     // Deja que llegue la primera emisión (vacía) antes de sincronizar.

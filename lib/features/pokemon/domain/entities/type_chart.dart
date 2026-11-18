@@ -16,9 +16,10 @@ class TypeChart extends Equatable {
     final result = <int, Map<int, int>>{};
     for (final entry in entries) {
       // putIfAbsent crea el mapa interno la primera vez que aparece el atacante.
-      result.putIfAbsent(entry.damageTypeId, () => <int, int>{})[entry
-          .targetTypeId] =
-          entry.damageFactor;
+      result.putIfAbsent(
+        entry.damageTypeId,
+        () => <int, int>{},
+      )[entry.targetTypeId] = entry.damageFactor;
     }
     return result;
   }
