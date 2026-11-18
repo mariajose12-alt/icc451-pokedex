@@ -76,26 +76,28 @@ void main() {
     expect(pokemon.totalStats, 534);
   });
 
-  test('un Pokémon sin stats guardados se lee con lista vacía y total 0',
-          () async {
-        await local.savePage([
-          const PokemonDto(
-            id: 7,
-            name: 'squirtle',
-            nationalDexNumber: 7,
-            generationId: 1,
-            height: 5,
-            weight: 90,
-            types: [PokemonTypeDto(slot: 1, typeId: 11, typeName: 'water')],
-            artworkUrl: 'a7.png',
-            spriteUrl: 's7.png',
-          ),
-        ], isLast: true);
+  test(
+    'un Pokémon sin stats guardados se lee con lista vacía y total 0',
+    () async {
+      await local.savePage([
+        const PokemonDto(
+          id: 7,
+          name: 'squirtle',
+          nationalDexNumber: 7,
+          generationId: 1,
+          height: 5,
+          weight: 90,
+          types: [PokemonTypeDto(slot: 1, typeId: 11, typeName: 'water')],
+          artworkUrl: 'a7.png',
+          spriteUrl: 's7.png',
+        ),
+      ], isLast: true);
 
-        final pokemon = await local.watchPokemon(7).first;
+      final pokemon = await local.watchPokemon(7).first;
 
-        expect(pokemon, isNotNull);
-        expect(pokemon!.stats, isEmpty);
-        expect(pokemon.totalStats, 0);
-      });
+      expect(pokemon, isNotNull);
+      expect(pokemon!.stats, isEmpty);
+      expect(pokemon.totalStats, 0);
+    },
+  );
 }
