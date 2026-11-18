@@ -77,5 +77,87 @@
     "placeholders": {
       "value": { "type": "String" }
     }
-  }
+  },
+  "detailStatsTitle": "Estadísticas base",
+  "detailStatsEmpty": "Estadísticas no disponibles todavía",
+  "detailStatTotal": "Total",
+  "detailStatPercent": "{percent} %",
+  "@detailStatPercent": {
+    "placeholders": {
+      "percent": { "type": "int" }
+    }
+  },
+  "detailStatSemantic": "{name}: {value}, {percent} por ciento",
+  "@detailStatSemantic": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "value": { "type": "int" },
+      "percent": { "type": "int" }
+    }
+  },
+  "statHp": "HP",
+  "statAttack": "Ataque",
+  "statDefense": "Defensa",
+  "statSpAttack": "At. esp.",
+  "statSpDefense": "Def. esp.",
+  "statSpeed": "Velocidad",
+  "detailMatchupsTitle": "Matchups de daño",
+  "detailMatchupsWeak": "Débil contra",
+  "detailMatchupsResist": "Resiste",
+  "detailMatchupsImmune": "Inmune a",
+  "detailMatchupsEmpty": "Matchups no disponibles todavía",
+  "detailTabSummary": "Resumen",
+  "detailTabEvolution": "Evolución",
+  "detailTabCombat": "Combate",
+  "detailTabMoves": "Movs.",
+  "detailDataTitle": "Datos",
+  "detailSectionPending": "Esta sección estará disponible pronto",
+  "detailActionShiny": "Ver versión shiny",
+  "detailActionForm": "Cambiar de forma",
+  "detailActionShare": "Compartir",
+  "detailAbilitiesTitle": "Habilidades",
+  "detailAbilitiesEmpty": "Sin habilidades registradas",
+  "detailAbilityHidden": "Oculta",
+  "detailAbilityNoEffect": "Sin descripción",
+  "detailAbilitiesEnglishNote": "Las descripciones están en inglés",
+  "detailExtrasPending": "Estos datos se descargan al abrir el Pokémon con conexión",
+  "detailEggGroupsTitle": "Grupos huevo",
+  "evolutionTitle": "Línea evolutiva",
+  "eggGroupMonster": "Monstruo",
+  "eggGroupWater1": "Agua 1",
+  "eggGroupWater2": "Agua 2",
+  "eggGroupWater3": "Agua 3",
+  "eggGroupBug": "Bicho",
+  "eggGroupFlying": "Volador",
+  "eggGroupField": "Campo",
+  "eggGroupFairy": "Hada",
+  "eggGroupGrass": "Planta",
+  "eggGroupHumanLike": "Humanoide",
+  "eggGroupMineral": "Mineral",
+  "eggGroupAmorphous": "Amorfo",
+  "eggGroupDitto": "Ditto",
+  "eggGroupDragon": "Dragón",
+  "eggGroupUndiscovered": "Desconocido",
+  "evolutionNone": "Este Pokémon no evoluciona",
+  "evolutionCurrent": "Actual",
+  "evolutionTriggerLevel": "Nivel {level}",
+  "@evolutionTriggerLevel": {
+    "placeholders": { "level": { "type": "int" } }
+  },
+  "evolutionTriggerLevelUp": "Subir de nivel",
+  "evolutionTriggerFriendship": "Amistad alta",
+  "evolutionTriggerTrade": "Intercambio",
+  "evolutionTriggerItem": "Usar {item}",
+  "@evolutionTriggerItem": {
+    "placeholders": { "item": { "type": "String" } }
+  },
+  "evolutionTriggerItemGeneric": "Usar un objeto",
+  "evolutionTriggerUnknown": "Condición especial",
+  "evolutionTimeDay": "de día",
+  "evolutionTimeNight": "de noche",
+  "evolutionTimeDusk": "al anochecer",
+  "detailFormSheetTitle": "Forma",
+  "detailFormNormal": "Normal",
+  "detailFormCurrent": "Actual",
+  "detailFormClose": "Cerrar"
 }

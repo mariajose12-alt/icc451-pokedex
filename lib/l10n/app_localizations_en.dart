@@ -1,6 +1,5 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -37,26 +36,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get catalogEmptyTitle => 'No Pokémon saved yet';
 
   @override
-  String get catalogEmptyMessage =>
-      'Connect to the Internet to download the catalog. After that you can use it offline.';
+  String get catalogEmptyMessage => 'Connect to the Internet to download the catalog. After that you can use it offline.';
 
   @override
   String get catalogErrorTitle => 'The catalog could not be loaded';
 
   @override
-  String get catalogRefreshFailedBanner =>
-      'Could not update. Showing saved data.';
+  String get catalogRefreshFailedBanner => 'Could not update. Showing saved data.';
 
   @override
-  String get errorNoConnection =>
-      'No Internet connection. Check your network and try again.';
+  String get errorNoConnection => 'No Internet connection. Check your network and try again.';
 
   @override
   String get errorTimeout => 'The request took too long. Try again.';
 
   @override
-  String get errorRateLimit =>
-      'Too many requests. Wait a moment and try again.';
+  String get errorRateLimit => 'Too many requests. Wait a moment and try again.';
 
   @override
   String get errorService => 'The service is not available right now.';
@@ -148,8 +143,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get detailNotFoundTitle => 'Pokémon not found';
 
   @override
-  String get detailNotFoundMessage =>
-      'This Pokémon is not saved on your device.';
+  String get detailNotFoundMessage => 'This Pokémon is not saved on your device.';
 
   @override
   String get detailBack => 'Back';
@@ -169,4 +163,204 @@ class AppLocalizationsEn extends AppLocalizations {
   String detailWeightValue(String value) {
     return '$value kg';
   }
+
+  @override
+  String get detailStatsTitle => 'Base stats';
+
+  @override
+  String get detailStatsEmpty => 'Stats not available yet';
+
+  @override
+  String get detailStatTotal => 'Total';
+
+  @override
+  String detailStatPercent(int percent) {
+    return '$percent%';
+  }
+
+  @override
+  String detailStatSemantic(String name, int value, int percent) {
+    return '$name: $value, $percent percent';
+  }
+
+  @override
+  String get statHp => 'HP';
+
+  @override
+  String get statAttack => 'Attack';
+
+  @override
+  String get statDefense => 'Defense';
+
+  @override
+  String get statSpAttack => 'Sp. Atk';
+
+  @override
+  String get statSpDefense => 'Sp. Def';
+
+  @override
+  String get statSpeed => 'Speed';
+
+  @override
+  String get detailMatchupsTitle => 'Damage matchups';
+
+  @override
+  String get detailMatchupsWeak => 'Weak to';
+
+  @override
+  String get detailMatchupsResist => 'Resists';
+
+  @override
+  String get detailMatchupsImmune => 'Immune to';
+
+  @override
+  String get detailMatchupsEmpty => 'Matchups not available yet';
+
+  @override
+  String get detailTabSummary => 'Summary';
+
+  @override
+  String get detailTabEvolution => 'Evolution';
+
+  @override
+  String get detailTabCombat => 'Combat';
+
+  @override
+  String get detailTabMoves => 'Moves';
+
+  @override
+  String get detailDataTitle => 'Data';
+
+  @override
+  String get detailSectionPending => 'This section will be available soon';
+
+  @override
+  String get detailActionShiny => 'View shiny version';
+
+  @override
+  String get detailActionForm => 'Change form';
+
+  @override
+  String get detailActionShare => 'Share';
+
+  @override
+  String get detailAbilitiesTitle => 'Abilities';
+
+  @override
+  String get detailAbilitiesEmpty => 'No abilities recorded';
+
+  @override
+  String get detailAbilityHidden => 'Hidden';
+
+  @override
+  String get detailAbilityNoEffect => 'No description';
+
+  @override
+  String get detailAbilitiesEnglishNote => 'Descriptions are in English';
+
+  @override
+  String get detailExtrasPending => 'This data downloads when you open the Pokémon online';
+
+  @override
+  String get detailEggGroupsTitle => 'Egg groups';
+
+  @override
+  String get evolutionTitle => 'Evolution line';
+
+  @override
+  String get eggGroupMonster => 'Monster';
+
+  @override
+  String get eggGroupWater1 => 'Water 1';
+
+  @override
+  String get eggGroupWater2 => 'Water 2';
+
+  @override
+  String get eggGroupWater3 => 'Water 3';
+
+  @override
+  String get eggGroupBug => 'Bug';
+
+  @override
+  String get eggGroupFlying => 'Flying';
+
+  @override
+  String get eggGroupField => 'Field';
+
+  @override
+  String get eggGroupFairy => 'Fairy';
+
+  @override
+  String get eggGroupGrass => 'Grass';
+
+  @override
+  String get eggGroupHumanLike => 'Human-Like';
+
+  @override
+  String get eggGroupMineral => 'Mineral';
+
+  @override
+  String get eggGroupAmorphous => 'Amorphous';
+
+  @override
+  String get eggGroupDitto => 'Ditto';
+
+  @override
+  String get eggGroupDragon => 'Dragon';
+
+  @override
+  String get eggGroupUndiscovered => 'Undiscovered';
+
+  @override
+  String get evolutionNone => 'This Pokémon does not evolve';
+
+  @override
+  String get evolutionCurrent => 'Current';
+
+  @override
+  String evolutionTriggerLevel(int level) {
+    return 'Level $level';
+  }
+
+  @override
+  String get evolutionTriggerLevelUp => 'Level up';
+
+  @override
+  String get evolutionTriggerFriendship => 'High friendship';
+
+  @override
+  String get evolutionTriggerTrade => 'Trade';
+
+  @override
+  String evolutionTriggerItem(String item) {
+    return 'Use $item';
+  }
+
+  @override
+  String get evolutionTriggerItemGeneric => 'Use an item';
+
+  @override
+  String get evolutionTriggerUnknown => 'Special condition';
+
+  @override
+  String get evolutionTimeDay => 'during the day';
+
+  @override
+  String get evolutionTimeNight => 'at night';
+
+  @override
+  String get evolutionTimeDusk => 'at dusk';
+
+  @override
+  String get detailFormSheetTitle => 'Form';
+
+  @override
+  String get detailFormNormal => 'Normal';
+
+  @override
+  String get detailFormCurrent => 'Current';
+
+  @override
+  String get detailFormClose => 'Close';
 }

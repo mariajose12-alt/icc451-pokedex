@@ -77,5 +77,87 @@
     "placeholders": {
       "value": { "type": "String" }
     }
-  }
+  },
+  "detailStatsTitle": "Base stats",
+  "detailStatsEmpty": "Stats not available yet",
+  "detailStatTotal": "Total",
+  "detailStatPercent": "{percent}%",
+  "@detailStatPercent": {
+    "placeholders": {
+      "percent": { "type": "int" }
+    }
+  },
+  "detailStatSemantic": "{name}: {value}, {percent} percent",
+  "@detailStatSemantic": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "value": { "type": "int" },
+      "percent": { "type": "int" }
+    }
+  },
+  "statHp": "HP",
+  "statAttack": "Attack",
+  "statDefense": "Defense",
+  "statSpAttack": "Sp. Atk",
+  "statSpDefense": "Sp. Def",
+  "statSpeed": "Speed",
+  "detailMatchupsTitle": "Damage matchups",
+  "detailMatchupsWeak": "Weak to",
+  "detailMatchupsResist": "Resists",
+  "detailMatchupsImmune": "Immune to",
+  "detailMatchupsEmpty": "Matchups not available yet",
+  "detailTabSummary": "Summary",
+  "detailTabEvolution": "Evolution",
+  "detailTabCombat": "Combat",
+  "detailTabMoves": "Moves",
+  "detailDataTitle": "Data",
+  "detailSectionPending": "This section will be available soon",
+  "detailActionShiny": "View shiny version",
+  "detailActionForm": "Change form",
+  "detailActionShare": "Share",
+  "detailAbilitiesTitle": "Abilities",
+  "detailAbilitiesEmpty": "No abilities recorded",
+  "detailAbilityHidden": "Hidden",
+  "detailAbilityNoEffect": "No description",
+  "detailAbilitiesEnglishNote": "Descriptions are in English",
+  "detailExtrasPending": "This data downloads when you open the Pokémon online",
+  "detailEggGroupsTitle": "Egg groups",
+  "evolutionTitle": "Evolution line",
+  "eggGroupMonster": "Monster",
+  "eggGroupWater1": "Water 1",
+  "eggGroupWater2": "Water 2",
+  "eggGroupWater3": "Water 3",
+  "eggGroupBug": "Bug",
+  "eggGroupFlying": "Flying",
+  "eggGroupField": "Field",
+  "eggGroupFairy": "Fairy",
+  "eggGroupGrass": "Grass",
+  "eggGroupHumanLike": "Human-Like",
+  "eggGroupMineral": "Mineral",
+  "eggGroupAmorphous": "Amorphous",
+  "eggGroupDitto": "Ditto",
+  "eggGroupDragon": "Dragon",
+  "eggGroupUndiscovered": "Undiscovered",
+  "evolutionNone": "This Pokémon does not evolve",
+  "evolutionCurrent": "Current",
+  "evolutionTriggerLevel": "Level {level}",
+  "@evolutionTriggerLevel": {
+    "placeholders": { "level": { "type": "int" } }
+  },
+  "evolutionTriggerLevelUp": "Level up",
+  "evolutionTriggerFriendship": "High friendship",
+  "evolutionTriggerTrade": "Trade",
+  "evolutionTriggerItem": "Use {item}",
+  "@evolutionTriggerItem": {
+    "placeholders": { "item": { "type": "String" } }
+  },
+  "evolutionTriggerItemGeneric": "Use an item",
+  "evolutionTriggerUnknown": "Special condition",
+  "evolutionTimeDay": "during the day",
+  "evolutionTimeNight": "at night",
+  "evolutionTimeDusk": "at dusk",
+  "detailFormSheetTitle": "Form",
+  "detailFormNormal": "Normal",
+  "detailFormCurrent": "Current",
+  "detailFormClose": "Close"
 }
