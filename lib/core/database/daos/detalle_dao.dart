@@ -278,6 +278,55 @@ class DetalleDao extends DatabaseAccessor<AppDatabase> with _$DetalleDaoMixin {
       formTypeIds: typeIdsByForm,
     );
   }
+
+  /// Versiones en las que este Pokémon tiene movimientos, de la más nueva
+  /// (id mayor) a la más antigua.
+  Stream<List<VersionGroupEntry>> watchMoveVersionGroups(int pokemonId) {
+    final query =
+        select(versionGroups).join([
+            innerJoin(
+              pokemonMoves,
+              pokemonMoves.versionGroupId.equalsExp(versionGroups.id),
+            ),
+          ])
+          ..where(pokemonMoves.pokemonId.equals(pokemonId))
+          ..groupBy([versionGroups.id])
+          ..orderBy([OrderingTerm.desc(versionGroups.id)]);
+
+    return query.watch().map(
+      (rows) => [for (final row in rows) row.readTable(versionGroups)],
+    );
+  }
+
+  /// Movimientos de un Pokémon en una versión y con un método.
+  /// Filtra por las tres primeras columnas de la clave primaria de
+  /// pokemon_moves (pokemonId, versionGroupId, learnMethodId): SQLite usa
+  /// esa clave como índice (RNF-REN-02).
+  Stream<List<MoveRow>> watchMoves({
+    required int pokemonId,
+    required int versionGroupId,
+    required int learnMethodId,
+  }) {
+    final query =
+        select(pokemonMoves)
+            .join([innerJoin(moves, moves.id.equalsExp(pokemonMoves.moveId))])
+          ..where(
+            pokemonMoves.pokemonId.equals(pokemonId) &
+                pokemonMoves.versionGroupId.equals(versionGroupId) &
+                pokemonMoves.learnMethodId.equals(learnMethodId),
+          );
+
+    return query.watch().map(
+      (rows) => [
+        for (final row in rows)
+          MoveRow(
+            moveId: row.readTable(moves).id,
+            name: row.readTable(moves).name,
+            level: row.readTable(pokemonMoves).level,
+          ),
+      ],
+    );
+  }
 }
 
 /// Una habilidad junto con si es oculta para ESTE Pokémon.
@@ -308,4 +357,17 @@ class PokemonExtrasRows {
 
   /// Ids de tipo de cada forma, por id de forma, en orden de slot.
   final Map<int, List<int>> formTypeIds;
+}
+
+/// Un movimiento con su nivel, tal como sale de la base.
+class MoveRow {
+  const MoveRow({
+    required this.moveId,
+    required this.name,
+    required this.level,
+  });
+
+  final int moveId;
+  final String name;
+  final int level;
 }
