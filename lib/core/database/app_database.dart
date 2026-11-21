@@ -19,6 +19,7 @@ import 'tables/pokemon_form_types_table.dart';
 import 'tables/pokemon_forms_table.dart';
 import 'tables/pokemon_moves_table.dart';
 import 'tables/version_groups_table.dart';
+import 'daos/favorites_dao.dart';
 import 'daos/catalogo_dao.dart';
 import 'daos/detalle_dao.dart';
 part 'app_database.g.dart';
@@ -44,7 +45,7 @@ part 'app_database.g.dart';
     TriviaAnswers,
     SyncMetadata,
   ],
-  daos: [CatalogoDao, DetalleDao],
+  daos: [CatalogoDao, DetalleDao, FavoritesDao],
 )
 class AppDatabase extends _$AppDatabase {
   // Constructor principal

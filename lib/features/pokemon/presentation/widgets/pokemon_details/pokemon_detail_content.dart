@@ -22,6 +22,8 @@ import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/po
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_detail_section_title.dart';
 import 'package:pokedex/features/pokemon/presentation/cubit/pokemon_moves_cubit.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_detail_moves.dart';
+import 'package:pokedex/features/favorites/domain/repositories/favorites_repository.dart';
+import 'package:pokedex/features/favorites/presentation/cubit/favorite_cubit.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
 
 /// Contenido del detalle cuando el Pokémon está guardado: header, pestañas y
@@ -36,6 +38,7 @@ class PokemonDetailContent extends StatefulWidget {
     this.detailRepository,
     this.onOpenPokemon,
     this.movesRepository,
+    this.favoritesRepository,
     super.key,
   });
 
@@ -51,6 +54,10 @@ class PokemonDetailContent extends StatefulWidget {
   /// Movimientos de la pestaña Movs. Si es null, esa pestaña muestra el
   /// aviso de «próximamente» (así las pruebas viejas siguen igual).
   final PokemonMovesRepository? movesRepository;
+
+  /// Favoritos. Si es null, el detalle no muestra el corazón (así las
+  /// pruebas viejas siguen igual).
+  final FavoritesRepository? favoritesRepository;
 
   /// Se llama con el id de una especie de la cadena evolutiva. Lo da la
   /// página, que sabe navegar.
@@ -78,6 +85,8 @@ class _PokemonDetailContentState extends State<PokemonDetailContent> {
           child: PokemonDetailHeader(
             pokemon: widget.pokemon,
             hasExtras: widget.detailRepository != null,
+            typeChartRepository: widget.typeChartRepository,
+            hasFavorites: widget.favoritesRepository != null,
           ),
         ),
         SliverPersistentHeader(
@@ -120,6 +129,18 @@ class _PokemonDetailContentState extends State<PokemonDetailContent> {
         key: ValueKey(widget.pokemon.id),
         create: (context) => PokemonExtrasCubit(
           repository: detailRepository,
+          pokemonId: widget.pokemon.id,
+        ),
+        child: result,
+      );
+    }
+
+    final favoritesRepository = widget.favoritesRepository;
+    if (favoritesRepository != null) {
+      result = BlocProvider<FavoriteCubit>(
+        key: ValueKey('fav-${widget.pokemon.id}'),
+        create: (context) => FavoriteCubit(
+          repository: favoritesRepository,
           pokemonId: widget.pokemon.id,
         ),
         child: result,

@@ -13,6 +13,12 @@ import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/po
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_type_names.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_type_backdrop.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/type_badge.dart';
+import 'package:pokedex/features/pokemon/domain/entities/damage_matchups.dart';
+import 'package:pokedex/features/pokemon/domain/repositories/type_chart_repository.dart';
+import 'package:pokedex/features/pokemon/domain/usecases/calculate_matchups.dart';
+import 'package:pokedex/features/pokemon/presentation/share/pokemon_card_data_builder.dart';
+import 'package:pokedex/features/pokemon/presentation/share/pokemon_card_dialog.dart';
+import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_detail_favorite_button.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
 
 /// Cabecera del detalle (RF-DET-01): franja con los colores de los tipos,
@@ -22,6 +28,8 @@ class PokemonDetailHeader extends StatefulWidget {
   const PokemonDetailHeader({
     required this.pokemon,
     this.hasExtras = false,
+    this.typeChartRepository,
+    this.hasFavorites = false,
     super.key,
   });
 
@@ -30,6 +38,13 @@ class PokemonDetailHeader extends StatefulWidget {
   /// ¿Hay un [PokemonExtrasCubit] arriba? Si es false, shiny y formas quedan
   /// desactivados.
   final bool hasExtras;
+
+  /// Tabla de tipos, para las debilidades de la carta. Si es null, la carta
+  /// muestra «—» en matchups.
+  final TypeChartRepository? typeChartRepository;
+
+  /// ¿Hay un FavoriteCubit arriba? Si es false, no se muestra el corazón.
+  final bool hasFavorites;
 
   @override
   State<PokemonDetailHeader> createState() => _PokemonDetailHeaderState();
@@ -193,6 +208,13 @@ class _PokemonDetailHeaderState extends State<PokemonDetailHeader> {
             ],
           ),
         ),
+        // Favorito: sobre la esquina de la imagen, como en el diseño.
+        if (widget.hasFavorites)
+          const Positioned(
+            left: 122,
+            top: 20,
+            child: PokemonDetailFavoriteButton(),
+          ),
         // Acciones rápidas sobre la franja. Compartir se conecta en B9.
         Positioned(
           top: 8,
@@ -222,11 +244,72 @@ class _PokemonDetailHeaderState extends State<PokemonDetailHeader> {
               PokemonDetailActionButton(
                 icon: Icons.share,
                 label: l10n.detailActionShare,
+                onPressed: () => _openCard(
+                  name: name,
+                  typeNames: typeNames,
+                  extras: extras,
+                  selection: selection,
+                ),
               ),
             ],
           ),
         ),
       ],
+    );
+  }
+
+  /// Abre la Pokémon Card (RF-COM-01). Lee la tabla de tipos de la base local
+  /// (funciona offline) y arma los datos de la carta con lo que se está viendo.
+  Future<void> _openCard({
+    required String name,
+    required List<String> typeNames,
+    required PokemonExtras extras,
+    required PokemonFormSelection selection,
+  }) async {
+    final l10n = AppLocalizations.of(context)!;
+    final languageCode = Localizations.localeOf(context).languageCode;
+    final pokemon = widget.pokemon;
+
+    // Los tipos de la forma que se ve; si no se conocen, los del catálogo.
+    final current = selection.current;
+    final defenderTypeIds =
+        (selection.isOtherForm && current != null && current.typeIds.isNotEmpty)
+        ? current.typeIds
+        : [for (final type in pokemon.types) type.id];
+
+    var matchups = DamageMatchups.empty;
+    var typeNamesById = const <int, String>{};
+    final repository = widget.typeChartRepository;
+    if (repository != null) {
+      final chart = await repository.watchTypeChart().first;
+      typeNamesById = await repository.watchTypeNames().first;
+      matchups = calculateMatchups(
+        defenderTypeIds: defenderTypeIds,
+        chart: chart,
+      );
+    }
+    if (!mounted) {
+      return;
+    }
+
+    // Misma imagen que muestra la cabecera: forma o shiny si están activos.
+    final imageUrl = selection.overrideImage
+        ? (selection.artworkUrl ?? selection.spriteUrl)
+        : (pokemon.artworkUrl ?? pokemon.spriteUrl);
+
+    await showPokemonCardDialog(
+      context,
+      data: buildPokemonCardData(
+        pokemon: pokemon,
+        extras: extras,
+        matchups: matchups,
+        typeNamesById: typeNamesById,
+        typeNames: typeNames,
+        imageUrl: imageUrl,
+        name: name,
+        l10n: l10n,
+        languageCode: languageCode,
+      ),
     );
   }
 }

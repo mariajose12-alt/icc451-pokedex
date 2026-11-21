@@ -5801,6 +5801,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $SyncMetadataTable syncMetadata = $SyncMetadataTable(this);
   late final CatalogoDao catalogoDao = CatalogoDao(this as AppDatabase);
   late final DetalleDao detalleDao = DetalleDao(this as AppDatabase);
+  late final FavoritesDao favoritesDao = FavoritesDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

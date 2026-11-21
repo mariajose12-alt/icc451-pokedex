@@ -16,6 +16,8 @@ import 'core/di/service_locator.dart';
 import 'core/network/api_config.dart';
 import 'core/network/poke_api_client.dart';
 import 'core/sync/sync_info.dart';
+import 'features/favorites/data/repositories/offline_first_favorites_repository.dart';
+import 'features/favorites/domain/repositories/favorites_repository.dart';
 import 'features/pokemon/data/datasources/local/pokemon_detail_local_datasource.dart';
 import 'features/pokemon/data/datasources/local/pokemon_moves_local_datasource.dart';
 import 'features/pokemon/data/repositories/offline_first_pokemon_detail_repository.dart';
@@ -107,6 +109,11 @@ Future<void> main() async {
     OfflineFirstPokemonMovesRepository(
       local: PokemonMovesLocalDataSource(dao: database.detalleDao),
     ),
+  );
+
+  // Favoritos (RF-FAV-01): datos del usuario que la sincronización no toca.
+  getIt.registerSingleton<FavoritesRepository>(
+    OfflineFirstFavoritesRepository(dao: database.favoritesDao),
   );
 
   // Detalle bajo demanda (PA-02, OF-20): lee de la base y la red solo escribe.
