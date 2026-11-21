@@ -8,6 +8,7 @@ import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/po
 import 'package:pokedex/l10n/app_localizations.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/type_chart_repository.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/pokemon_detail_repository.dart';
+import 'package:pokedex/features/pokemon/domain/repositories/pokemon_moves_repository.dart';
 
 /// Pantalla de detalle. Solo conoce el Cubit: nunca la red ni la base.
 /// El Cubit lo crea la ruta (sección 4).
@@ -15,6 +16,7 @@ class PokemonDetailPage extends StatelessWidget {
   const PokemonDetailPage({
     this.typeChartRepository,
     this.detailRepository,
+    this.movesRepository,
     super.key,
   });
 
@@ -22,6 +24,9 @@ class PokemonDetailPage extends StatelessWidget {
 
   /// Se lo da el router. Opcional para poder probar la pantalla sin él.
   final PokemonDetailRepository? detailRepository;
+
+  /// Se lo da el router. Opcional para poder probar la pantalla sin él.
+  final PokemonMovesRepository? movesRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +52,7 @@ class PokemonDetailPage extends StatelessWidget {
               pokemon: pokemon,
               typeChartRepository: typeChartRepository,
               detailRepository: detailRepository,
+              movesRepository: movesRepository,
               onOpenPokemon: (id) => context.push('/pokemon/$id'),
             ),
           };

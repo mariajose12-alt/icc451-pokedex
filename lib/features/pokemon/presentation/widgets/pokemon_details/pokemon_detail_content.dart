@@ -6,6 +6,7 @@ import 'package:pokedex/core/widgets/pixel_panel.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/pokemon_detail_repository.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/type_chart_repository.dart';
+import 'package:pokedex/features/pokemon/domain/repositories/pokemon_moves_repository.dart';
 import 'package:pokedex/features/pokemon/presentation/cubit/pokemon_extras_cubit.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_detail_abilities.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_detail_egg_groups.dart';
@@ -19,6 +20,8 @@ import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/po
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_detail_tab_bar.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_detail_evolution.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_detail_section_title.dart';
+import 'package:pokedex/features/pokemon/presentation/cubit/pokemon_moves_cubit.dart';
+import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_detail_moves.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
 
 /// Contenido del detalle cuando el Pokémon está guardado: header, pestañas y
@@ -32,6 +35,7 @@ class PokemonDetailContent extends StatefulWidget {
     this.typeChartRepository,
     this.detailRepository,
     this.onOpenPokemon,
+    this.movesRepository,
     super.key,
   });
 
@@ -43,6 +47,10 @@ class PokemonDetailContent extends StatefulWidget {
   /// Habilidades, egg groups, evoluciones y formas. Si es null, esas secciones
   /// no se muestran (así las pruebas viejas siguen funcionando).
   final PokemonDetailRepository? detailRepository;
+
+  /// Movimientos de la pestaña Movs. Si es null, esa pestaña muestra el
+  /// aviso de «próximamente» (así las pruebas viejas siguen igual).
+  final PokemonMovesRepository? movesRepository;
 
   /// Se llama con el id de una especie de la cadena evolutiva. Lo da la
   /// página, que sabe navegar.
@@ -89,21 +97,36 @@ class _PokemonDetailContentState extends State<PokemonDetailContent> {
       ],
     );
 
-    final detailRepository = widget.detailRepository;
-    if (detailRepository == null) {
-      return scroll;
+    // Los Cubits envuelven TODAS las pestañas: cambiar de pestaña no vuelve a
+    // leer la base ni pierde la versión elegida en Movs. La key hace que se
+    // creen nuevos si cambia el Pokémon.
+    Widget result = scroll;
+
+    final movesRepository = widget.movesRepository;
+    if (movesRepository != null) {
+      result = BlocProvider<PokemonMovesCubit>(
+        key: ValueKey('moves-${widget.pokemon.id}'),
+        create: (context) => PokemonMovesCubit(
+          repository: movesRepository,
+          pokemonId: widget.pokemon.id,
+        ),
+        child: result,
+      );
     }
 
-    // El Cubit envuelve TODAS las pestañas: cambiar de pestaña no vuelve a
-    // leer la base. La key hace que se cree uno nuevo si cambia el Pokémon.
-    return BlocProvider<PokemonExtrasCubit>(
-      key: ValueKey(widget.pokemon.id),
-      create: (context) => PokemonExtrasCubit(
-        repository: detailRepository,
-        pokemonId: widget.pokemon.id,
-      ),
-      child: scroll,
-    );
+    final detailRepository = widget.detailRepository;
+    if (detailRepository != null) {
+      result = BlocProvider<PokemonExtrasCubit>(
+        key: ValueKey(widget.pokemon.id),
+        create: (context) => PokemonExtrasCubit(
+          repository: detailRepository,
+          pokemonId: widget.pokemon.id,
+        ),
+        child: result,
+      );
+    }
+
+    return result;
   }
 
   /// Contenido (como sliver) de la pestaña elegida.
@@ -124,9 +147,10 @@ class _PokemonDetailContentState extends State<PokemonDetailContent> {
               ),
       ),
       PokemonDetailTab.combat => SliverToBoxAdapter(child: _combatTab()),
-      PokemonDetailTab.moves => const SliverToBoxAdapter(
-        child: PokemonDetailPendingSection(),
-      ),
+      PokemonDetailTab.moves =>
+        widget.movesRepository == null
+            ? const SliverToBoxAdapter(child: PokemonDetailPendingSection())
+            : const PokemonDetailMoves(),
     };
   }
 

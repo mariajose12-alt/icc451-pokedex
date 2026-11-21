@@ -19,6 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:pokedex/features/pokemon/domain/repositories/pokemon_detail_repository.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/type_chart_repository.dart';
+import 'package:pokedex/features/pokemon/domain/repositories/pokemon_moves_repository.dart';
 
 import 'app_shell.dart';
 
@@ -87,6 +88,7 @@ final GoRouter appRouter = GoRouter(
                       child: PokemonDetailPage(
                         typeChartRepository: getIt<TypeChartRepository>(),
                         detailRepository: getIt<PokemonDetailRepository>(),
+                        movesRepository: getIt<PokemonMovesRepository>(),
                       ),
                     );
                   },

@@ -363,4 +363,50 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get detailFormClose => 'Cerrar';
+
+  @override
+  String get movesVersionLabel => 'Versión';
+
+  @override
+  String get movesVersionSheetTitle => 'Versión del juego';
+
+  @override
+  String movesVersionButtonLabel(String name) {
+    return 'Versión del juego: $name. Cambiar';
+  }
+
+  @override
+  String get movesMethodsLabel => 'Método de aprendizaje';
+
+  @override
+  String get movesMethodLevel => 'Nivel';
+
+  @override
+  String get movesMethodMachine => 'MT';
+
+  @override
+  String get movesMethodTutor => 'Tutor';
+
+  @override
+  String get movesMethodEgg => 'Huevo';
+
+  @override
+  String get movesOrderLabel => 'Ordenar por';
+
+  @override
+  String get movesOrderLevel => 'Nivel';
+
+  @override
+  String get movesOrderName => 'Nombre';
+
+  @override
+  String movesLevelTag(int level) {
+    return 'Nv.$level';
+  }
+
+  @override
+  String get movesEmptyTitle => 'Sin movimientos por este método';
+
+  @override
+  String get movesEmptyMessage => 'Prueba con otro método o con otra versión del juego.';
 }

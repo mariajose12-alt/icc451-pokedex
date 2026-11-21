@@ -363,4 +363,50 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get detailFormClose => 'Close';
+
+  @override
+  String get movesVersionLabel => 'Version';
+
+  @override
+  String get movesVersionSheetTitle => 'Game version';
+
+  @override
+  String movesVersionButtonLabel(String name) {
+    return 'Game version: $name. Change';
+  }
+
+  @override
+  String get movesMethodsLabel => 'Learning method';
+
+  @override
+  String get movesMethodLevel => 'Level';
+
+  @override
+  String get movesMethodMachine => 'TM';
+
+  @override
+  String get movesMethodTutor => 'Tutor';
+
+  @override
+  String get movesMethodEgg => 'Egg';
+
+  @override
+  String get movesOrderLabel => 'Sort by';
+
+  @override
+  String get movesOrderLevel => 'Level';
+
+  @override
+  String get movesOrderName => 'Name';
+
+  @override
+  String movesLevelTag(int level) {
+    return 'Lv.$level';
+  }
+
+  @override
+  String get movesEmptyTitle => 'No moves for this method';
+
+  @override
+  String get movesEmptyMessage => 'Try another method or game version.';
 }

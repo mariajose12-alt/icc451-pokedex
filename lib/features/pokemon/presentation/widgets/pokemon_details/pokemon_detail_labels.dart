@@ -1,6 +1,7 @@
 import 'package:pokedex/l10n/app_localizations.dart';
 import 'package:pokedex/features/pokemon/domain/entities/evolution_stage.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon_form.dart';
+import 'package:pokedex/features/pokemon/domain/entities/move_learn_method.dart';
 
 /// Convierte un identificador de PokeAPI en texto legible:
 /// 'swords-dance' -> 'Swords Dance'.
@@ -89,5 +90,15 @@ String formLabel(AppLocalizations l10n, String pokemonName, PokemonForm form) {
   return switch (suffix) {
     'gmax' => 'Gigamax',
     _ => prettifySlug(suffix),
+  };
+}
+
+/// Nombre del método de aprendizaje: «Nivel», «MT», «Tutor», «Huevo».
+String moveMethodLabel(AppLocalizations l10n, MoveLearnMethod method) {
+  return switch (method) {
+    MoveLearnMethod.levelUp => l10n.movesMethodLevel,
+    MoveLearnMethod.machine => l10n.movesMethodMachine,
+    MoveLearnMethod.tutor => l10n.movesMethodTutor,
+    MoveLearnMethod.egg => l10n.movesMethodEgg,
   };
 }

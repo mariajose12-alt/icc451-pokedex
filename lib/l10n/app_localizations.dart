@@ -754,6 +754,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Close'**
   String get detailFormClose;
+
+  /// No description provided for @movesVersionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get movesVersionLabel;
+
+  /// No description provided for @movesVersionSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Game version'**
+  String get movesVersionSheetTitle;
+
+  /// No description provided for @movesVersionButtonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Game version: {name}. Change'**
+  String movesVersionButtonLabel(String name);
+
+  /// No description provided for @movesMethodsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Learning method'**
+  String get movesMethodsLabel;
+
+  /// No description provided for @movesMethodLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Level'**
+  String get movesMethodLevel;
+
+  /// No description provided for @movesMethodMachine.
+  ///
+  /// In en, this message translates to:
+  /// **'TM'**
+  String get movesMethodMachine;
+
+  /// No description provided for @movesMethodTutor.
+  ///
+  /// In en, this message translates to:
+  /// **'Tutor'**
+  String get movesMethodTutor;
+
+  /// No description provided for @movesMethodEgg.
+  ///
+  /// In en, this message translates to:
+  /// **'Egg'**
+  String get movesMethodEgg;
+
+  /// No description provided for @movesOrderLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by'**
+  String get movesOrderLabel;
+
+  /// No description provided for @movesOrderLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Level'**
+  String get movesOrderLevel;
+
+  /// No description provided for @movesOrderName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get movesOrderName;
+
+  /// No description provided for @movesLevelTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Lv.{level}'**
+  String movesLevelTag(int level);
+
+  /// No description provided for @movesEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No moves for this method'**
+  String get movesEmptyTitle;
+
+  /// No description provided for @movesEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Try another method or game version.'**
+  String get movesEmptyMessage;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

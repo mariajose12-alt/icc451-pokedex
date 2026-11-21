@@ -159,5 +159,25 @@
   "detailFormSheetTitle": "Forma",
   "detailFormNormal": "Normal",
   "detailFormCurrent": "Actual",
-  "detailFormClose": "Cerrar"
+  "detailFormClose": "Cerrar",
+  "movesVersionLabel": "Versión",
+  "movesVersionSheetTitle": "Versión del juego",
+  "movesVersionButtonLabel": "Versión del juego: {name}. Cambiar",
+  "@movesVersionButtonLabel": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "movesMethodsLabel": "Método de aprendizaje",
+  "movesMethodLevel": "Nivel",
+  "movesMethodMachine": "MT",
+  "movesMethodTutor": "Tutor",
+  "movesMethodEgg": "Huevo",
+  "movesOrderLabel": "Ordenar por",
+  "movesOrderLevel": "Nivel",
+  "movesOrderName": "Nombre",
+  "movesLevelTag": "Nv.{level}",
+  "@movesLevelTag": {
+    "placeholders": { "level": { "type": "int" } }
+  },
+  "movesEmptyTitle": "Sin movimientos por este método",
+  "movesEmptyMessage": "Prueba con otro método o con otra versión del juego."
 }

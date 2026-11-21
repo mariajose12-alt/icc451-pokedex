@@ -159,5 +159,25 @@
   "detailFormSheetTitle": "Form",
   "detailFormNormal": "Normal",
   "detailFormCurrent": "Current",
-  "detailFormClose": "Close"
+  "detailFormClose": "Close",
+  "movesVersionLabel": "Version",
+  "movesVersionSheetTitle": "Game version",
+  "movesVersionButtonLabel": "Game version: {name}. Change",
+  "@movesVersionButtonLabel": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "movesMethodsLabel": "Learning method",
+  "movesMethodLevel": "Level",
+  "movesMethodMachine": "TM",
+  "movesMethodTutor": "Tutor",
+  "movesMethodEgg": "Egg",
+  "movesOrderLabel": "Sort by",
+  "movesOrderLevel": "Level",
+  "movesOrderName": "Name",
+  "movesLevelTag": "Lv.{level}",
+  "@movesLevelTag": {
+    "placeholders": { "level": { "type": "int" } }
+  },
+  "movesEmptyTitle": "No moves for this method",
+  "movesEmptyMessage": "Try another method or game version."
 }
