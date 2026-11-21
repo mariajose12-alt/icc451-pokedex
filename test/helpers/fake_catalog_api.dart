@@ -1,6 +1,8 @@
 import 'package:pokedex/core/network/network_exceptions.dart';
 import 'package:pokedex/core/network/poke_api_client.dart';
 
+import 'pokemon_fixtures.dart';
+
 // API falsa con [total] Pokémon (ids 1..total). Responde según el cursor
 // que reciba, igual que la API real, y recuerda cada llamada.
 class FakeCatalogApi implements PokeApiClient {
@@ -59,6 +61,7 @@ class FakeCatalogApi implements PokeApiClient {
             'type': <String, dynamic>{'id': 12, 'name': 'grass'},
           },
         ],
+        'pokemonstats': statsJson(),
         'pokemonspecy': <String, dynamic>{'id': id, 'generation_id': 1},
       });
     }

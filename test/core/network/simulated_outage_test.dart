@@ -49,14 +49,22 @@ void main() {
     // Abrir el menú y elegir la opción.
     await tester.tap(find.byIcon(Icons.more_vert));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Simular caída de la API (solo pruebas)'));
+
+    final opcion = find.text('Simular caída de la API (solo pruebas)');
+    await tester.ensureVisible(opcion);
+    await tester.pumpAndSettle();
+    await tester.tap(opcion);
     await tester.pumpAndSettle();
     expect(simulator.value, isTrue);
 
     // Otra vez: se apaga.
     await tester.tap(find.byIcon(Icons.more_vert));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Simular caída de la API (solo pruebas)'));
+
+    final opcionDeNuevo = find.text('Simular caída de la API (solo pruebas)');
+    await tester.ensureVisible(opcionDeNuevo);
+    await tester.pumpAndSettle();
+    await tester.tap(opcionDeNuevo);
     await tester.pumpAndSettle();
     expect(simulator.value, isFalse);
   });

@@ -4,6 +4,8 @@ import 'package:pokedex/core/network/poke_api_client.dart';
 import 'package:pokedex/features/pokemon/data/datasources/remote/pokemon_remote_datasource.dart';
 import 'package:pokedex/features/pokemon/data/models/pokemon_mapper.dart';
 
+import '../../../helpers/pokemon_fixtures.dart';
+
 // Cliente falso: devuelve lo que le digamos y recuerda con qué lo llamaron.
 class FakeApiClient implements PokeApiClient {
   Map<String, dynamic>? response;
@@ -46,6 +48,7 @@ Map<String, dynamic> sampleResponse() {
             'type': <String, dynamic>{'id': 13, 'name': 'electric'},
           },
         ],
+        'pokemonstats': statsJson(),
         'pokemonspecy': <String, dynamic>{'id': 25, 'generation_id': 1},
       },
     ],
