@@ -4,6 +4,7 @@ import 'package:pokedex/core/database/tables/poke_types_table.dart';
 import 'package:pokedex/core/database/tables/pokemon_table.dart';
 import 'package:pokedex/core/database/tables/pokemon_types_table.dart';
 import 'package:pokedex/core/database/tables/sync_metadata_table.dart';
+import 'package:pokedex/core/database/tables/pokemon_stats_table.dart';
 
 part 'catalogo_dao.g.dart';
 
@@ -19,7 +20,9 @@ class PokemonWithTypes {
 
 // DAO del catálogo: lecturas reactivas para la UI y escrituras por página
 // para la sincronización (ADR-0003).
-@DriftAccessor(tables: [Pokemons, PokeTypes, PokemonTypes, SyncMetadata])
+@DriftAccessor(
+  tables: [Pokemons, PokeTypes, PokemonTypes, SyncMetadata, PokemonStats],
+)
 class CatalogoDao extends DatabaseAccessor<AppDatabase>
     with _$CatalogoDaoMixin {
   CatalogoDao(super.db);
@@ -111,6 +114,7 @@ class CatalogoDao extends DatabaseAccessor<AppDatabase>
     required List<PokeTypesCompanion> types,
     required List<PokemonsCompanion> pokemons,
     required List<PokemonTypesCompanion> pokemonTypes,
+    required List<PokemonStatsCompanion> stats,
     required SyncMetadataCompanion syncState,
   }) {
     return transaction(() async {
@@ -129,6 +133,9 @@ class CatalogoDao extends DatabaseAccessor<AppDatabase>
         this.pokemonTypes,
       )..where((t) => t.pokemonId.isIn(ids))).go();
       await batch((b) => b.insertAll(this.pokemonTypes, pokemonTypes));
+
+      // Estadísticas: upsert, igual que los Pokémon. Nunca se borran filas.
+      await batch((b) => b.insertAllOnConflictUpdate(pokemonStats, stats));
 
       // Cursor y estado de la página, en la misma transacción.
       await into(syncMetadata).insertOnConflictUpdate(syncState);

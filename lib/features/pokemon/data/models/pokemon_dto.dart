@@ -1,3 +1,5 @@
+import 'package:pokedex/features/pokemon/data/models/pokemon_stat_dto.dart';
+
 /// Copia fiel de lo que devuelve PokeAPI para un Pokémon.
 /// Solo la capa data conoce estas clases (ARQ-04).
 class PokemonTypeDto {
@@ -33,12 +35,14 @@ class PokemonDto {
     required this.types,
     required this.artworkUrl,
     required this.spriteUrl,
+    required this.stats,
   });
 
   final int id;
   final String name;
   final int nationalDexNumber;
   final int generationId;
+  final List<PokemonStatDto> stats;
 
   /// En decímetros, tal como los da la API.
   final int height;
@@ -56,6 +60,13 @@ class PokemonDto {
     final types = <PokemonTypeDto>[];
     for (final item in typesJson) {
       types.add(PokemonTypeDto.fromJson(item as Map<String, dynamic>));
+    }
+
+    // Estadisticas base: lista de  {base_stat, stat {name} }
+    final statsJson = json['pokemonstats'] as List<dynamic>;
+    final stats = <PokemonStatDto>[];
+    for (final item in statsJson) {
+      stats.add(PokemonStatDto.fromJson(item as Map<String, dynamic>));
     }
 
     // Imágenes: PokeAPI devuelve una lista con un solo elemento.
@@ -80,6 +91,7 @@ class PokemonDto {
       types: types,
       artworkUrl: artwork is String ? artwork : null,
       spriteUrl: sprite is String ? sprite : null,
+      stats: stats,
     );
   }
 }

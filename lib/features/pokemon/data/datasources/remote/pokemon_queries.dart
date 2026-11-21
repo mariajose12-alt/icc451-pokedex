@@ -30,6 +30,12 @@ query CatalogPage($lastId: Int!, $pageSize: Int!) {
       slot
       type { id name }
     }
+    pokemonstats {
+      base_stat
+      stat {
+        name
+      }
+    }
     pokemonspecy { id generation_id }
   }
   pokemon_aggregate(where: {is_default: {_eq: true}}) {

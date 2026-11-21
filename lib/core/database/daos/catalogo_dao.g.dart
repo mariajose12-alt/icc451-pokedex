@@ -8,6 +8,7 @@ mixin _$CatalogoDaoMixin on DatabaseAccessor<AppDatabase> {
   $PokeTypesTable get pokeTypes => attachedDatabase.pokeTypes;
   $PokemonTypesTable get pokemonTypes => attachedDatabase.pokemonTypes;
   $SyncMetadataTable get syncMetadata => attachedDatabase.syncMetadata;
+  $PokemonStatsTable get pokemonStats => attachedDatabase.pokemonStats;
   CatalogoDaoManager get managers => CatalogoDaoManager(this);
 }
 
@@ -22,4 +23,6 @@ class CatalogoDaoManager {
       $$PokemonTypesTableTableManager(_db.attachedDatabase, _db.pokemonTypes);
   $$SyncMetadataTableTableManager get syncMetadata =>
       $$SyncMetadataTableTableManager(_db.attachedDatabase, _db.syncMetadata);
+  $$PokemonStatsTableTableManager get pokemonStats =>
+      $$PokemonStatsTableTableManager(_db.attachedDatabase, _db.pokemonStats);
 }

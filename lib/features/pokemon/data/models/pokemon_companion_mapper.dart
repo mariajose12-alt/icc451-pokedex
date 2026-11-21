@@ -8,11 +8,13 @@ class PageCompanions {
     required this.types,
     required this.pokemons,
     required this.pokemonTypes,
+    required this.stats,
   });
 
   final List<PokeTypesCompanion> types;
   final List<PokemonsCompanion> pokemons;
   final List<PokemonTypesCompanion> pokemonTypes;
+  final List<PokemonStatsCompanion> stats;
 }
 
 /// Convierte los DTOs de una página (formato de PokeAPI) en filas para Drift.
@@ -23,6 +25,7 @@ PageCompanions pageToCompanions(List<PokemonDto> items, DateTime now) {
   final typesById = <int, PokeTypesCompanion>{};
   final pokemons = <PokemonsCompanion>[];
   final relations = <PokemonTypesCompanion>[];
+  final stats = <PokemonStatsCompanion>[];
 
   for (final dto in items) {
     pokemons.add(
@@ -54,11 +57,45 @@ PageCompanions pageToCompanions(List<PokemonDto> items, DateTime now) {
         ),
       );
     }
+
+    stats.add(statsToCompanion(dto));
   }
 
   return PageCompanions(
     types: typesById.values.toList(),
     pokemons: pokemons,
     pokemonTypes: relations,
+    stats: stats,
+  );
+}
+
+/// Convierte las estadisticas de un Pokemon en una fila de PokemonStats.
+/// Si falta alguna de las sesi falla: no se guarda una fila incompleta
+PokemonStatsCompanion statsToCompanion(PokemonDto dto) {
+  // Mapa de nombre de PokeAPI a valor: {'hp' : 45, 'attack' : 49, ...}
+  final values = <String, int>{};
+  for (final stat in dto.stats) {
+    values[stat.statName] = stat.baseStat;
+  }
+
+  // Funcion local: busca un valor y falla si no existe
+  int valueOf(String name) {
+    final value = values[name];
+    if (value == null) {
+      throw FormatException(
+        'Falta la estadística "$name" del Pokémon ${dto.id}',
+      );
+    }
+    return value;
+  }
+
+  return PokemonStatsCompanion.insert(
+    pokemonId: Value(dto.id),
+    hp: valueOf('hp'),
+    attack: valueOf('attack'),
+    defense: valueOf('defense'),
+    specialAttack: valueOf('special-attack'),
+    specialDefense: valueOf('special-defense'),
+    speed: valueOf('speed'),
   );
 }

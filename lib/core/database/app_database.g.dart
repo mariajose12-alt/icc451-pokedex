@@ -2432,6 +2432,465 @@ class TriviaAnswersCompanion extends UpdateCompanion<TriviaAnswersEntry> {
   }
 }
 
+class $PokemonStatsTable extends PokemonStats
+    with TableInfo<$PokemonStatsTable, PokemonStatEntry> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PokemonStatsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _pokemonIdMeta = const VerificationMeta(
+    'pokemonId',
+  );
+  @override
+  late final GeneratedColumn<int> pokemonId = GeneratedColumn<int>(
+    'pokemon_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _hpMeta = const VerificationMeta('hp');
+  @override
+  late final GeneratedColumn<int> hp = GeneratedColumn<int>(
+    'hp',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _attackMeta = const VerificationMeta('attack');
+  @override
+  late final GeneratedColumn<int> attack = GeneratedColumn<int>(
+    'attack',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _defenseMeta = const VerificationMeta(
+    'defense',
+  );
+  @override
+  late final GeneratedColumn<int> defense = GeneratedColumn<int>(
+    'defense',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _specialAttackMeta = const VerificationMeta(
+    'specialAttack',
+  );
+  @override
+  late final GeneratedColumn<int> specialAttack = GeneratedColumn<int>(
+    'special_attack',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _specialDefenseMeta = const VerificationMeta(
+    'specialDefense',
+  );
+  @override
+  late final GeneratedColumn<int> specialDefense = GeneratedColumn<int>(
+    'special_defense',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _speedMeta = const VerificationMeta('speed');
+  @override
+  late final GeneratedColumn<int> speed = GeneratedColumn<int>(
+    'speed',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    pokemonId,
+    hp,
+    attack,
+    defense,
+    specialAttack,
+    specialDefense,
+    speed,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'pokemon_stats';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<PokemonStatEntry> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('pokemon_id')) {
+      context.handle(
+        _pokemonIdMeta,
+        pokemonId.isAcceptableOrUnknown(data['pokemon_id']!, _pokemonIdMeta),
+      );
+    }
+    if (data.containsKey('hp')) {
+      context.handle(_hpMeta, hp.isAcceptableOrUnknown(data['hp']!, _hpMeta));
+    } else if (isInserting) {
+      context.missing(_hpMeta);
+    }
+    if (data.containsKey('attack')) {
+      context.handle(
+        _attackMeta,
+        attack.isAcceptableOrUnknown(data['attack']!, _attackMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_attackMeta);
+    }
+    if (data.containsKey('defense')) {
+      context.handle(
+        _defenseMeta,
+        defense.isAcceptableOrUnknown(data['defense']!, _defenseMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_defenseMeta);
+    }
+    if (data.containsKey('special_attack')) {
+      context.handle(
+        _specialAttackMeta,
+        specialAttack.isAcceptableOrUnknown(
+          data['special_attack']!,
+          _specialAttackMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_specialAttackMeta);
+    }
+    if (data.containsKey('special_defense')) {
+      context.handle(
+        _specialDefenseMeta,
+        specialDefense.isAcceptableOrUnknown(
+          data['special_defense']!,
+          _specialDefenseMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_specialDefenseMeta);
+    }
+    if (data.containsKey('speed')) {
+      context.handle(
+        _speedMeta,
+        speed.isAcceptableOrUnknown(data['speed']!, _speedMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_speedMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {pokemonId};
+  @override
+  PokemonStatEntry map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PokemonStatEntry(
+      pokemonId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}pokemon_id'],
+      )!,
+      hp: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}hp'],
+      )!,
+      attack: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}attack'],
+      )!,
+      defense: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}defense'],
+      )!,
+      specialAttack: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}special_attack'],
+      )!,
+      specialDefense: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}special_defense'],
+      )!,
+      speed: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}speed'],
+      )!,
+    );
+  }
+
+  @override
+  $PokemonStatsTable createAlias(String alias) {
+    return $PokemonStatsTable(attachedDatabase, alias);
+  }
+}
+
+class PokemonStatEntry extends DataClass
+    implements Insertable<PokemonStatEntry> {
+  /// Pokemon al que pertenecen. Es la clave primaria, no pueden haber dos filas
+  /// de estadisticas para el mismo pokemon.
+  final int pokemonId;
+  final int hp;
+  final int attack;
+  final int defense;
+  final int specialAttack;
+  final int specialDefense;
+  final int speed;
+  const PokemonStatEntry({
+    required this.pokemonId,
+    required this.hp,
+    required this.attack,
+    required this.defense,
+    required this.specialAttack,
+    required this.specialDefense,
+    required this.speed,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['pokemon_id'] = Variable<int>(pokemonId);
+    map['hp'] = Variable<int>(hp);
+    map['attack'] = Variable<int>(attack);
+    map['defense'] = Variable<int>(defense);
+    map['special_attack'] = Variable<int>(specialAttack);
+    map['special_defense'] = Variable<int>(specialDefense);
+    map['speed'] = Variable<int>(speed);
+    return map;
+  }
+
+  PokemonStatsCompanion toCompanion(bool nullToAbsent) {
+    return PokemonStatsCompanion(
+      pokemonId: Value(pokemonId),
+      hp: Value(hp),
+      attack: Value(attack),
+      defense: Value(defense),
+      specialAttack: Value(specialAttack),
+      specialDefense: Value(specialDefense),
+      speed: Value(speed),
+    );
+  }
+
+  factory PokemonStatEntry.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PokemonStatEntry(
+      pokemonId: serializer.fromJson<int>(json['pokemonId']),
+      hp: serializer.fromJson<int>(json['hp']),
+      attack: serializer.fromJson<int>(json['attack']),
+      defense: serializer.fromJson<int>(json['defense']),
+      specialAttack: serializer.fromJson<int>(json['specialAttack']),
+      specialDefense: serializer.fromJson<int>(json['specialDefense']),
+      speed: serializer.fromJson<int>(json['speed']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'pokemonId': serializer.toJson<int>(pokemonId),
+      'hp': serializer.toJson<int>(hp),
+      'attack': serializer.toJson<int>(attack),
+      'defense': serializer.toJson<int>(defense),
+      'specialAttack': serializer.toJson<int>(specialAttack),
+      'specialDefense': serializer.toJson<int>(specialDefense),
+      'speed': serializer.toJson<int>(speed),
+    };
+  }
+
+  PokemonStatEntry copyWith({
+    int? pokemonId,
+    int? hp,
+    int? attack,
+    int? defense,
+    int? specialAttack,
+    int? specialDefense,
+    int? speed,
+  }) => PokemonStatEntry(
+    pokemonId: pokemonId ?? this.pokemonId,
+    hp: hp ?? this.hp,
+    attack: attack ?? this.attack,
+    defense: defense ?? this.defense,
+    specialAttack: specialAttack ?? this.specialAttack,
+    specialDefense: specialDefense ?? this.specialDefense,
+    speed: speed ?? this.speed,
+  );
+  PokemonStatEntry copyWithCompanion(PokemonStatsCompanion data) {
+    return PokemonStatEntry(
+      pokemonId: data.pokemonId.present ? data.pokemonId.value : this.pokemonId,
+      hp: data.hp.present ? data.hp.value : this.hp,
+      attack: data.attack.present ? data.attack.value : this.attack,
+      defense: data.defense.present ? data.defense.value : this.defense,
+      specialAttack: data.specialAttack.present
+          ? data.specialAttack.value
+          : this.specialAttack,
+      specialDefense: data.specialDefense.present
+          ? data.specialDefense.value
+          : this.specialDefense,
+      speed: data.speed.present ? data.speed.value : this.speed,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PokemonStatEntry(')
+          ..write('pokemonId: $pokemonId, ')
+          ..write('hp: $hp, ')
+          ..write('attack: $attack, ')
+          ..write('defense: $defense, ')
+          ..write('specialAttack: $specialAttack, ')
+          ..write('specialDefense: $specialDefense, ')
+          ..write('speed: $speed')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    pokemonId,
+    hp,
+    attack,
+    defense,
+    specialAttack,
+    specialDefense,
+    speed,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PokemonStatEntry &&
+          other.pokemonId == this.pokemonId &&
+          other.hp == this.hp &&
+          other.attack == this.attack &&
+          other.defense == this.defense &&
+          other.specialAttack == this.specialAttack &&
+          other.specialDefense == this.specialDefense &&
+          other.speed == this.speed);
+}
+
+class PokemonStatsCompanion extends UpdateCompanion<PokemonStatEntry> {
+  final Value<int> pokemonId;
+  final Value<int> hp;
+  final Value<int> attack;
+  final Value<int> defense;
+  final Value<int> specialAttack;
+  final Value<int> specialDefense;
+  final Value<int> speed;
+  const PokemonStatsCompanion({
+    this.pokemonId = const Value.absent(),
+    this.hp = const Value.absent(),
+    this.attack = const Value.absent(),
+    this.defense = const Value.absent(),
+    this.specialAttack = const Value.absent(),
+    this.specialDefense = const Value.absent(),
+    this.speed = const Value.absent(),
+  });
+  PokemonStatsCompanion.insert({
+    this.pokemonId = const Value.absent(),
+    required int hp,
+    required int attack,
+    required int defense,
+    required int specialAttack,
+    required int specialDefense,
+    required int speed,
+  }) : hp = Value(hp),
+       attack = Value(attack),
+       defense = Value(defense),
+       specialAttack = Value(specialAttack),
+       specialDefense = Value(specialDefense),
+       speed = Value(speed);
+  static Insertable<PokemonStatEntry> custom({
+    Expression<int>? pokemonId,
+    Expression<int>? hp,
+    Expression<int>? attack,
+    Expression<int>? defense,
+    Expression<int>? specialAttack,
+    Expression<int>? specialDefense,
+    Expression<int>? speed,
+  }) {
+    return RawValuesInsertable({
+      if (pokemonId != null) 'pokemon_id': pokemonId,
+      if (hp != null) 'hp': hp,
+      if (attack != null) 'attack': attack,
+      if (defense != null) 'defense': defense,
+      if (specialAttack != null) 'special_attack': specialAttack,
+      if (specialDefense != null) 'special_defense': specialDefense,
+      if (speed != null) 'speed': speed,
+    });
+  }
+
+  PokemonStatsCompanion copyWith({
+    Value<int>? pokemonId,
+    Value<int>? hp,
+    Value<int>? attack,
+    Value<int>? defense,
+    Value<int>? specialAttack,
+    Value<int>? specialDefense,
+    Value<int>? speed,
+  }) {
+    return PokemonStatsCompanion(
+      pokemonId: pokemonId ?? this.pokemonId,
+      hp: hp ?? this.hp,
+      attack: attack ?? this.attack,
+      defense: defense ?? this.defense,
+      specialAttack: specialAttack ?? this.specialAttack,
+      specialDefense: specialDefense ?? this.specialDefense,
+      speed: speed ?? this.speed,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (pokemonId.present) {
+      map['pokemon_id'] = Variable<int>(pokemonId.value);
+    }
+    if (hp.present) {
+      map['hp'] = Variable<int>(hp.value);
+    }
+    if (attack.present) {
+      map['attack'] = Variable<int>(attack.value);
+    }
+    if (defense.present) {
+      map['defense'] = Variable<int>(defense.value);
+    }
+    if (specialAttack.present) {
+      map['special_attack'] = Variable<int>(specialAttack.value);
+    }
+    if (specialDefense.present) {
+      map['special_defense'] = Variable<int>(specialDefense.value);
+    }
+    if (speed.present) {
+      map['speed'] = Variable<int>(speed.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PokemonStatsCompanion(')
+          ..write('pokemonId: $pokemonId, ')
+          ..write('hp: $hp, ')
+          ..write('attack: $attack, ')
+          ..write('defense: $defense, ')
+          ..write('specialAttack: $specialAttack, ')
+          ..write('specialDefense: $specialDefense, ')
+          ..write('speed: $speed')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $SyncMetadataTable extends SyncMetadata
     with TableInfo<$SyncMetadataTable, SyncMetadataEntry> {
   @override
@@ -2789,8 +3248,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $FavoritesTable favorites = $FavoritesTable(this);
   late final $TriviaResultsTable triviaResults = $TriviaResultsTable(this);
   late final $TriviaAnswersTable triviaAnswers = $TriviaAnswersTable(this);
+  late final $PokemonStatsTable pokemonStats = $PokemonStatsTable(this);
   late final $SyncMetadataTable syncMetadata = $SyncMetadataTable(this);
   late final CatalogoDao catalogoDao = CatalogoDao(this as AppDatabase);
+  late final FavoritesDao favoritesDao = FavoritesDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -2804,6 +3265,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     favorites,
     triviaResults,
     triviaAnswers,
+    pokemonStats,
     syncMetadata,
   ];
   @override
@@ -5669,6 +6131,251 @@ typedef $$TriviaAnswersTableProcessedTableManager =
       TriviaAnswersEntry,
       PrefetchHooks Function({bool triviaResultId, bool pokemonId})
     >;
+typedef $$PokemonStatsTableCreateCompanionBuilder =
+    PokemonStatsCompanion Function({
+      Value<int> pokemonId,
+      required int hp,
+      required int attack,
+      required int defense,
+      required int specialAttack,
+      required int specialDefense,
+      required int speed,
+    });
+typedef $$PokemonStatsTableUpdateCompanionBuilder =
+    PokemonStatsCompanion Function({
+      Value<int> pokemonId,
+      Value<int> hp,
+      Value<int> attack,
+      Value<int> defense,
+      Value<int> specialAttack,
+      Value<int> specialDefense,
+      Value<int> speed,
+    });
+
+class $$PokemonStatsTableFilterComposer
+    extends Composer<_$AppDatabase, $PokemonStatsTable> {
+  $$PokemonStatsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get pokemonId => $composableBuilder(
+    column: $table.pokemonId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get hp => $composableBuilder(
+    column: $table.hp,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get attack => $composableBuilder(
+    column: $table.attack,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get defense => $composableBuilder(
+    column: $table.defense,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get specialAttack => $composableBuilder(
+    column: $table.specialAttack,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get specialDefense => $composableBuilder(
+    column: $table.specialDefense,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get speed => $composableBuilder(
+    column: $table.speed,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$PokemonStatsTableOrderingComposer
+    extends Composer<_$AppDatabase, $PokemonStatsTable> {
+  $$PokemonStatsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get pokemonId => $composableBuilder(
+    column: $table.pokemonId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get hp => $composableBuilder(
+    column: $table.hp,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get attack => $composableBuilder(
+    column: $table.attack,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get defense => $composableBuilder(
+    column: $table.defense,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get specialAttack => $composableBuilder(
+    column: $table.specialAttack,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get specialDefense => $composableBuilder(
+    column: $table.specialDefense,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get speed => $composableBuilder(
+    column: $table.speed,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$PokemonStatsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PokemonStatsTable> {
+  $$PokemonStatsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get pokemonId =>
+      $composableBuilder(column: $table.pokemonId, builder: (column) => column);
+
+  GeneratedColumn<int> get hp =>
+      $composableBuilder(column: $table.hp, builder: (column) => column);
+
+  GeneratedColumn<int> get attack =>
+      $composableBuilder(column: $table.attack, builder: (column) => column);
+
+  GeneratedColumn<int> get defense =>
+      $composableBuilder(column: $table.defense, builder: (column) => column);
+
+  GeneratedColumn<int> get specialAttack => $composableBuilder(
+    column: $table.specialAttack,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get specialDefense => $composableBuilder(
+    column: $table.specialDefense,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get speed =>
+      $composableBuilder(column: $table.speed, builder: (column) => column);
+}
+
+class $$PokemonStatsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $PokemonStatsTable,
+          PokemonStatEntry,
+          $$PokemonStatsTableFilterComposer,
+          $$PokemonStatsTableOrderingComposer,
+          $$PokemonStatsTableAnnotationComposer,
+          $$PokemonStatsTableCreateCompanionBuilder,
+          $$PokemonStatsTableUpdateCompanionBuilder,
+          (
+            PokemonStatEntry,
+            BaseReferences<_$AppDatabase, $PokemonStatsTable, PokemonStatEntry>,
+          ),
+          PokemonStatEntry,
+          PrefetchHooks Function()
+        > {
+  $$PokemonStatsTableTableManager(_$AppDatabase db, $PokemonStatsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PokemonStatsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$PokemonStatsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$PokemonStatsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> pokemonId = const Value.absent(),
+                Value<int> hp = const Value.absent(),
+                Value<int> attack = const Value.absent(),
+                Value<int> defense = const Value.absent(),
+                Value<int> specialAttack = const Value.absent(),
+                Value<int> specialDefense = const Value.absent(),
+                Value<int> speed = const Value.absent(),
+              }) => PokemonStatsCompanion(
+                pokemonId: pokemonId,
+                hp: hp,
+                attack: attack,
+                defense: defense,
+                specialAttack: specialAttack,
+                specialDefense: specialDefense,
+                speed: speed,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> pokemonId = const Value.absent(),
+                required int hp,
+                required int attack,
+                required int defense,
+                required int specialAttack,
+                required int specialDefense,
+                required int speed,
+              }) => PokemonStatsCompanion.insert(
+                pokemonId: pokemonId,
+                hp: hp,
+                attack: attack,
+                defense: defense,
+                specialAttack: specialAttack,
+                specialDefense: specialDefense,
+                speed: speed,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$PokemonStatsTable, PokemonStatEntry>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $PokemonStatsTable,
+                    PokemonStatEntry
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$PokemonStatsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $PokemonStatsTable,
+      PokemonStatEntry,
+      $$PokemonStatsTableFilterComposer,
+      $$PokemonStatsTableOrderingComposer,
+      $$PokemonStatsTableAnnotationComposer,
+      $$PokemonStatsTableCreateCompanionBuilder,
+      $$PokemonStatsTableUpdateCompanionBuilder,
+      (
+        PokemonStatEntry,
+        BaseReferences<_$AppDatabase, $PokemonStatsTable, PokemonStatEntry>,
+      ),
+      PokemonStatEntry,
+      PrefetchHooks Function()
+    >;
 typedef $$SyncMetadataTableCreateCompanionBuilder =
     SyncMetadataCompanion Function({
       required String resourceKey,
@@ -5889,6 +6596,8 @@ class $AppDatabaseManager {
       $$TriviaResultsTableTableManager(_db, _db.triviaResults);
   $$TriviaAnswersTableTableManager get triviaAnswers =>
       $$TriviaAnswersTableTableManager(_db, _db.triviaAnswers);
+  $$PokemonStatsTableTableManager get pokemonStats =>
+      $$PokemonStatsTableTableManager(_db, _db.pokemonStats);
   $$SyncMetadataTableTableManager get syncMetadata =>
       $$SyncMetadataTableTableManager(_db, _db.syncMetadata);
 }

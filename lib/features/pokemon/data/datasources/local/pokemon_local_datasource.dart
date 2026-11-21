@@ -95,6 +95,7 @@ class PokemonLocalDataSource {
       types: rows.types,
       pokemons: rows.pokemons,
       pokemonTypes: rows.pokemonTypes,
+      stats: rows.stats,
       syncState: SyncMetadataCompanion(
         resourceKey: const Value(SyncResources.catalog),
         status: Value(isLast ? SyncStatus.ok : SyncStatus.syncing),
