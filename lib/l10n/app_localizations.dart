@@ -62,8 +62,7 @@ import 'app_localizations_es.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale)
-    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -71,8 +70,7 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -84,18 +82,17 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
-      <LocalizationsDelegate<dynamic>>[
-        delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
+    delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('es'),
+    Locale('es')
   ];
 
   /// No description provided for @appTitle.
@@ -925,10 +922,333 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remove from favorites'**
   String get detailFavoriteRemove;
+
+  /// No description provided for @triviaBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'TRIVIA'**
+  String get triviaBadge;
+
+  /// No description provided for @triviaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Who is this Pokémon?'**
+  String get triviaTitle;
+
+  /// No description provided for @triviaStatBest.
+  ///
+  /// In en, this message translates to:
+  /// **'BEST'**
+  String get triviaStatBest;
+
+  /// No description provided for @triviaStatStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'STREAK'**
+  String get triviaStatStreak;
+
+  /// No description provided for @triviaStatGames.
+  ///
+  /// In en, this message translates to:
+  /// **'GAMES'**
+  String get triviaStatGames;
+
+  /// No description provided for @triviaRules.
+  ///
+  /// In en, this message translates to:
+  /// **'10 Pokémon per game · 15 seconds each · hints cost points'**
+  String get triviaRules;
+
+  /// No description provided for @triviaPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Play'**
+  String get triviaPlay;
+
+  /// No description provided for @triviaRanking.
+  ///
+  /// In en, this message translates to:
+  /// **'Ranking'**
+  String get triviaRanking;
+
+  /// No description provided for @triviaAchievements.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements'**
+  String get triviaAchievements;
+
+  /// No description provided for @triviaSavedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Pokémon saved · works offline'**
+  String triviaSavedCount(int count);
+
+  /// No description provided for @triviaNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}'**
+  String triviaNumber(int value);
+
+  /// No description provided for @triviaSilhouetteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Silhouette of a mystery Pokémon'**
+  String get triviaSilhouetteLabel;
+
+  /// No description provided for @triviaQuestionProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'QUESTION {current}/{total}'**
+  String triviaQuestionProgress(int current, int total);
+
+  /// No description provided for @triviaPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'{score} pts'**
+  String triviaPoints(int score);
+
+  /// No description provided for @triviaSecondsLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{seconds} s'**
+  String triviaSecondsLeft(int seconds);
+
+  /// No description provided for @triviaGuessHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type the name…'**
+  String get triviaGuessHint;
+
+  /// No description provided for @triviaHintButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Hint · −{cost} pts'**
+  String triviaHintButton(int cost);
+
+  /// No description provided for @triviaSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get triviaSkip;
+
+  /// No description provided for @triviaGuess.
+  ///
+  /// In en, this message translates to:
+  /// **'Guess'**
+  String get triviaGuess;
+
+  /// No description provided for @triviaLettersLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'The name has {count} letters'**
+  String triviaLettersLabel(int count);
+
+  /// No description provided for @triviaCorrect.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct!'**
+  String get triviaCorrect;
+
+  /// No description provided for @triviaTimeUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Time is up!'**
+  String get triviaTimeUp;
+
+  /// No description provided for @triviaWasNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'It was {number}'**
+  String triviaWasNumber(String number);
+
+  /// No description provided for @triviaBreakdownHit.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct answer'**
+  String get triviaBreakdownHit;
+
+  /// No description provided for @triviaBreakdownSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed bonus ({seconds} s)'**
+  String triviaBreakdownSpeed(int seconds);
+
+  /// No description provided for @triviaStreakReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Your streak of {streak} was reset. Keep trying!'**
+  String triviaStreakReset(int streak);
+
+  /// No description provided for @triviaNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get triviaNext;
+
+  /// No description provided for @triviaGameOver.
+  ///
+  /// In en, this message translates to:
+  /// **'GAME OVER'**
+  String get triviaGameOver;
+
+  /// No description provided for @triviaNewRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'★ New record!'**
+  String get triviaNewRecord;
+
+  /// No description provided for @triviaCorrectLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct'**
+  String get triviaCorrectLabel;
+
+  /// No description provided for @triviaCorrectOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{correct} of {total}'**
+  String triviaCorrectOf(int correct, int total);
+
+  /// No description provided for @triviaAchievementUnlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'ACHIEVEMENT UNLOCKED'**
+  String get triviaAchievementUnlocked;
+
+  /// No description provided for @triviaPlayAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Play again'**
+  String get triviaPlayAgain;
+
+  /// No description provided for @triviaSeeRanking.
+  ///
+  /// In en, this message translates to:
+  /// **'See ranking'**
+  String get triviaSeeRanking;
+
+  /// No description provided for @triviaBackHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get triviaBackHome;
+
+  /// No description provided for @triviaDotsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{correct} correct out of {total} questions'**
+  String triviaDotsLabel(int correct, int total);
+
+  /// No description provided for @triviaBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get triviaBack;
+
+  /// No description provided for @triviaRankingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your best games'**
+  String get triviaRankingSubtitle;
+
+  /// No description provided for @triviaNewTag.
+  ///
+  /// In en, this message translates to:
+  /// **'NEW'**
+  String get triviaNewTag;
+
+  /// No description provided for @triviaPodiumLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Place {position}: {score} points'**
+  String triviaPodiumLabel(int position, int score);
+
+  /// No description provided for @triviaRankingRowDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'{correct} of {total} correct · {date}'**
+  String triviaRankingRowDetail(int correct, int total, String date);
+
+  /// No description provided for @triviaRankingEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No games yet'**
+  String get triviaRankingEmptyTitle;
+
+  /// No description provided for @triviaRankingEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Play a game and your score will show up here.'**
+  String get triviaRankingEmptyMessage;
+
+  /// No description provided for @triviaUnlockedOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{unlocked} of {total} unlocked'**
+  String triviaUnlockedOf(int unlocked, int total);
+
+  /// No description provided for @triviaUnlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlocked'**
+  String get triviaUnlocked;
+
+  /// No description provided for @triviaLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
+  String get triviaLocked;
+
+  /// No description provided for @triviaProgressOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{current}/{target}'**
+  String triviaProgressOf(int current, int target);
+
+  /// No description provided for @triviaNoDataBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'OFFLINE'**
+  String get triviaNoDataBadge;
+
+  /// No description provided for @triviaNoDataTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough Pokémon yet'**
+  String get triviaNoDataTitle;
+
+  /// No description provided for @triviaNoDataMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You need at least {required} saved Pokémon to play. Connect to download more.'**
+  String triviaNoDataMessage(int required);
+
+  /// No description provided for @triviaNoDataProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{saved} of {required} saved'**
+  String triviaNoDataProgress(int saved, int required);
+
+  /// No description provided for @triviaGoCatalog.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to catalog'**
+  String get triviaGoCatalog;
+
+  /// No description provided for @triviaRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get triviaRetry;
+
+  /// No description provided for @triviaNoDataNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Ranking and achievements stay available offline.'**
+  String get triviaNoDataNote;
 }
 
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -937,26 +1257,25 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['en', 'es'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['en', 'es'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
+
+
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'en':
-      return AppLocalizationsEn();
-    case 'es':
-      return AppLocalizationsEs();
+    case 'en': return AppLocalizationsEn();
+    case 'es': return AppLocalizationsEs();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.',
+    'that was used.'
   );
 }

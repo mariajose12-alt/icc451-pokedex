@@ -16,7 +16,14 @@ import 'package:pokedex/features/pokemon/presentation/bloc/catalog_event.dart';
 import 'package:pokedex/features/pokemon/presentation/cubit/catalog_view_mode_cubit.dart';
 import 'package:pokedex/features/pokemon/presentation/pages/catalog_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:pokedex/features/trivia/presentation/pages/trivia_home_page.dart';
+import 'package:pokedex/features/trivia/presentation/pages/trivia_question_page.dart';
+import 'package:pokedex/features/trivia/presentation/pages/trivia_result_page.dart';
+import 'package:pokedex/features/trivia/presentation/pages/trivia_reveal_page.dart';
+import 'package:pokedex/features/trivia/presentation/preview/trivia_sample_data.dart';
+import 'package:pokedex/features/trivia/presentation/pages/trivia_achievements_page.dart';
+import 'package:pokedex/features/trivia/presentation/pages/trivia_no_data_page.dart';
+import 'package:pokedex/features/trivia/presentation/pages/trivia_ranking_page.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/pokemon_detail_repository.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/type_chart_repository.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/pokemon_moves_repository.dart';
@@ -104,6 +111,80 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: AppRoutes.favorites,
               builder: (context, state) => const FavoritesPage(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: AppRoutes.trivia,
+              builder: (context, state) => TriviaHomePage(
+                data: TriviaSampleData.home,
+                onPlay: () => context.go(AppRoutes.triviaQuestion),
+                onRanking: () => context.go(AppRoutes.triviaRanking),
+                onAchievements: () => context.go(AppRoutes.triviaAchievements),
+              ),
+              routes: [
+                // TEMPORAL: la navegación entre pantallas es de ejemplo
+                // (Adivinar → acierto, Saltar → tiempo agotado). El motor de
+                // la trivia decidirá esto más adelante.
+                GoRoute(
+                  path: 'question',
+                  builder: (context, state) => TriviaQuestionPage(
+                    data: TriviaSampleData.question,
+                    onGuess: () => context.go(AppRoutes.triviaCorrect),
+                    onSkip: () => context.go(AppRoutes.triviaTimeUp),
+                    onHint: () {}, // Sin lógica todavía.
+                  ),
+                ),
+                GoRoute(
+                  path: 'correct',
+                  builder: (context, state) => TriviaRevealPage(
+                    kind: TriviaRevealKind.correct,
+                    data: TriviaSampleData.correct,
+                    onNext: () => context.go(AppRoutes.triviaResult),
+                  ),
+                ),
+                GoRoute(
+                  path: 'time-up',
+                  builder: (context, state) => TriviaRevealPage(
+                    kind: TriviaRevealKind.timeUp,
+                    data: TriviaSampleData.timeUp,
+                    onNext: () => context.go(AppRoutes.triviaResult),
+                  ),
+                ),
+                GoRoute(
+                  path: 'result',
+                  builder: (context, state) => TriviaResultPage(
+                    data: TriviaSampleData.result,
+                    onPlayAgain: () => context.go(AppRoutes.triviaQuestion),
+                    onRanking: () => context.go(AppRoutes.triviaRanking),
+                    onHome: () => context.go(AppRoutes.trivia),
+                  ),
+                ),
+                GoRoute(
+                  path: 'ranking',
+                  builder: (context, state) => TriviaRankingPage(
+                    entries: TriviaSampleData.ranking,
+                    onBack: () => context.go(AppRoutes.trivia),
+                  ),
+                ),
+                GoRoute(
+                  path: 'achievements',
+                  builder: (context, state) => TriviaAchievementsPage(
+                    achievements: TriviaSampleData.achievements,
+                    onBack: () => context.go(AppRoutes.trivia),
+                  ),
+                ),
+                GoRoute(
+                  path: 'no-data',
+                  builder: (context, state) => TriviaNoDataPage(
+                    data: TriviaSampleData.noData,
+                    onGoCatalog: () => context.go(AppRoutes.catalog),
+                    onRetry: () => context.go(AppRoutes.trivia),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

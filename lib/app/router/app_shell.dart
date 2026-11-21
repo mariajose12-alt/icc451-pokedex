@@ -71,13 +71,16 @@ class AppShell extends StatelessWidget {
             selectedIcon: Icons.catching_pokemon,
             label: l10n.navPokedex,
           ),
-          /*
           PokedexNavItem(
             icon: Icons.favorite_border,
             selectedIcon: Icons.favorite,
             label: l10n.navFavorites,
           ),
-          */
+          PokedexNavItem(
+            icon: Icons.quiz_outlined,
+            selectedIcon: Icons.quiz,
+            label: l10n.navTrivia,
+          ),
         ],
       ),
     );

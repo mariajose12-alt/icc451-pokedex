@@ -1,6 +1,5 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -37,26 +36,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get catalogEmptyTitle => 'No Pokémon saved yet';
 
   @override
-  String get catalogEmptyMessage =>
-      'Connect to the Internet to download the catalog. After that you can use it offline.';
+  String get catalogEmptyMessage => 'Connect to the Internet to download the catalog. After that you can use it offline.';
 
   @override
   String get catalogErrorTitle => 'The catalog could not be loaded';
 
   @override
-  String get catalogRefreshFailedBanner =>
-      'Could not update. Showing saved data.';
+  String get catalogRefreshFailedBanner => 'Could not update. Showing saved data.';
 
   @override
-  String get errorNoConnection =>
-      'No Internet connection. Check your network and try again.';
+  String get errorNoConnection => 'No Internet connection. Check your network and try again.';
 
   @override
   String get errorTimeout => 'The request took too long. Try again.';
 
   @override
-  String get errorRateLimit =>
-      'Too many requests. Wait a moment and try again.';
+  String get errorRateLimit => 'Too many requests. Wait a moment and try again.';
 
   @override
   String get errorService => 'The service is not available right now.';
@@ -148,8 +143,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get detailNotFoundTitle => 'Pokémon not found';
 
   @override
-  String get detailNotFoundMessage =>
-      'This Pokémon is not saved on your device.';
+  String get detailNotFoundMessage => 'This Pokémon is not saved on your device.';
 
   @override
   String get detailBack => 'Back';
@@ -265,8 +259,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get detailAbilitiesEnglishNote => 'Descriptions are in English';
 
   @override
-  String get detailExtrasPending =>
-      'This data downloads when you open the Pokémon online';
+  String get detailExtrasPending => 'This data downloads when you open the Pokémon online';
 
   @override
   String get detailEggGroupsTitle => 'Egg groups';
@@ -462,4 +455,219 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get detailFavoriteRemove => 'Remove from favorites';
+
+  @override
+  String get triviaBadge => 'TRIVIA';
+
+  @override
+  String get triviaTitle => 'Who is this Pokémon?';
+
+  @override
+  String get triviaStatBest => 'BEST';
+
+  @override
+  String get triviaStatStreak => 'STREAK';
+
+  @override
+  String get triviaStatGames => 'GAMES';
+
+  @override
+  String get triviaRules => '10 Pokémon per game · 15 seconds each · hints cost points';
+
+  @override
+  String get triviaPlay => 'Play';
+
+  @override
+  String get triviaRanking => 'Ranking';
+
+  @override
+  String get triviaAchievements => 'Achievements';
+
+  @override
+  String triviaSavedCount(int count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '$countString Pokémon saved · works offline';
+  }
+
+  @override
+  String triviaNumber(int value) {
+    final intl.NumberFormat valueNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String valueString = valueNumberFormat.format(value);
+
+    return '$valueString';
+  }
+
+  @override
+  String get triviaSilhouetteLabel => 'Silhouette of a mystery Pokémon';
+
+  @override
+  String triviaQuestionProgress(int current, int total) {
+    return 'QUESTION $current/$total';
+  }
+
+  @override
+  String triviaPoints(int score) {
+    final intl.NumberFormat scoreNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String scoreString = scoreNumberFormat.format(score);
+
+    return '$scoreString pts';
+  }
+
+  @override
+  String triviaSecondsLeft(int seconds) {
+    return '$seconds s';
+  }
+
+  @override
+  String get triviaGuessHint => 'Type the name…';
+
+  @override
+  String triviaHintButton(int cost) {
+    return 'Hint · −$cost pts';
+  }
+
+  @override
+  String get triviaSkip => 'Skip';
+
+  @override
+  String get triviaGuess => 'Guess';
+
+  @override
+  String triviaLettersLabel(int count) {
+    return 'The name has $count letters';
+  }
+
+  @override
+  String get triviaCorrect => 'Correct!';
+
+  @override
+  String get triviaTimeUp => 'Time is up!';
+
+  @override
+  String triviaWasNumber(String number) {
+    return 'It was $number';
+  }
+
+  @override
+  String get triviaBreakdownHit => 'Correct answer';
+
+  @override
+  String triviaBreakdownSpeed(int seconds) {
+    return 'Speed bonus ($seconds s)';
+  }
+
+  @override
+  String triviaStreakReset(int streak) {
+    return 'Your streak of $streak was reset. Keep trying!';
+  }
+
+  @override
+  String get triviaNext => 'Next';
+
+  @override
+  String get triviaGameOver => 'GAME OVER';
+
+  @override
+  String get triviaNewRecord => '★ New record!';
+
+  @override
+  String get triviaCorrectLabel => 'Correct';
+
+  @override
+  String triviaCorrectOf(int correct, int total) {
+    return '$correct of $total';
+  }
+
+  @override
+  String get triviaAchievementUnlocked => 'ACHIEVEMENT UNLOCKED';
+
+  @override
+  String get triviaPlayAgain => 'Play again';
+
+  @override
+  String get triviaSeeRanking => 'See ranking';
+
+  @override
+  String get triviaBackHome => 'Home';
+
+  @override
+  String triviaDotsLabel(int correct, int total) {
+    return '$correct correct out of $total questions';
+  }
+
+  @override
+  String get triviaBack => 'Back';
+
+  @override
+  String get triviaRankingSubtitle => 'Your best games';
+
+  @override
+  String get triviaNewTag => 'NEW';
+
+  @override
+  String triviaPodiumLabel(int position, int score) {
+    final intl.NumberFormat scoreNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String scoreString = scoreNumberFormat.format(score);
+
+    return 'Place $position: $scoreString points';
+  }
+
+  @override
+  String triviaRankingRowDetail(int correct, int total, String date) {
+    return '$correct of $total correct · $date';
+  }
+
+  @override
+  String get triviaRankingEmptyTitle => 'No games yet';
+
+  @override
+  String get triviaRankingEmptyMessage => 'Play a game and your score will show up here.';
+
+  @override
+  String triviaUnlockedOf(int unlocked, int total) {
+    return '$unlocked of $total unlocked';
+  }
+
+  @override
+  String get triviaUnlocked => 'Unlocked';
+
+  @override
+  String get triviaLocked => 'Locked';
+
+  @override
+  String triviaProgressOf(int current, int target) {
+    final intl.NumberFormat currentNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String currentString = currentNumberFormat.format(current);
+    final intl.NumberFormat targetNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String targetString = targetNumberFormat.format(target);
+
+    return '$currentString/$targetString';
+  }
+
+  @override
+  String get triviaNoDataBadge => 'OFFLINE';
+
+  @override
+  String get triviaNoDataTitle => 'Not enough Pokémon yet';
+
+  @override
+  String triviaNoDataMessage(int required) {
+    return 'You need at least $required saved Pokémon to play. Connect to download more.';
+  }
+
+  @override
+  String triviaNoDataProgress(int saved, int required) {
+    return '$saved of $required saved';
+  }
+
+  @override
+  String get triviaGoCatalog => 'Go to catalog';
+
+  @override
+  String get triviaRetry => 'Retry';
+
+  @override
+  String get triviaNoDataNote => 'Ranking and achievements stay available offline.';
 }
