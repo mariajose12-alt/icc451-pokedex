@@ -20,6 +20,12 @@ class FakeCatalogApi implements PokeApiClient {
   /// Qué error se lanza cuando toca fallar.
   PokeApiException failWith = const NoConnectionException();
 
+  /// Veces que se pidieron las efectividades.
+  int efficacyCalls = 0;
+
+  /// Si es true, la consulta de efectividades falla.
+  bool failEfficacies = false;
+
   @override
   final String url = 'fake';
 
@@ -31,6 +37,33 @@ class FakeCatalogApi implements PokeApiClient {
     String document, {
     Map<String, dynamic> variables = const <String, dynamic>{},
   }) async {
+    // La consulta de efectividades no usa cursor ni cuenta como página.
+    if (document.contains('typeefficacy')) {
+      efficacyCalls++;
+      if (failEfficacies) {
+        throw failWith;
+      }
+      return <String, dynamic>{
+        'typeefficacy': <dynamic>[
+          <String, dynamic>{
+            'damage_type_id': 12,
+            'target_type_id': 10,
+            'damage_factor': 50,
+          },
+          <String, dynamic>{
+            'damage_type_id': 10,
+            'target_type_id': 12,
+            'damage_factor': 200,
+          },
+          <String, dynamic>{
+            'damage_type_id': 1,
+            'target_type_id': 8,
+            'damage_factor': 0,
+          },
+        ],
+      };
+    }
+
     final lastId = variables['lastId'] as int;
     final pageSize = variables['pageSize'] as int;
     calls.add(lastId);
@@ -58,6 +91,14 @@ class FakeCatalogApi implements PokeApiClient {
             'slot': 1,
             'type': <String, dynamic>{'id': 12, 'name': 'grass'},
           },
+        ],
+        'pokemonstats': <dynamic>[
+          for (var statId = 1; statId <= 6; statId++)
+            <String, dynamic>{
+              // Valor fácil de comprobar: 10 * statId + id del Pokémon.
+              'base_stat': 10 * statId + id,
+              'stat': <String, dynamic>{'id': statId},
+            },
         ],
         'pokemonspecy': <String, dynamic>{'id': id, 'generation_id': 1},
       });

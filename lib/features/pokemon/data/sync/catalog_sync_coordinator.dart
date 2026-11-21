@@ -73,6 +73,16 @@ class CatalogSyncCoordinator {
   }
 
   Future<void> _syncAll() async {
+    // 1. El catálogo. Si falla, se lanza el error y no se sigue.
+    await _syncPages();
+
+    // 2. Las efectividades. Esto va FUERA del try/catch del catálogo a
+    // propósito: si falla, el catálogo ya está completo y no debe quedar
+    // marcado como "failed".
+    await _downloadEfficaciesIfMissing();
+  }
+
+  Future<void> _syncPages() async {
     try {
       var cursor = await _local.resumeCursor();
 
@@ -102,20 +112,23 @@ class CatalogSyncCoordinator {
     }
   }
 
-  /// Pide una página y, si falla por algo pasajero, la repite esperando
-  /// cada vez más (RNF-RES-02). Lo que no se arregla esperando se lanza
-  /// de inmediato.
-  Future<CatalogPageDto> _fetchWithRetries(int cursor) async {
+  /// Pide una página, con reintentos.
+  Future<CatalogPageDto> _fetchWithRetries(int cursor) {
+    return _withRetries(
+      () => _remote.fetchCatalogPage(afterId: cursor, pageSize: pageSize),
+      'la página tras id $cursor',
+    );
+  }
+
+  /// Ejecuta [action] y, si falla por algo pasajero, la repite esperando cada
+  /// vez más (RNF-RES-02). Lo que no se arregla esperando se lanza de inmediato.
+  Future<T> _withRetries<T>(Future<T> Function() action, String what) async {
     var attempt = 0;
 
     while (true) {
       try {
-        return await _remote.fetchCatalogPage(
-          afterId: cursor,
-          pageSize: pageSize,
-        );
+        return await action();
       } on PokeApiException catch (error) {
-        // Se rinde si el error no es pasajero o si ya no quedan reintentos.
         final canRetry = _isTransient(error) && attempt < retryDelays.length;
         if (!canRetry) {
           rethrow;
@@ -124,11 +137,62 @@ class CatalogSyncCoordinator {
         final delay = retryDelays[attempt];
         attempt++;
         debugPrint(
-          'Sync: falló la página tras id $cursor ($error). '
+          'Sync: falló $what ($error). '
           'Reintento $attempt/${retryDelays.length} en ${delay.inSeconds} s',
         );
         await Future<void>.delayed(delay);
       }
+    }
+  }
+
+  // Descarga de efectividades en curso (para no pedirlas dos veces a la vez).
+  Future<void>? _efficaciesInFlight;
+
+  /// Se asegura de que las efectividades estén guardadas. NUNCA lanza error:
+  /// son datos secundarios, y si fallan se reintenta en la próxima
+  /// actualización. Si hay una sincronización del catálogo en curso, espera
+  /// a esa (ella misma las descarga al final).
+  Future<void> ensureEfficacies() async {
+    final running = _inFlight;
+    if (running != null) {
+      try {
+        await running;
+      } catch (_) {
+        // El error del catálogo ya lo recibe quien lo pidió.
+      }
+      return;
+    }
+    await _downloadEfficaciesIfMissing();
+  }
+
+  Future<void> _downloadEfficaciesIfMissing() {
+    final running = _efficaciesInFlight;
+    if (running != null) {
+      return running;
+    }
+
+    final run = _downloadEfficacies().whenComplete(() {
+      _efficaciesInFlight = null;
+    });
+    _efficaciesInFlight = run;
+    return run;
+  }
+
+  Future<void> _downloadEfficacies() async {
+    try {
+      // Ya están: no se gasta ninguna llamada.
+      if (await _local.hasEfficacies()) {
+        return;
+      }
+
+      final items = await _withRetries(
+        _remote.fetchTypeEfficacies,
+        'las efectividades de tipos',
+      );
+      await _local.saveEfficacies(items);
+    } catch (error) {
+      // Se registra y se sigue: no afecta al estado del catálogo.
+      debugPrint('Sync: no se pudieron guardar las efectividades ($error)');
     }
   }
 

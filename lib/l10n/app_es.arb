@@ -63,5 +63,144 @@
   "debugSimulateOutage": "Simular caída de la API (solo pruebas)",
   "detailNotFoundTitle": "Pokémon no encontrado",
   "detailNotFoundMessage": "Este Pokémon no está guardado en tu dispositivo.",
-  "detailBack": "Volver"
+  "detailBack": "Volver",
+  "detailHeight": "Altura",
+  "detailWeight": "Peso",
+  "detailHeightValue": "{value} m",
+  "@detailHeightValue": {
+    "placeholders": {
+      "value": { "type": "String" }
+    }
+  },
+  "detailWeightValue": "{value} kg",
+  "@detailWeightValue": {
+    "placeholders": {
+      "value": { "type": "String" }
+    }
+  },
+  "detailStatsTitle": "Estadísticas base",
+  "detailStatsEmpty": "Estadísticas no disponibles todavía",
+  "detailStatTotal": "Total",
+  "detailStatPercent": "{percent} %",
+  "@detailStatPercent": {
+    "placeholders": {
+      "percent": { "type": "int" }
+    }
+  },
+  "detailStatSemantic": "{name}: {value}, {percent} por ciento",
+  "@detailStatSemantic": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "value": { "type": "int" },
+      "percent": { "type": "int" }
+    }
+  },
+  "statHp": "HP",
+  "statAttack": "Ataque",
+  "statDefense": "Defensa",
+  "statSpAttack": "At. esp.",
+  "statSpDefense": "Def. esp.",
+  "statSpeed": "Velocidad",
+  "detailMatchupsTitle": "Matchups de daño",
+  "detailMatchupsWeak": "Débil contra",
+  "detailMatchupsResist": "Resiste",
+  "detailMatchupsImmune": "Inmune a",
+  "detailMatchupsEmpty": "Matchups no disponibles todavía",
+  "detailTabSummary": "Resumen",
+  "detailTabEvolution": "Evolución",
+  "detailTabCombat": "Combate",
+  "detailTabMoves": "Movs.",
+  "detailDataTitle": "Datos",
+  "detailSectionPending": "Esta sección estará disponible pronto",
+  "detailActionShiny": "Ver versión shiny",
+  "detailActionForm": "Cambiar de forma",
+  "detailActionShare": "Compartir",
+  "detailAbilitiesTitle": "Habilidades",
+  "detailAbilitiesEmpty": "Sin habilidades registradas",
+  "detailAbilityHidden": "Oculta",
+  "detailAbilityNoEffect": "Sin descripción",
+  "detailAbilitiesEnglishNote": "Las descripciones están en inglés",
+  "detailExtrasPending": "Estos datos se descargan al abrir el Pokémon con conexión",
+  "detailEggGroupsTitle": "Grupos huevo",
+  "evolutionTitle": "Línea evolutiva",
+  "eggGroupMonster": "Monstruo",
+  "eggGroupWater1": "Agua 1",
+  "eggGroupWater2": "Agua 2",
+  "eggGroupWater3": "Agua 3",
+  "eggGroupBug": "Bicho",
+  "eggGroupFlying": "Volador",
+  "eggGroupField": "Campo",
+  "eggGroupFairy": "Hada",
+  "eggGroupGrass": "Planta",
+  "eggGroupHumanLike": "Humanoide",
+  "eggGroupMineral": "Mineral",
+  "eggGroupAmorphous": "Amorfo",
+  "eggGroupDitto": "Ditto",
+  "eggGroupDragon": "Dragón",
+  "eggGroupUndiscovered": "Desconocido",
+  "evolutionNone": "Este Pokémon no evoluciona",
+  "evolutionCurrent": "Actual",
+  "evolutionTriggerLevel": "Nivel {level}",
+  "@evolutionTriggerLevel": {
+    "placeholders": { "level": { "type": "int" } }
+  },
+  "evolutionTriggerLevelUp": "Subir de nivel",
+  "evolutionTriggerFriendship": "Amistad alta",
+  "evolutionTriggerTrade": "Intercambio",
+  "evolutionTriggerItem": "Usar {item}",
+  "@evolutionTriggerItem": {
+    "placeholders": { "item": { "type": "String" } }
+  },
+  "evolutionTriggerItemGeneric": "Usar un objeto",
+  "evolutionTriggerUnknown": "Condición especial",
+  "evolutionTimeDay": "de día",
+  "evolutionTimeNight": "de noche",
+  "evolutionTimeDusk": "al anochecer",
+  "detailFormSheetTitle": "Forma",
+  "detailFormNormal": "Normal",
+  "detailFormCurrent": "Actual",
+  "detailFormClose": "Cerrar",
+  "movesVersionLabel": "Versión",
+  "movesVersionSheetTitle": "Versión del juego",
+  "movesVersionButtonLabel": "Versión del juego: {name}. Cambiar",
+  "@movesVersionButtonLabel": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "movesMethodsLabel": "Método de aprendizaje",
+  "movesMethodLevel": "Nivel",
+  "movesMethodMachine": "MT",
+  "movesMethodTutor": "Tutor",
+  "movesMethodEgg": "Huevo",
+  "movesOrderLabel": "Ordenar por",
+  "movesOrderLevel": "Nivel",
+  "movesOrderName": "Nombre",
+  "movesLevelTag": "Nv.{level}",
+  "@movesLevelTag": {
+    "placeholders": { "level": { "type": "int" } }
+  },
+  "movesEmptyTitle": "Sin movimientos por este método",
+  "movesEmptyMessage": "Prueba con otro método o con otra versión del juego.",
+  "cardNationalDex": "POKÉDEX NACIONAL",
+  "cardTotal": "TOTAL",
+  "cardHeightWeight": "Altura / Peso",
+  "cardAbilities": "Habilidades",
+  "cardAbilityHidden": "{name} (oculta)",
+  "@cardAbilityHidden": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "cardWeakTo": "Débil contra",
+  "cardResists": "Resiste",
+  "cardFooter": "Pokédex · ICC451",
+  "cardNoData": "—",
+  "cardShareAction": "Compartir carta",
+  "cardShareError": "No se pudo generar la imagen. Inténtalo de nuevo.",
+  "cardShareText": "{name} · N.º {number} · Pokédex",
+  "@cardShareText": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "number": { "type": "String" }
+    }
+  },
+  "detailFavoriteAdd": "Agregar a favoritos",
+  "detailFavoriteRemove": "Quitar de favoritos"
 }
