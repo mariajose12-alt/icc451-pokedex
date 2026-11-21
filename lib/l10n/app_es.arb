@@ -179,5 +179,28 @@
     "placeholders": { "level": { "type": "int" } }
   },
   "movesEmptyTitle": "Sin movimientos por este método",
-  "movesEmptyMessage": "Prueba con otro método o con otra versión del juego."
+  "movesEmptyMessage": "Prueba con otro método o con otra versión del juego.",
+  "cardNationalDex": "POKÉDEX NACIONAL",
+  "cardTotal": "TOTAL",
+  "cardHeightWeight": "Altura / Peso",
+  "cardAbilities": "Habilidades",
+  "cardAbilityHidden": "{name} (oculta)",
+  "@cardAbilityHidden": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "cardWeakTo": "Débil contra",
+  "cardResists": "Resiste",
+  "cardFooter": "Pokédex · ICC451",
+  "cardNoData": "—",
+  "cardShareAction": "Compartir carta",
+  "cardShareError": "No se pudo generar la imagen. Inténtalo de nuevo.",
+  "cardShareText": "{name} · N.º {number} · Pokédex",
+  "@cardShareText": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "number": { "type": "String" }
+    }
+  },
+  "detailFavoriteAdd": "Agregar a favoritos",
+  "detailFavoriteRemove": "Quitar de favoritos"
 }

@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -36,22 +37,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get catalogEmptyTitle => 'No Pokémon saved yet';
 
   @override
-  String get catalogEmptyMessage => 'Connect to the Internet to download the catalog. After that you can use it offline.';
+  String get catalogEmptyMessage =>
+      'Connect to the Internet to download the catalog. After that you can use it offline.';
 
   @override
   String get catalogErrorTitle => 'The catalog could not be loaded';
 
   @override
-  String get catalogRefreshFailedBanner => 'Could not update. Showing saved data.';
+  String get catalogRefreshFailedBanner =>
+      'Could not update. Showing saved data.';
 
   @override
-  String get errorNoConnection => 'No Internet connection. Check your network and try again.';
+  String get errorNoConnection =>
+      'No Internet connection. Check your network and try again.';
 
   @override
   String get errorTimeout => 'The request took too long. Try again.';
 
   @override
-  String get errorRateLimit => 'Too many requests. Wait a moment and try again.';
+  String get errorRateLimit =>
+      'Too many requests. Wait a moment and try again.';
 
   @override
   String get errorService => 'The service is not available right now.';
@@ -143,7 +148,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get detailNotFoundTitle => 'Pokémon not found';
 
   @override
-  String get detailNotFoundMessage => 'This Pokémon is not saved on your device.';
+  String get detailNotFoundMessage =>
+      'This Pokémon is not saved on your device.';
 
   @override
   String get detailBack => 'Back';
@@ -259,7 +265,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get detailAbilitiesEnglishNote => 'Descriptions are in English';
 
   @override
-  String get detailExtrasPending => 'This data downloads when you open the Pokémon online';
+  String get detailExtrasPending =>
+      'This data downloads when you open the Pokémon online';
 
   @override
   String get detailEggGroupsTitle => 'Egg groups';
@@ -409,4 +416,50 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get movesEmptyMessage => 'Try another method or game version.';
+
+  @override
+  String get cardNationalDex => 'NATIONAL POKÉDEX';
+
+  @override
+  String get cardTotal => 'TOTAL';
+
+  @override
+  String get cardHeightWeight => 'Height / Weight';
+
+  @override
+  String get cardAbilities => 'Abilities';
+
+  @override
+  String cardAbilityHidden(String name) {
+    return '$name (hidden)';
+  }
+
+  @override
+  String get cardWeakTo => 'Weak to';
+
+  @override
+  String get cardResists => 'Resists';
+
+  @override
+  String get cardFooter => 'Pokédex · ICC451';
+
+  @override
+  String get cardNoData => '—';
+
+  @override
+  String get cardShareAction => 'Share card';
+
+  @override
+  String get cardShareError => 'Couldn\'t create the image. Please try again.';
+
+  @override
+  String cardShareText(String name, String number) {
+    return '$name · No. $number · Pokédex';
+  }
+
+  @override
+  String get detailFavoriteAdd => 'Add to favorites';
+
+  @override
+  String get detailFavoriteRemove => 'Remove from favorites';
 }

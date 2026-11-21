@@ -179,5 +179,28 @@
     "placeholders": { "level": { "type": "int" } }
   },
   "movesEmptyTitle": "No moves for this method",
-  "movesEmptyMessage": "Try another method or game version."
+  "movesEmptyMessage": "Try another method or game version.",
+  "cardNationalDex": "NATIONAL POKÉDEX",
+  "cardTotal": "TOTAL",
+  "cardHeightWeight": "Height / Weight",
+  "cardAbilities": "Abilities",
+  "cardAbilityHidden": "{name} (hidden)",
+  "@cardAbilityHidden": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "cardWeakTo": "Weak to",
+  "cardResists": "Resists",
+  "cardFooter": "Pokédex · ICC451",
+  "cardNoData": "—",
+  "cardShareAction": "Share card",
+  "cardShareError": "Couldn't create the image. Please try again.",
+  "cardShareText": "{name} · No. {number} · Pokédex",
+  "@cardShareText": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "number": { "type": "String" }
+    }
+  },
+  "detailFavoriteAdd": "Add to favorites",
+  "detailFavoriteRemove": "Remove from favorites"
 }
