@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 
-import 'pokemon_table.dart';
+import 'package:pokedex/core/database/tables/pokemon_table.dart';
 
 // Datos del usuario -> la sincronización del catálogo no los modifica PS-11
 @DataClassName('FavoriteEntry')
