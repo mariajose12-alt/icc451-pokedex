@@ -15,4 +15,11 @@ class TriviaAnswers extends Table {
   IntColumn get pokemonId => integer().references(Pokemons, #id)();
 
   BoolColumn get correct => boolean()();
+
+  // Milisegundos que tardó en responder (o el límite completo si se agotó).
+  IntColumn get millisecondsUsed => integer().withDefault(const Constant(0))();
+
+  IntColumn get hintsUsed => integer().withDefault(const Constant(0))();
+
+  IntColumn get points => integer().withDefault(const Constant(0))();
 }

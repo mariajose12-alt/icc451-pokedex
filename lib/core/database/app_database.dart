@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 
 import 'connection.dart';
+import 'daos/trivia_dao.dart';
 import 'tables/pokemon_stats_table.dart';
 import 'tables/type_efficacies_table.dart';
 import 'tables/abilities_table.dart';
@@ -19,6 +20,7 @@ import 'tables/pokemon_form_types_table.dart';
 import 'tables/pokemon_forms_table.dart';
 import 'tables/pokemon_moves_table.dart';
 import 'tables/version_groups_table.dart';
+import 'tables/trivia_achievements_table.dart';
 import 'daos/favorites_dao.dart';
 import 'daos/catalogo_dao.dart';
 import 'daos/detalle_dao.dart';
@@ -43,9 +45,10 @@ part 'app_database.g.dart';
     Favorites,
     TriviaResults,
     TriviaAnswers,
+    TriviaAchievements,
     SyncMetadata,
   ],
-  daos: [CatalogoDao, DetalleDao, FavoritesDao],
+  daos: [CatalogoDao, DetalleDao, FavoritesDao, TriviaDao],
 )
 class AppDatabase extends _$AppDatabase {
   // Constructor principal
@@ -59,8 +62,9 @@ class AppDatabase extends _$AppDatabase {
   //  2: stats base y efectividades entre tipos (detalle del Pokémon).
   //  3: datos del detalle bajo demanda: habilidades con nombre es/en,
   //     movimientos, egg groups, evoluciones y formas.
+  //  4: trivia: datos por respuesta (tiempo, pistas, puntos) y logros.
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -83,6 +87,17 @@ class AppDatabase extends _$AppDatabase {
         await m.createTable(evolutionNodes);
         await m.createTable(pokemonForms);
         await m.createTable(pokemonFormTypes);
+      }
+
+      if (from < 4) {
+        // Solo se agregan columnas con valor por defecto y una tabla nueva.
+        // Los favoritos, el catálogo y las partidas viejas no se tocan.
+        await m.addColumn(triviaResults, triviaResults.totalQuestions);
+        await m.addColumn(triviaResults, triviaResults.hintsUsed);
+        await m.addColumn(triviaAnswers, triviaAnswers.millisecondsUsed);
+        await m.addColumn(triviaAnswers, triviaAnswers.hintsUsed);
+        await m.addColumn(triviaAnswers, triviaAnswers.points);
+        await m.createTable(triviaAchievements);
       }
     },
 
