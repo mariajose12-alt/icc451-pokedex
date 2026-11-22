@@ -129,7 +129,11 @@ class StageBackground extends StatelessWidget {
           children: [
             Positioned.fill(child: background),
             ConstrainedBox(
-              constraints: BoxConstraints(minHeight: minHeight!),
+              // Ancho completo: sin esto la columna se encoge y queda a la izquierda.
+              constraints: BoxConstraints(
+                minWidth: double.infinity,
+                minHeight: minHeight!,
+              ),
               child: child,
             ),
           ],

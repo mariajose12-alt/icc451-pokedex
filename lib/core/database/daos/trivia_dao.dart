@@ -141,4 +141,10 @@ class TriviaDao extends DatabaseAccessor<AppDatabase> with _$TriviaDaoMixin {
   Future<List<TriviaAchievementEntry>> getUnlocked() {
     return select(triviaAchievements).get();
   }
+
+  /// Todos los Pokémon en orden aleatorio. El repositorio decide cuáles se
+  /// pueden usar (por ejemplo, sin conexión, solo los de imagen guardada).
+  Future<List<PokemonEntry>> shuffledPokemon() {
+    return (select(pokemons)..orderBy([(_) => OrderingTerm.random()])).get();
+  }
 }

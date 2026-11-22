@@ -104,4 +104,23 @@ class TriviaLocalDataSource {
       for (final answers in byGame.values) TriviaGameResult(answers: answers),
     ];
   }
+
+  /// Todas las preguntas posibles, mezcladas. Un solo viaje a la base para
+  /// los tipos (en vez de uno por Pokémon).
+  Future<List<TriviaQuestion>> allQuestionsShuffled() async {
+    final rows = await _dao.shuffledPokemon();
+    final types = await _dao.typeNamesOf([for (final row in rows) row.id]);
+
+    return [
+      for (final row in rows)
+        TriviaQuestion(
+          pokemonId: row.id,
+          name: row.name,
+          nationalDexNumber: row.nationalDexNumber,
+          typeNames: types[row.id] ?? const [],
+          artworkUrl: row.artworkUrl,
+          spriteUrl: row.spriteUrl,
+        ),
+    ];
+  }
 }

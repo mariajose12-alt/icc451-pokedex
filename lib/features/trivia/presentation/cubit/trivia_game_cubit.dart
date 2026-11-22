@@ -14,12 +14,17 @@ class TriviaGameCubit extends Cubit<TriviaGameState> {
   TriviaGameCubit({
     required this._repository,
     this.tick = const Duration(milliseconds: 100),
+    this.imageGrace = const Duration(seconds: 5),
   }) : super(const TriviaGameLoading());
 
   final TriviaRepository _repository;
 
   /// Cada cuánto avanza el reloj. Se puede cambiar en las pruebas.
   final Duration tick;
+
+  /// Máximo que se espera a la imagen antes de arrancar el reloj igual.
+  final Duration imageGrace;
+  Timer? _graceTimer;
 
   List<TriviaQuestion> _questions = const [];
   final List<TriviaAnswerRecord> _answers = [];
@@ -131,6 +136,17 @@ class TriviaGameCubit extends Cubit<TriviaGameState> {
         streak: _streak,
       ),
     );
+    // El reloj espera a que se vea la silueta; si tarda demasiado, arranca igual.
+    _graceTimer?.cancel();
+    _graceTimer = Timer(imageGrace, imageReady);
+  }
+
+  /// La pantalla avisa que la silueta ya se ve. Es seguro llamarla varias veces.
+  void imageReady() {
+    _graceTimer?.cancel();
+    if (state is! TriviaGameQuestion || (_timer?.isActive ?? false)) {
+      return;
+    }
     _startTimer();
   }
 
@@ -163,6 +179,7 @@ class TriviaGameCubit extends Cubit<TriviaGameState> {
     required TriviaOutcome outcome,
   }) {
     _timer?.cancel();
+    _graceTimer?.cancel();
 
     final correct = outcome == TriviaOutcome.correct;
     final used = outcome == TriviaOutcome.timeUp
@@ -227,8 +244,8 @@ class TriviaGameCubit extends Cubit<TriviaGameState> {
 
   @override
   Future<void> close() {
-    // Sin esto el reloj seguiría corriendo al salir de la pantalla.
     _timer?.cancel();
+    _graceTimer?.cancel();
     return super.close();
   }
 }

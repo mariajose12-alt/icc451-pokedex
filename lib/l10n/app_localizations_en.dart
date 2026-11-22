@@ -488,7 +488,7 @@ class AppLocalizationsEn extends AppLocalizations {
     final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
-    return '$countString Pokémon saved · works offline';
+    return '$countString Pokémon ready to play · offline, only the ones you\'ve seen';
   }
 
   @override
@@ -654,12 +654,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String triviaNoDataMessage(int required) {
-    return 'You need at least $required saved Pokémon to play. Connect to download more.';
+    return 'Offline you can only play with Pokémon whose image is already saved. You need at least $required. Connect and open Pokémon in the catalog to save them.';
   }
 
   @override
   String triviaNoDataProgress(int saved, int required) {
-    return '$saved of $required saved';
+    return '$saved of $required available';
   }
 
   @override

@@ -980,7 +980,7 @@ abstract class AppLocalizations {
   /// No description provided for @triviaSavedCount.
   ///
   /// In en, this message translates to:
-  /// **'{count} Pokémon saved · works offline'**
+  /// **'{count} Pokémon ready to play · offline, only the ones you\'ve seen'**
   String triviaSavedCount(int count);
 
   /// No description provided for @triviaNumber.
@@ -1220,13 +1220,13 @@ abstract class AppLocalizations {
   /// No description provided for @triviaNoDataMessage.
   ///
   /// In en, this message translates to:
-  /// **'You need at least {required} saved Pokémon to play. Connect to download more.'**
+  /// **'Offline you can only play with Pokémon whose image is already saved. You need at least {required}. Connect and open Pokémon in the catalog to save them.'**
   String triviaNoDataMessage(int required);
 
   /// No description provided for @triviaNoDataProgress.
   ///
   /// In en, this message translates to:
-  /// **'{saved} of {required} saved'**
+  /// **'{saved} of {required} available'**
   String triviaNoDataProgress(int saved, int required);
 
   /// No description provided for @triviaGoCatalog.

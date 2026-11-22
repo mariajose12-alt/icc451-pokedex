@@ -15,7 +15,8 @@ void main() {
       questions: sampleQuestions(questions),
       bestScore: bestScore,
     );
-    cubit = TriviaGameCubit(repository: repository);
+
+    cubit = TriviaGameCubit(repository: repository, imageGrace: Duration.zero);
     await cubit.start();
   }
 
@@ -23,7 +24,7 @@ void main() {
 
   test('sin Pokémon suficientes muestra el estado sin datos', () async {
     repository = FakeTriviaRepository();
-    cubit = TriviaGameCubit(repository: repository);
+    cubit = TriviaGameCubit(repository: repository, imageGrace: Duration.zero);
 
     await cubit.start();
 
@@ -101,7 +102,10 @@ void main() {
   test('al agotarse el tiempo revela y da 0 puntos', () {
     fakeAsync((async) {
       repository = FakeTriviaRepository(questions: sampleQuestions(2));
-      cubit = TriviaGameCubit(repository: repository);
+      cubit = TriviaGameCubit(
+        repository: repository,
+        imageGrace: Duration.zero,
+      );
       cubit.start();
       async.flushMicrotasks();
 
@@ -118,7 +122,10 @@ void main() {
   test('responder rápido da más puntos que responder tarde', () {
     fakeAsync((async) {
       repository = FakeTriviaRepository(questions: sampleQuestions(2));
-      cubit = TriviaGameCubit(repository: repository);
+      cubit = TriviaGameCubit(
+        repository: repository,
+        imageGrace: Duration.zero,
+      );
       cubit.start();
       async.flushMicrotasks();
       async.elapse(const Duration(seconds: 1));
@@ -170,5 +177,48 @@ void main() {
     cubit.useHint();
 
     expect(cubit.state, revealed);
+  });
+
+  test('el reloj no corre hasta que la silueta esté lista', () {
+    fakeAsync((async) {
+      repository = FakeTriviaRepository(questions: sampleQuestions(2));
+      // Gracia larga: solo arranca con imageReady().
+      cubit = TriviaGameCubit(
+        repository: repository,
+        imageGrace: const Duration(seconds: 30),
+      );
+      cubit.start();
+      async.flushMicrotasks();
+
+      async.elapse(const Duration(seconds: 5));
+      expect((cubit.state as TriviaGameQuestion).millisecondsLeft, 15000);
+
+      cubit.imageReady();
+      async.elapse(const Duration(seconds: 3));
+      expect(
+        (cubit.state as TriviaGameQuestion).millisecondsLeft,
+        lessThan(15000),
+      );
+    });
+  });
+
+  test('si la imagen no responde, el reloj arranca tras la gracia', () {
+    fakeAsync((async) {
+      repository = FakeTriviaRepository(questions: sampleQuestions(2));
+      cubit = TriviaGameCubit(
+        repository: repository,
+        imageGrace: const Duration(seconds: 5),
+      );
+      cubit.start();
+      async.flushMicrotasks();
+
+      async.elapse(const Duration(seconds: 8));
+
+      // 5 s de espera + 3 s ya corridos.
+      expect(
+        (cubit.state as TriviaGameQuestion).millisecondsLeft,
+        lessThan(15000),
+      );
+    });
   });
 }

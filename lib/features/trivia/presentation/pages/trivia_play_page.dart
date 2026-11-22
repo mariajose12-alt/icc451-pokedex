@@ -67,6 +67,7 @@ class _TriviaPlayPageState extends State<TriviaPlayPage> {
               onGuess: () => cubit.submitAnswer(_controller.text),
               onHint: cubit.useHint,
               onSkip: cubit.skip,
+              onImageReady: cubit.imageReady,
             );
           case TriviaGameRevealed():
             return TriviaRevealPage(

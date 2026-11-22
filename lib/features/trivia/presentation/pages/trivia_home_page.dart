@@ -42,46 +42,43 @@ class TriviaHomePage extends StatelessWidget {
                   minHeight: 340,
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TriviaPill(
-                          l10n.triviaBadge,
-                          color: PixelPalette.accent,
-                          letterSpacing: 2,
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          l10n.triviaTitle,
-                          style: theme.textTheme.headlineMedium?.copyWith(
-                            fontSize: 30,
-                            height: 1.02,
-                            color: Colors.white,
-                            fontVariations: const [FontVariation('wght', 700)],
-                            shadows: const [
-                              Shadow(
-                                color: PixelPalette.background,
-                                offset: Offset(3, 3),
-                              ),
-                            ],
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
+                      child: Column(
+                        // Todo centrado en el escenario.
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          TriviaPill(
+                            l10n.triviaBadge,
+                            color: PixelPalette.accent,
+                            letterSpacing: 2,
                           ),
-                        ),
-                        const SizedBox(height: 12),
-                        Stack(
-                          children: [
-                            Center(
-                              child: TriviaSilhouette(
-                                imageUrl: data.silhouetteUrl,
-                                size: 215,
-                              ),
+                          const SizedBox(height: 6),
+                          Text(
+                            l10n.triviaTitle,
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.headlineMedium?.copyWith(
+                              fontSize: 30,
+                              height: 1.02,
+                              color: Colors.white,
+                              fontVariations: const [
+                                FontVariation('wght', 700),
+                              ],
+                              shadows: const [
+                                Shadow(
+                                  color: PixelPalette.background,
+                                  offset: Offset(3, 3),
+                                ),
+                              ],
                             ),
-                            const Align(
-                              alignment: Alignment.bottomRight,
-                              child: StageQuestionMark(size: 68),
-                            ),
-                          ],
-                        ),
-                      ],
+                          ),
+                          const SizedBox(height: 12),
+                          TriviaSilhouette(
+                            imageUrl: data.silhouetteUrl,
+                            size: 215,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

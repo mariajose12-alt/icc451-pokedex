@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pokedex/core/theme/pixel_palette.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
+import 'package:pokedex/core/cache/image_cache_manager.dart';
 
 /// Texto sobre una píldora oscura: se lee sobre cualquier escenario.
 class TriviaPill extends StatelessWidget {
@@ -219,31 +220,101 @@ class AnswerDots extends StatelessWidget {
 
 /// Silueta de un Pokémon: su artwork pintado de un solo color. Los lectores
 /// de pantalla NO reciben el nombre (sería regalar la respuesta).
-class TriviaSilhouette extends StatelessWidget {
-  const TriviaSilhouette({required this.imageUrl, this.size = 220, super.key});
+class TriviaSilhouette extends StatefulWidget {
+  const TriviaSilhouette({
+    required this.imageUrl,
+    this.size = 220,
+    this.onReady,
+    super.key,
+  });
 
   final String? imageUrl;
   final double size;
 
+  /// Se llama una vez cuando la silueta ya se ve (o no hay nada que esperar).
+  final VoidCallback? onReady;
+
+  @override
+  State<TriviaSilhouette> createState() => _TriviaSilhouetteState();
+}
+
+class _TriviaSilhouetteState extends State<TriviaSilhouette> {
+  bool _ready = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Sin URL no hay nada que esperar.
+    if (widget.imageUrl == null) {
+      _markReady();
+    }
+  }
+
+  @override
+  void didUpdateWidget(TriviaSilhouette oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.imageUrl != widget.imageUrl) {
+      _ready = false;
+      if (widget.imageUrl == null) {
+        _markReady();
+      }
+    }
+  }
+
+  void _markReady() {
+    if (_ready) {
+      return;
+    }
+    // Después del frame: no se puede llamar a setState durante build.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || _ready) {
+        return;
+      }
+      setState(() => _ready = true);
+      widget.onReady?.call();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final url = imageUrl;
+    final url = widget.imageUrl;
+    final size = widget.size;
+
+    Widget fallback() =>
+        Center(child: Icon(Icons.catching_pokemon, size: size * 0.6));
 
     // Misma imagen con un color plano. srcIn conserva solo la forma.
-    Widget tinted(Color color) => ColorFiltered(
+    // Solo la copia principal avisa que está lista (la otra es la sombra).
+    Widget tinted(Color color, {required bool main}) => ColorFiltered(
       colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
       child: url == null
-          ? Icon(Icons.catching_pokemon, size: size * 0.6)
+          ? fallback()
           : CachedNetworkImage(
               imageUrl: url,
+              cacheManager: ImageCacheManager.instance,
               width: size,
               height: size,
               fit: BoxFit.contain,
               memCacheWidth: 600,
               placeholder: (_, _) => const SizedBox.shrink(),
-              errorWidget: (_, _, _) =>
-                  Icon(Icons.catching_pokemon, size: size * 0.6),
+              imageBuilder: (_, provider) {
+                if (main) {
+                  _markReady();
+                }
+                return Image(
+                  image: provider,
+                  width: size,
+                  height: size,
+                  fit: BoxFit.contain,
+                );
+              },
+              errorWidget: (_, _, _) {
+                if (main) {
+                  _markReady();
+                }
+                return fallback();
+              },
             ),
     );
 
@@ -259,9 +330,20 @@ class TriviaSilhouette extends StatelessWidget {
             // Sombra dura desplazada.
             Transform.translate(
               offset: const Offset(5, 5),
-              child: tinted(const Color(0x59000000)),
+              child: tinted(const Color(0x59000000), main: false),
             ),
-            tinted(PixelPalette.background),
+            tinted(PixelPalette.background, main: true),
+            // Mientras la imagen carga se ve un indicador.
+            if (!_ready && url != null)
+              const Center(
+                child: SizedBox.square(
+                  dimension: 36,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 4,
+                    color: PixelPalette.background,
+                  ),
+                ),
+              ),
           ],
         ),
       ),
@@ -292,6 +374,7 @@ class TriviaArtwork extends StatelessWidget {
                 placeholder: (_, _) => const SizedBox.shrink(),
                 errorWidget: (_, _, _) =>
                     Icon(Icons.catching_pokemon, size: size * 0.6),
+                cacheManager: ImageCacheManager.instance,
               ),
       ),
     );

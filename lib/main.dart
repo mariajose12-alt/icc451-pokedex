@@ -39,6 +39,7 @@ import 'features/pokemon/data/sync/catalog_sync_coordinator.dart';
 
 import 'package:flutter/foundation.dart' show kDebugMode;
 
+import 'features/trivia/data/datasources/local/trivia_image_cache.dart';
 import 'features/trivia/data/datasources/local/trivia_local_datasource.dart';
 import 'features/trivia/data/repositories/offline_first_trivia_repository.dart';
 import 'features/trivia/domain/repositories/trivia_repository.dart';
@@ -120,10 +121,12 @@ Future<void> main() async {
     OfflineFirstFavoritesRepository(dao: database.favoritesDao),
   );
 
-  // Trivia: todo sale de la base local, sin red.
+  // Trivia: la base local y las imágenes ya guardadas; sin red no se descarga.
   getIt.registerSingleton<TriviaRepository>(
     OfflineFirstTriviaRepository(
       local: TriviaLocalDataSource(dao: database.triviaDao),
+      connectivity: getIt<ConnectivityMonitor>(),
+      images: const PersistentTriviaImageCache(),
     ),
   );
 

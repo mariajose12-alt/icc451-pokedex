@@ -488,7 +488,7 @@ class AppLocalizationsEs extends AppLocalizations {
     final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
-    return '$countString Pokémon guardados · funciona sin conexión';
+    return '$countString Pokémon disponibles para jugar · sin conexión, solo los que ya viste';
   }
 
   @override
@@ -654,12 +654,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String triviaNoDataMessage(int required) {
-    return 'Necesitas al menos $required Pokémon guardados para jugar. Conéctate para descargar más.';
+    return 'Sin conexión solo se juega con Pokémon cuya imagen ya está guardada. Necesitas al menos $required. Conéctate y abre Pokémon en el catálogo para guardarlos.';
   }
 
   @override
   String triviaNoDataProgress(int saved, int required) {
-    return '$saved de $required guardados';
+    return '$saved de $required disponibles';
   }
 
   @override

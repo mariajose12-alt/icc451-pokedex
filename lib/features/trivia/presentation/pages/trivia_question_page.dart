@@ -4,6 +4,7 @@ import 'package:pokedex/features/trivia/presentation/models/trivia_view_data.dar
 import 'package:pokedex/features/trivia/presentation/widgets/stage_background.dart';
 import 'package:pokedex/features/trivia/presentation/widgets/trivia_button.dart';
 import 'package:pokedex/features/trivia/presentation/widgets/trivia_parts.dart';
+import 'package:pokedex/features/trivia/presentation/widgets/trivia_answer_boxes.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
 
 const _fieldBorder = OutlineInputBorder(
@@ -20,6 +21,7 @@ class TriviaQuestionPage extends StatelessWidget {
     required this.onHint,
     required this.onSkip,
     required this.controller,
+    required this.onImageReady,
     super.key,
   });
 
@@ -28,6 +30,7 @@ class TriviaQuestionPage extends StatelessWidget {
   final VoidCallback onHint;
   final VoidCallback onSkip;
   final TextEditingController controller;
+  final VoidCallback onImageReady;
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +69,7 @@ class TriviaQuestionPage extends StatelessWidget {
                                   child: TriviaSilhouette(
                                     imageUrl: data.imageUrl,
                                     size: 236,
+                                    onReady: onImageReady,
                                   ),
                                 ),
                                 const Align(
@@ -108,35 +112,11 @@ class TriviaQuestionPage extends StatelessWidget {
                     children: [
                       // Una casilla por letra. Para el lector de pantalla se
                       // dice solo cuántas letras son.
-                      Semantics(
-                        label: l10n.triviaLettersLabel(data.nameLength),
-                        excludeSemantics: true,
-                        child: Wrap(
-                          alignment: WrapAlignment.center,
-                          spacing: 4,
-                          runSpacing: 4,
-                          children: [
-                            for (var i = 0; i < data.nameLength; i++)
-                              Container(
-                                width: 30,
-                                height: 38,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: PixelPalette.background,
-                                  border: Border.all(
-                                    color: PixelPalette.panelBorder,
-                                    width: 3,
-                                  ),
-                                ),
-                                child: i < data.revealedLetters.length
-                                    ? Text(
-                                        data.revealedLetters[i].toUpperCase(),
-                                        style: theme.textTheme.titleMedium,
-                                      )
-                                    : null,
-                              ),
-                          ],
-                        ),
+                      TriviaAnswerBoxes(
+                        controller: controller,
+                        length: data.nameLength,
+                        hintLetters: data.revealedLetters,
+                        onSubmit: onGuess,
                       ),
                       const SizedBox(height: 14),
                       TextFormField(

@@ -35,75 +35,71 @@ class TriviaAchievementsPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                StageBackground(
+                StageBackground.grow(
                   mood: StageMood.gold,
-                  height: 240,
-                  child: Stack(
+                  minHeight: 260,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 14, 16, 70),
-                        child: Row(
+                        padding: const EdgeInsets.fromLTRB(16, 18, 16, 12),
+                        child: Column(
                           children: [
                             const PixelSprite(
                               sprite: PixelSprites.cup,
                               color: PixelPalette.background,
-                              width: 56,
+                              width: 64,
                             ),
-                            const SizedBox(width: 14),
-                            Expanded(
-                              child: Text(
-                                l10n.triviaAchievements,
-                                style: theme.textTheme.headlineMedium?.copyWith(
-                                  fontSize: 30,
-                                  color: Colors.white,
-                                  fontVariations: const [
-                                    FontVariation('wght', 700),
-                                  ],
-                                  shadows: const [
-                                    Shadow(
-                                      color: PixelPalette.background,
-                                      offset: Offset(3, 3),
-                                    ),
-                                  ],
-                                ),
+                            const SizedBox(height: 10),
+                            Text(
+                              l10n.triviaAchievements,
+                              textAlign: TextAlign.center,
+                              style: theme.textTheme.headlineMedium?.copyWith(
+                                fontSize: 30,
+                                color: Colors.white,
+                                fontVariations: const [
+                                  FontVariation('wght', 700),
+                                ],
+                                shadows: const [
+                                  Shadow(
+                                    color: PixelPalette.background,
+                                    offset: Offset(3, 3),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
                       ),
-                      Positioned(
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        child: StageStrip(
-                          child: Semantics(
-                            label: l10n.triviaUnlockedOf(
-                              unlocked,
-                              achievements.length,
-                            ),
-                            excludeSemantics: true,
-                            child: Row(
-                              children: [
-                                Text(
-                                  l10n.triviaCorrectOf(
-                                    unlocked,
-                                    achievements.length,
-                                  ),
-                                  style: theme.textTheme.titleMedium?.copyWith(
-                                    fontVariations: const [
-                                      FontVariation('wght', 700),
-                                    ],
-                                  ),
+                      StageStrip(
+                        child: Semantics(
+                          label: l10n.triviaUnlockedOf(
+                            unlocked,
+                            achievements.length,
+                          ),
+                          excludeSemantics: true,
+                          child: Row(
+                            children: [
+                              Text(
+                                l10n.triviaCorrectOf(
+                                  unlocked,
+                                  achievements.length,
                                 ),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: SegmentedBar(
-                                    filled: unlocked,
-                                    total: achievements.length,
-                                  ),
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  fontVariations: const [
+                                    FontVariation('wght', 700),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: SegmentedBar(
+                                  filled: unlocked,
+                                  total: achievements.length,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),

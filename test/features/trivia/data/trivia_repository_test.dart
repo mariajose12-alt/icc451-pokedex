@@ -1,22 +1,32 @@
 import 'package:drift/drift.dart' show Value;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:pokedex/core/connectivity/service_availability.dart';
 import 'package:pokedex/core/database/app_database.dart';
 import 'package:pokedex/features/trivia/data/datasources/local/trivia_local_datasource.dart';
 import 'package:pokedex/features/trivia/data/repositories/offline_first_trivia_repository.dart';
 import 'package:pokedex/features/trivia/domain/entities/trivia_achievement.dart';
 import 'package:pokedex/features/trivia/domain/entities/trivia_game_result.dart';
 
+import '../../../helpers/fake_connectivity_monitor.dart';
+import '../../../helpers/fake_trivia_image_cache.dart';
+
 void main() {
   late AppDatabase db;
   late OfflineFirstTriviaRepository repository;
   var clock = DateTime(2026, 11, 21, 10);
+  late FakeConnectivityMonitor connectivity;
+  late FakeTriviaImageCache images;
 
   setUp(() {
     clock = DateTime(2026, 11, 21, 10);
     db = AppDatabase(NativeDatabase.memory());
+    connectivity = FakeConnectivityMonitor(ServiceAvailability.online);
+    images = FakeTriviaImageCache();
     repository = OfflineFirstTriviaRepository(
       local: TriviaLocalDataSource(dao: db.triviaDao),
+      connectivity: connectivity,
+      images: images,
       now: () => clock,
     );
   });
@@ -35,6 +45,7 @@ void main() {
               name: 'pokemon$id',
               nationalDexNumber: id,
               generationId: 1,
+              artworkUrl: Value('https://img/$id.png'),
               updatedAt: DateTime(2026, 10, 27),
             ),
           );
@@ -192,4 +203,39 @@ void main() {
 
     expect(await db.select(db.pokemons).get(), hasLength(25));
   });
+
+  test('sin conexión solo se sortean Pokémon con imagen guardada', () async {
+    await seedPokemon(30);
+    connectivity.emit(ServiceAvailability.offline);
+    // Solo 25 de los 30 tienen su imagen guardada.
+    images.cached.addAll([for (var i = 1; i <= 25; i++) 'https://img/$i.png']);
+
+    final questions = await repository.pickQuestions();
+
+    expect(questions, hasLength(10));
+    expect(questions.every((q) => q.pokemonId <= 25), isTrue);
+  });
+
+  test(
+    'sin conexión y con menos de 20 imágenes guardadas no se juega',
+    () async {
+      await seedPokemon(30);
+      connectivity.emit(ServiceAvailability.offline);
+      images.cached.addAll([
+        for (var i = 1; i <= 19; i++) 'https://img/$i.png',
+      ]);
+
+      expect(await repository.pickQuestions(), isEmpty);
+      expect(await repository.watchAvailablePokemonCount().first, 19);
+    },
+  );
+
+  test(
+    'con conexión se usan todos aunque no haya imágenes guardadas',
+    () async {
+      await seedPokemon(30);
+
+      expect(await repository.pickQuestions(), hasLength(10));
+    },
+  );
 }
