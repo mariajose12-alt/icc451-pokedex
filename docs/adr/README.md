@@ -16,6 +16,7 @@ Cada archivo documenta una decisión importante con su contexto, la decisión, l
 | [0010](0010-indicador-global-estilo-pokedex.md) | Indicador global con forma de lente y luces de Pokédex | Aceptado |
 | [0011](0011-monitor-de-conectividad-verificacion-activa.md) | Monitor de conectividad con verificación activa de la API | Aceptado |
 | [0012](0012-sincronizador-en-la-capa-data.md) | Sincronizador del catálogo en la capa data | Aceptado |
+| [0013](0013-reglas-de-la-trivia.md) | Reglas de la trivia y logros calculados desde el historial | Propuesto |
 
 Estados posibles: **Propuesto**, **Aceptado**, **Reemplazado**. Si una decisión cambia, no se borra su ADR: se marca como reemplazado y se crea uno nuevo.
 
