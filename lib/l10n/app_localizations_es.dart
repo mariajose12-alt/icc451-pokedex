@@ -735,4 +735,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String triviaAchCollectorDesc(int count) {
     return 'Juega $count partidas';
   }
+
+  @override
+  String get triviaAchievementsHint => 'Cada logro muestra lo que necesitas para lograrlo';
 }

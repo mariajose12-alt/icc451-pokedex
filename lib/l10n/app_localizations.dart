@@ -1342,6 +1342,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Play {count} games'**
   String triviaAchCollectorDesc(int count);
+
+  /// No description provided for @triviaAchievementsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Each achievement shows what you need to unlock it'**
+  String get triviaAchievementsHint;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

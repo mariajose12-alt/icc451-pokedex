@@ -20,4 +20,8 @@ abstract class TriviaRepository {
   Stream<List<TriviaRankingItem>> watchRanking({int limit = 10});
 
   Stream<List<TriviaAchievementProgress>> watchAchievements();
+
+  /// Imagen de un Pokémon al azar para la pantalla de inicio. Null si no hay
+  /// ninguna que se pueda mostrar.
+  Future<String?> pickSilhouetteUrl();
 }

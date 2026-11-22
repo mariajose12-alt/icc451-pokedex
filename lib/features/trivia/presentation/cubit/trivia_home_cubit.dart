@@ -9,20 +9,29 @@ class TriviaHomeState extends Equatable {
   const TriviaHomeState({
     this.stats = const TriviaStats(),
     this.savedPokemon = 0,
+    this.silhouetteUrl,
   });
 
   final TriviaStats stats;
   final int savedPokemon;
 
-  TriviaHomeState copyWith({TriviaStats? stats, int? savedPokemon}) {
+  /// Silueta de la portada. Se elige una vez al abrir la pantalla.
+  final String? silhouetteUrl;
+
+  TriviaHomeState copyWith({
+    TriviaStats? stats,
+    int? savedPokemon,
+    String? silhouetteUrl,
+  }) {
     return TriviaHomeState(
       stats: stats ?? this.stats,
       savedPokemon: savedPokemon ?? this.savedPokemon,
+      silhouetteUrl: silhouetteUrl ?? this.silhouetteUrl,
     );
   }
 
   @override
-  List<Object?> get props => [stats, savedPokemon];
+  List<Object?> get props => [stats, savedPokemon, silhouetteUrl];
 }
 
 /// Récords y cantidad de Pokémon guardados para la pantalla de inicio.
@@ -36,6 +45,14 @@ class TriviaHomeCubit extends Cubit<TriviaHomeState> {
     _countSubscription = repository.watchAvailablePokemonCount().listen(
       (count) => emit(state.copyWith(savedPokemon: count)),
     );
+    unawaited(_loadSilhouette(repository));
+  }
+
+  Future<void> _loadSilhouette(TriviaRepository repository) async {
+    final url = await repository.pickSilhouetteUrl();
+    if (!isClosed) {
+      emit(state.copyWith(silhouetteUrl: url));
+    }
   }
 
   late final StreamSubscription<TriviaStats> _statsSubscription;

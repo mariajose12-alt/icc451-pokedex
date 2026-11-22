@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
 import 'package:pokedex/features/trivia/presentation/models/trivia_view_data.dart';
 import 'package:pokedex/features/trivia/presentation/widgets/stage_background.dart';
 import 'package:pokedex/features/trivia/presentation/widgets/trivia_button.dart';
 import 'package:pokedex/features/trivia/presentation/widgets/trivia_parts.dart';
 import 'package:pokedex/features/trivia/presentation/widgets/trivia_answer_boxes.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
-
-const _fieldBorder = OutlineInputBorder(
-  borderRadius: BorderRadius.zero,
-  borderSide: BorderSide(color: PixelPalette.accent, width: 3),
-);
 
 /// Pregunta: silueta, tiempo, casillas de letras y campo para el nombre
 /// (RF-TRV-01, RF-TRV-02). Solo muestra lo que recibe.
@@ -110,32 +104,14 @@ class TriviaQuestionPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      // Una casilla por letra. Para el lector de pantalla se
-                      // dice solo cuántas letras son.
+                      // El único campo de respuesta: se escribe sobre las casillas.
                       TriviaAnswerBoxes(
                         controller: controller,
                         length: data.nameLength,
                         hintLetters: data.revealedLetters,
                         onSubmit: onGuess,
                       ),
-                      const SizedBox(height: 14),
-                      TextFormField(
-                        controller: controller,
-                        textInputAction: TextInputAction.done,
-                        autocorrect: false,
-                        enableSuggestions: false,
-                        onFieldSubmitted: (_) => onGuess(),
-                        style: theme.textTheme.titleMedium,
-                        decoration: InputDecoration(
-                          hintText: l10n.triviaGuessHint,
-                          filled: true,
-                          fillColor: PixelPalette.background,
-                          border: _fieldBorder,
-                          enabledBorder: _fieldBorder,
-                          focusedBorder: _fieldBorder,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 16),
                       Row(
                         children: [
                           Expanded(

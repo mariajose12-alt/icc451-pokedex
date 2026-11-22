@@ -238,4 +238,25 @@ void main() {
       expect(await repository.pickQuestions(), hasLength(10));
     },
   );
+
+  test('la silueta del inicio es una imagen disponible', () async {
+    await seedPokemon(30);
+
+    expect(await repository.pickSilhouetteUrl(), startsWith('https://img/'));
+  });
+
+  test('sin conexión la silueta sale de las imágenes guardadas', () async {
+    await seedPokemon(30);
+    connectivity.emit(ServiceAvailability.offline);
+    images.cached.add('https://img/7.png');
+
+    expect(await repository.pickSilhouetteUrl(), 'https://img/7.png');
+  });
+
+  test('sin conexión y sin imágenes guardadas no hay silueta', () async {
+    await seedPokemon(30);
+    connectivity.emit(ServiceAvailability.offline);
+
+    expect(await repository.pickSilhouetteUrl(), isNull);
+  });
 }

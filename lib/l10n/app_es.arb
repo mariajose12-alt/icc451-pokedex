@@ -297,5 +297,6 @@
   "@triviaAchTrainerDesc": { "placeholders": { "count": { "type": "int" } } },
   "triviaAchCollectorName": "Coleccionista",
   "triviaAchCollectorDesc": "Juega {count} partidas",
-  "@triviaAchCollectorDesc": { "placeholders": { "count": { "type": "int" } } }
+  "@triviaAchCollectorDesc": { "placeholders": { "count": { "type": "int" } } },
+  "triviaAchievementsHint": "Cada logro muestra lo que necesitas para lograrlo"
 }

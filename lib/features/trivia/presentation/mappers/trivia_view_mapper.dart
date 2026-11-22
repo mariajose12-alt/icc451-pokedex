@@ -67,7 +67,7 @@ TriviaHomeData homeData(TriviaHomeState state) {
     streak: state.stats.currentStreak,
     gamesPlayed: state.stats.gamesPlayed,
     savedPokemon: state.savedPokemon,
-    silhouetteUrl: null,
+    silhouetteUrl: state.silhouetteUrl,
   );
 }
 

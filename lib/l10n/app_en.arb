@@ -297,5 +297,6 @@
   "@triviaAchTrainerDesc": { "placeholders": { "count": { "type": "int" } } },
   "triviaAchCollectorName": "Collector",
   "triviaAchCollectorDesc": "Play {count} games",
-  "@triviaAchCollectorDesc": { "placeholders": { "count": { "type": "int" } } }
+  "@triviaAchCollectorDesc": { "placeholders": { "count": { "type": "int" } } },
+  "triviaAchievementsHint": "Each achievement shows what you need to unlock it"
 }

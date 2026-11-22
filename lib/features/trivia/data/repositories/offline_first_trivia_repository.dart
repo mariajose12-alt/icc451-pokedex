@@ -165,4 +165,33 @@ class OfflineFirstTriviaRepository implements TriviaRepository {
     }
     return null;
   }
+
+  @override
+  Future<String?> pickSilhouetteUrl() async {
+    final all = await _local.allQuestionsShuffled();
+
+    if (!_isOffline) {
+      // Con conexión, el primero al azar que tenga imagen.
+      for (final question in all) {
+        final url = question.imageUrl;
+        if (url != null) {
+          return url;
+        }
+      }
+      return null;
+    }
+
+    // Sin conexión, el primero al azar cuya imagen esté guardada. Se revisa
+    // de 40 en 40 y se corta en cuanto aparece uno.
+    for (var i = 0; i < all.length; i += 40) {
+      final chunk = all.skip(i).take(40);
+      final checked = await Future.wait(chunk.map(_offlineVersion));
+      for (final question in checked) {
+        if (question != null) {
+          return question.imageUrl;
+        }
+      }
+    }
+    return null;
+  }
 }

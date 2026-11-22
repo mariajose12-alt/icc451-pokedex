@@ -24,6 +24,9 @@ class FakeTriviaRepository implements TriviaRepository {
   Stream<int> watchAvailablePokemonCount() => Stream.value(questions.length);
 
   @override
+  Future<String?> pickSilhouetteUrl() async => null;
+
+  @override
   Future<List<TriviaAchievementId>> saveGame(TriviaGameResult game) async {
     saved = game;
     return [TriviaAchievementId.firstGame];

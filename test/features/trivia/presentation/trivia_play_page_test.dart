@@ -59,7 +59,7 @@ void main() {
       expect(find.byType(TriviaQuestionPage), findsOneWidget);
 
       // Se escribe en el campo y se envía con la tecla "listo".
-      await tester.enterText(find.byType(TextFormField), 'Pikachu');
+      await tester.enterText(find.byType(TextField), 'Pikachu');
       await tester.testTextInput.receiveAction(TextInputAction.done);
       await tester.pump();
       expect(find.byType(TriviaRevealPage), findsOneWidget);
@@ -69,10 +69,7 @@ void main() {
       // El campo empieza vacío en la pregunta siguiente.
       expect(find.byType(TriviaQuestionPage), findsOneWidget);
       expect(
-        tester
-            .widget<TextFormField>(find.byType(TextFormField))
-            .controller!
-            .text,
+        tester.widget<TextField>(find.byType(TextField)).controller!.text,
         isEmpty,
       );
 
