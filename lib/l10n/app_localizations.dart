@@ -1246,6 +1246,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ranking and achievements stay available offline.'**
   String get triviaNoDataNote;
+
+  /// No description provided for @triviaAchFirstGameName.
+  ///
+  /// In en, this message translates to:
+  /// **'First game'**
+  String get triviaAchFirstGameName;
+
+  /// No description provided for @triviaAchFirstGameDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish your first game'**
+  String get triviaAchFirstGameDesc;
+
+  /// No description provided for @triviaAchStreak5Name.
+  ///
+  /// In en, this message translates to:
+  /// **'Streak'**
+  String get triviaAchStreak5Name;
+
+  /// No description provided for @triviaAchStreak5Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Get {count} right in a row'**
+  String triviaAchStreak5Desc(int count);
+
+  /// No description provided for @triviaAchLightningName.
+  ///
+  /// In en, this message translates to:
+  /// **'Lightning'**
+  String get triviaAchLightningName;
+
+  /// No description provided for @triviaAchLightningDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer correctly in under {seconds} seconds'**
+  String triviaAchLightningDesc(int seconds);
+
+  /// No description provided for @triviaAchExpertName.
+  ///
+  /// In en, this message translates to:
+  /// **'Expert'**
+  String get triviaAchExpertName;
+
+  /// No description provided for @triviaAchExpertDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'{points} points in a single game'**
+  String triviaAchExpertDesc(int points);
+
+  /// No description provided for @triviaAchPerfectName.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect'**
+  String get triviaAchPerfectName;
+
+  /// No description provided for @triviaAchPerfectDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Get all {count} questions right'**
+  String triviaAchPerfectDesc(int count);
+
+  /// No description provided for @triviaAchNoHintsName.
+  ///
+  /// In en, this message translates to:
+  /// **'No hints'**
+  String get triviaAchNoHintsName;
+
+  /// No description provided for @triviaAchNoHintsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Get {count} or more right without hints'**
+  String triviaAchNoHintsDesc(int count);
+
+  /// No description provided for @triviaAchTrainerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Trainer'**
+  String get triviaAchTrainerName;
+
+  /// No description provided for @triviaAchTrainerDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Get {count} Pokémon right in total'**
+  String triviaAchTrainerDesc(int count);
+
+  /// No description provided for @triviaAchCollectorName.
+  ///
+  /// In en, this message translates to:
+  /// **'Collector'**
+  String get triviaAchCollectorName;
+
+  /// No description provided for @triviaAchCollectorDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Play {count} games'**
+  String triviaAchCollectorDesc(int count);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

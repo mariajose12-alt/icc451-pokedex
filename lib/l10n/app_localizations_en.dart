@@ -670,4 +670,69 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get triviaNoDataNote => 'Ranking and achievements stay available offline.';
+
+  @override
+  String get triviaAchFirstGameName => 'First game';
+
+  @override
+  String get triviaAchFirstGameDesc => 'Finish your first game';
+
+  @override
+  String get triviaAchStreak5Name => 'Streak';
+
+  @override
+  String triviaAchStreak5Desc(int count) {
+    return 'Get $count right in a row';
+  }
+
+  @override
+  String get triviaAchLightningName => 'Lightning';
+
+  @override
+  String triviaAchLightningDesc(int seconds) {
+    return 'Answer correctly in under $seconds seconds';
+  }
+
+  @override
+  String get triviaAchExpertName => 'Expert';
+
+  @override
+  String triviaAchExpertDesc(int points) {
+    final intl.NumberFormat pointsNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String pointsString = pointsNumberFormat.format(points);
+
+    return '$pointsString points in a single game';
+  }
+
+  @override
+  String get triviaAchPerfectName => 'Perfect';
+
+  @override
+  String triviaAchPerfectDesc(int count) {
+    return 'Get all $count questions right';
+  }
+
+  @override
+  String get triviaAchNoHintsName => 'No hints';
+
+  @override
+  String triviaAchNoHintsDesc(int count) {
+    return 'Get $count or more right without hints';
+  }
+
+  @override
+  String get triviaAchTrainerName => 'Trainer';
+
+  @override
+  String triviaAchTrainerDesc(int count) {
+    return 'Get $count Pokémon right in total';
+  }
+
+  @override
+  String get triviaAchCollectorName => 'Collector';
+
+  @override
+  String triviaAchCollectorDesc(int count) {
+    return 'Play $count games';
+  }
 }

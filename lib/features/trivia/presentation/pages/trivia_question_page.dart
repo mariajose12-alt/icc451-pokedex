@@ -19,6 +19,7 @@ class TriviaQuestionPage extends StatelessWidget {
     required this.onGuess,
     required this.onHint,
     required this.onSkip,
+    required this.controller,
     super.key,
   });
 
@@ -26,6 +27,7 @@ class TriviaQuestionPage extends StatelessWidget {
   final VoidCallback onGuess;
   final VoidCallback onHint;
   final VoidCallback onSkip;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -118,6 +120,7 @@ class TriviaQuestionPage extends StatelessWidget {
                               Container(
                                 width: 30,
                                 height: 38,
+                                alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   color: PixelPalette.background,
                                   border: Border.all(
@@ -125,13 +128,19 @@ class TriviaQuestionPage extends StatelessWidget {
                                     width: 3,
                                   ),
                                 ),
+                                child: i < data.revealedLetters.length
+                                    ? Text(
+                                        data.revealedLetters[i].toUpperCase(),
+                                        style: theme.textTheme.titleMedium,
+                                      )
+                                    : null,
                               ),
                           ],
                         ),
                       ),
                       const SizedBox(height: 14),
                       TextFormField(
-                        initialValue: data.typedText,
+                        controller: controller,
                         textInputAction: TextInputAction.done,
                         autocorrect: false,
                         enableSuggestions: false,

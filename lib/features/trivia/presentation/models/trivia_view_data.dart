@@ -27,7 +27,7 @@ class TriviaQuestionData {
     required this.secondsLeft,
     required this.totalSeconds,
     required this.nameLength,
-    required this.typedText,
+    required this.revealedLetters,
     required this.imageUrl,
   });
 
@@ -39,7 +39,7 @@ class TriviaQuestionData {
 
   /// Cuántas letras tiene el nombre (una casilla por letra).
   final int nameLength;
-  final String typedText;
+  final String revealedLetters;
   final String? imageUrl;
 }
 

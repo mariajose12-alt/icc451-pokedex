@@ -16,14 +16,13 @@ import 'package:pokedex/features/pokemon/presentation/bloc/catalog_event.dart';
 import 'package:pokedex/features/pokemon/presentation/cubit/catalog_view_mode_cubit.dart';
 import 'package:pokedex/features/pokemon/presentation/pages/catalog_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:pokedex/features/trivia/presentation/pages/trivia_home_page.dart';
-import 'package:pokedex/features/trivia/presentation/pages/trivia_question_page.dart';
-import 'package:pokedex/features/trivia/presentation/pages/trivia_result_page.dart';
-import 'package:pokedex/features/trivia/presentation/pages/trivia_reveal_page.dart';
-import 'package:pokedex/features/trivia/presentation/preview/trivia_sample_data.dart';
-import 'package:pokedex/features/trivia/presentation/pages/trivia_achievements_page.dart';
-import 'package:pokedex/features/trivia/presentation/pages/trivia_no_data_page.dart';
-import 'package:pokedex/features/trivia/presentation/pages/trivia_ranking_page.dart';
+import 'package:pokedex/features/trivia/domain/repositories/trivia_repository.dart';
+import 'package:pokedex/features/trivia/presentation/cubit/trivia_achievements_cubit.dart';
+import 'package:pokedex/features/trivia/presentation/cubit/trivia_game_cubit.dart';
+import 'package:pokedex/features/trivia/presentation/cubit/trivia_home_cubit.dart';
+import 'package:pokedex/features/trivia/presentation/cubit/trivia_ranking_cubit.dart';
+import 'package:pokedex/features/trivia/presentation/pages/trivia_play_page.dart';
+import 'package:pokedex/features/trivia/presentation/pages/trivia_screens.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/pokemon_detail_repository.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/type_chart_repository.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/pokemon_moves_repository.dart';
@@ -118,71 +117,40 @@ final GoRouter appRouter = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.trivia,
-              builder: (context, state) => TriviaHomePage(
-                data: TriviaSampleData.home,
-                onPlay: () => context.go(AppRoutes.triviaQuestion),
-                onRanking: () => context.go(AppRoutes.triviaRanking),
-                onAchievements: () => context.go(AppRoutes.triviaAchievements),
+              builder: (context, state) => BlocProvider<TriviaHomeCubit>(
+                create: (_) =>
+                    TriviaHomeCubit(repository: getIt<TriviaRepository>()),
+                child: const TriviaHomeScreen(),
               ),
               routes: [
-                // TEMPORAL: la navegación entre pantallas es de ejemplo
-                // (Adivinar → acierto, Saltar → tiempo agotado). El motor de
-                // la trivia decidirá esto más adelante.
                 GoRoute(
-                  path: 'question',
-                  builder: (context, state) => TriviaQuestionPage(
-                    data: TriviaSampleData.question,
-                    onGuess: () => context.go(AppRoutes.triviaCorrect),
-                    onSkip: () => context.go(AppRoutes.triviaTimeUp),
-                    onHint: () {}, // Sin lógica todavía.
-                  ),
-                ),
-                GoRoute(
-                  path: 'correct',
-                  builder: (context, state) => TriviaRevealPage(
-                    kind: TriviaRevealKind.correct,
-                    data: TriviaSampleData.correct,
-                    onNext: () => context.go(AppRoutes.triviaResult),
-                  ),
-                ),
-                GoRoute(
-                  path: 'time-up',
-                  builder: (context, state) => TriviaRevealPage(
-                    kind: TriviaRevealKind.timeUp,
-                    data: TriviaSampleData.timeUp,
-                    onNext: () => context.go(AppRoutes.triviaResult),
-                  ),
-                ),
-                GoRoute(
-                  path: 'result',
-                  builder: (context, state) => TriviaResultPage(
-                    data: TriviaSampleData.result,
-                    onPlayAgain: () => context.go(AppRoutes.triviaQuestion),
-                    onRanking: () => context.go(AppRoutes.triviaRanking),
-                    onHome: () => context.go(AppRoutes.trivia),
+                  path: 'play',
+                  builder: (context, state) => BlocProvider<TriviaGameCubit>(
+                    // start() arma las preguntas en cuanto se abre la partida.
+                    create: (_) =>
+                        TriviaGameCubit(repository: getIt<TriviaRepository>())
+                          ..start(),
+                    child: const TriviaPlayPage(),
                   ),
                 ),
                 GoRoute(
                   path: 'ranking',
-                  builder: (context, state) => TriviaRankingPage(
-                    entries: TriviaSampleData.ranking,
-                    onBack: () => context.go(AppRoutes.trivia),
+                  builder: (context, state) => BlocProvider<TriviaRankingCubit>(
+                    create: (_) => TriviaRankingCubit(
+                      repository: getIt<TriviaRepository>(),
+                    ),
+                    child: const TriviaRankingScreen(),
                   ),
                 ),
                 GoRoute(
                   path: 'achievements',
-                  builder: (context, state) => TriviaAchievementsPage(
-                    achievements: TriviaSampleData.achievements,
-                    onBack: () => context.go(AppRoutes.trivia),
-                  ),
-                ),
-                GoRoute(
-                  path: 'no-data',
-                  builder: (context, state) => TriviaNoDataPage(
-                    data: TriviaSampleData.noData,
-                    onGoCatalog: () => context.go(AppRoutes.catalog),
-                    onRetry: () => context.go(AppRoutes.trivia),
-                  ),
+                  builder: (context, state) =>
+                      BlocProvider<TriviaAchievementsCubit>(
+                        create: (_) => TriviaAchievementsCubit(
+                          repository: getIt<TriviaRepository>(),
+                        ),
+                        child: const TriviaAchievementsScreen(),
+                      ),
                 ),
               ],
             ),
