@@ -1,17 +1,33 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pokedex/app/app.dart';
+import 'package:pokedex/core/connectivity/connectivity_monitor.dart';
+import 'package:pokedex/core/di/service_locator.dart';
+import 'package:pokedex/core/sync/fake_sync_info_source.dart';
+import 'package:pokedex/core/sync/sync_info.dart';
+import 'package:pokedex/features/pokemon/data/repositories/fake_pokemon_repository.dart';
+import 'package:pokedex/features/pokemon/domain/repositories/pokemon_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'helpers/fake_connectivity_monitor.dart';
 
 void main() {
-  testWidgets('La app arranca y muestra el título', (tester) async {
-    await tester.pumpWidget(const PokedexApp());
+  late SharedPreferences preferences;
 
-    expect(find.text('Pokédex'), findsOneWidget);
+  setUp(() async {
+    SharedPreferences.setMockInitialValues(<String, Object>{});
+    preferences = await SharedPreferences.getInstance();
+    getIt
+      ..registerSingleton<SharedPreferences>(preferences)
+      ..registerSingleton<ConnectivityMonitor>(FakeConnectivityMonitor())
+      ..registerSingleton<SyncInfoSource>(FakeSyncInfoSource())
+      ..registerSingleton<PokemonRepository>(
+        FakePokemonRepository(
+          scenario: FakeScenario.empty,
+          delay: Duration.zero,
+        ),
+      );
+  });
+
+  tearDown(() async {
+    await getIt.reset();
   });
 }

@@ -31,9 +31,11 @@ dependencies:
   flutter:
     sdk: flutter
 
+  file: ^7.0.1
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.8
+  cupertino_icons: ^2.0.0
   flutter_bloc: ^9.1.1
   equatable: ^3.0.0
   get_it: ^9.3.0
@@ -48,6 +50,11 @@ dependencies:
   sqlite3_flutter_libs: ^0.6.0+eol
   shared_preferences: ^2.5.6
   intl: ^0.20.3
+  bloc_concurrency: ^0.3.0
+  skeletonizer: ^3.0.0
+  flutter_localizations:
+    sdk: flutter
+  share_plus: ^13.3.1
 
 dev_dependencies:
   flutter_test:
@@ -61,6 +68,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   drift_dev: ^2.35.1
   build_runner: ^2.16.2
+  flutter_launcher_icons: ^0.14.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -72,6 +80,7 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  generate: true
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -89,10 +98,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+     - family: PixelifySans
+       fonts:
+         - asset: assets/fonts/PixelifySans.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
@@ -103,3 +112,10 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+flutter_launcher_icons:
+    android: true
+    ios: false
+    image_path: "assets/icon/icon.png"
+    adaptive_icon_background: "#C83838"
+    adaptive_icon_foreground: "assets/icon/icon_foreground.png"
