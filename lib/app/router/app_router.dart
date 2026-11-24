@@ -17,6 +17,11 @@ import 'package:pokedex/features/pokemon/presentation/cubit/catalog_view_mode_cu
 import 'package:pokedex/features/pokemon/presentation/pages/catalog_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:pokedex/features/pokemon/domain/repositories/pokemon_detail_repository.dart';
+import 'package:pokedex/features/pokemon/domain/repositories/type_chart_repository.dart';
+import 'package:pokedex/features/pokemon/domain/repositories/pokemon_moves_repository.dart';
+import 'package:pokedex/features/favorites/domain/repositories/favorites_repository.dart';
+
 import 'app_shell.dart';
 
 /// Router de la aplicación. Cada pestaña es una rama con su propio estado.
@@ -32,6 +37,8 @@ final GoRouter appRouter = GoRouter(
           ),
           child: AppShell(
             navigationShell: navigationShell,
+            // El detalle vive en /catalog/:id; ahí la barra muestra volver.
+            showBack: state.uri.path.startsWith('${AppRoutes.catalog}/'),
             toolsMenu: getIt.isRegistered<ApiOutageSimulator>()
                 ? ToolsMenuButton(
                     simulator: getIt<ApiOutageSimulator>(),
@@ -77,8 +84,14 @@ final GoRouter appRouter = GoRouter(
                       create: (context) => PokemonDetailCubit(
                         repository: getIt<PokemonRepository>(),
                         pokemonId: id,
+                        detailRepository: getIt<PokemonDetailRepository>(),
                       ),
-                      child: const PokemonDetailPage(),
+                      child: PokemonDetailPage(
+                        typeChartRepository: getIt<TypeChartRepository>(),
+                        detailRepository: getIt<PokemonDetailRepository>(),
+                        movesRepository: getIt<PokemonMovesRepository>(),
+                        favoritesRepository: getIt<FavoritesRepository>(),
+                      ),
                     );
                   },
                 ),

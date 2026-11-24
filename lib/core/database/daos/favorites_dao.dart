@@ -1,31 +1,44 @@
 import 'package:drift/drift.dart';
-
 import 'package:pokedex/core/database/app_database.dart';
 import 'package:pokedex/core/database/tables/favorites_table.dart';
 
 part 'favorites_dao.g.dart';
 
+/// DAO de favoritos. Son datos del usuario: la sincronización del catálogo
+/// no los modifica (OF-21, PS-11).
 @DriftAccessor(tables: [Favorites])
 class FavoritesDao extends DatabaseAccessor<AppDatabase>
     with _$FavoritesDaoMixin {
-  FavoritesDao(super.db);
+  FavoritesDao(super.attachedDatabase);
 
-  /// Emite la lista de favoritos ante cada cambio.
-  Stream<List<FavoriteEntry>> watchFavorites() => select(favorites).watch();
+  /// ¿Es favorito? distinct(): si cambia otro favorito, este no vuelve a
+  /// emitir lo mismo.
+  Stream<bool> watchIsFavorite(int pokemonId) {
+    final query = select(favorites)
+      ..where((row) => row.pokemonId.equals(pokemonId));
+    return query.watch().map((rows) => rows.isNotEmpty).distinct();
+  }
 
-  /// Emite true si el Pokémon es favorito.
-  Stream<bool> watchIsFavorite(int pokemonId) =>
-      (select(favorites)..where((t) => t.pokemonId.equals(pokemonId)))
-          .watch()
-          .map((rows) => rows.isNotEmpty);
+  Stream<Set<int>> watchFavoriteIds() {
+    return select(favorites)
+        .watch()
+        .map((rows) => {for (final row in rows) row.pokemonId});
+  }
 
-  /// Agrega el favorito. Sin efecto si ya existe (PS-06).
-  Future<void> addFavorite(int pokemonId) => into(favorites).insert(
-    FavoritesCompanion.insert(pokemonId: Value(pokemonId)),
-    mode: InsertMode.insertOrIgnore,
-  );
-
-  /// Quita el favorito. Devuelve las filas eliminadas.
-  Future<int> removeFavorite(int pokemonId) =>
-      (delete(favorites)..where((t) => t.pokemonId.equals(pokemonId))).go();
+  /// Agrega o quita en una sola transacción (PS-09): o se completa o no se
+  /// hace nada. Primero se intenta borrar; si no había fila, se inserta.
+  /// Devuelve true si quedó como favorito.
+  Future<bool> toggle(int pokemonId) {
+    return transaction(() async {
+      final removed = await (delete(
+        favorites,
+      )..where((row) => row.pokemonId.equals(pokemonId))).go();
+      if (removed > 0) {
+        return false;
+      }
+      await into(favorites)
+          .insert(FavoritesCompanion.insert(pokemonId: Value(pokemonId)));
+      return true;
+    });
+  }
 }

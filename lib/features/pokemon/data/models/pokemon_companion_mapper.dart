@@ -58,7 +58,16 @@ PageCompanions pageToCompanions(List<PokemonDto> items, DateTime now) {
       );
     }
 
-    stats.add(statsToCompanion(dto));
+    // Una fila por cada stat del Pokémon (6 en total).
+    for (final stat in dto.stats) {
+      stats.add(
+        PokemonStatsCompanion.insert(
+          pokemonId: dto.id,
+          statId: stat.statId,
+          baseStat: stat.baseStat,
+        ),
+      );
+    }
   }
 
   return PageCompanions(
@@ -66,36 +75,5 @@ PageCompanions pageToCompanions(List<PokemonDto> items, DateTime now) {
     pokemons: pokemons,
     pokemonTypes: relations,
     stats: stats,
-  );
-}
-
-/// Convierte las estadisticas de un Pokemon en una fila de PokemonStats.
-/// Si falta alguna de las sesi falla: no se guarda una fila incompleta
-PokemonStatsCompanion statsToCompanion(PokemonDto dto) {
-  // Mapa de nombre de PokeAPI a valor: {'hp' : 45, 'attack' : 49, ...}
-  final values = <String, int>{};
-  for (final stat in dto.stats) {
-    values[stat.statName] = stat.baseStat;
-  }
-
-  // Funcion local: busca un valor y falla si no existe
-  int valueOf(String name) {
-    final value = values[name];
-    if (value == null) {
-      throw FormatException(
-        'Falta la estadística "$name" del Pokémon ${dto.id}',
-      );
-    }
-    return value;
-  }
-
-  return PokemonStatsCompanion.insert(
-    pokemonId: Value(dto.id),
-    hp: valueOf('hp'),
-    attack: valueOf('attack'),
-    defense: valueOf('defense'),
-    specialAttack: valueOf('special-attack'),
-    specialDefense: valueOf('special-defense'),
-    speed: valueOf('speed'),
   );
 }

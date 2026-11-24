@@ -8,6 +8,12 @@ class Abilities extends Table {
 
   TextColumn get effectSummary => text().nullable()();
 
+  // Nombre de la habilidad en español e inglés. Son nulos hasta que se abre
+  // un Pokémon que la tenga (el detalle se baja bajo demanda).
+  TextColumn get nameEs => text().nullable()();
+
+  TextColumn get nameEn => text().nullable()();
+
   @override
   Set<Column> get primaryKey => {id};
 }

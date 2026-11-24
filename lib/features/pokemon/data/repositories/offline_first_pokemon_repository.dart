@@ -28,8 +28,11 @@ class OfflineFirstPokemonRepository implements PokemonRepository {
 
   @override
   Future<void> refreshCatalog({bool onlyIfStale = false}) async {
-    // Actualización automática con datos vigentes: no se gasta ninguna llamada.
+    // Actualización automática con datos vigentes: no se descarga el catálogo.
     if (onlyIfStale && !await _local.isStale(catalogMaxAge)) {
+      // Pero si las efectividades faltan (falló la vez anterior), se intenta
+      // ahora. Si ya están, no cuesta ninguna llamada.
+      await _sync.ensureEfficacies();
       return;
     }
 
