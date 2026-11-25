@@ -282,7 +282,7 @@ class CatalogoDao extends DatabaseAccessor<AppDatabase>
         final type = row.readTableOrNull(pokeTypes);
         final item = byId.putIfAbsent(
           pokemon.id,
-              () => PokemonWithTypes(pokemon: pokemon, types: <TypeEntry>[]),
+          () => PokemonWithTypes(pokemon: pokemon, types: <TypeEntry>[]),
         );
         if (type != null) {
           item.types.add(type);

@@ -49,4 +49,18 @@ void main() {
 
     expect(store.load().orden, CatalogoOrden.numero);
   });
+
+  test('cerrar y reabrir: un store nuevo lee el criterio guardado', () async {
+    const criterio = CatalogoQuery(
+      tipoIds: {10},
+      generacionIds: {2, 3},
+      orden: CatalogoOrden.totalBase,
+    );
+    final prefs = await SharedPreferences.getInstance();
+
+    await CatalogQueryStore(preferences: prefs).save(criterio);
+
+    final reabierto = CatalogQueryStore(preferences: prefs);
+    expect(reabierto.load(), criterio);
+  });
 }

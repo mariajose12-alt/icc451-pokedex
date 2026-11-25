@@ -21,7 +21,9 @@ class CatalogBloc extends Bloc<CatalogEvent, CatalogState> {
     on<CatalogStarted>(_onStarted);
     // droppable() -> si ya hay un refresh en curso, ignora los nuevos.
     on<CatalogRefreshRequested>(_onRefreshRequested, transformer: droppable());
-    on<CatalogSearchChanged>(_onSearchChanged);
+    // transformer: restartable() -> impide que se acumulen los tiempos de
+    // espera al usuario escribir en la búsqueda
+    on<CatalogSearchChanged>(_onSearchChanged, transformer: restartable());
     on<CatalogFilterChanged>(_onFilterChanged);
     // restartable() -> cada criterio nuevo cancela la observación anterior.
     on<CatalogCriteriaApplied>(_onCriteriaApplied, transformer: restartable());
