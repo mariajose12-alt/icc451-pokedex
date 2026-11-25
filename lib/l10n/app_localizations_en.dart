@@ -811,4 +811,47 @@ class AppLocalizationsEn extends AppLocalizations {
   String settingsLastSyncValue(String time) {
     return 'Last sync · $time';
   }
+
+  @override
+  String get favoritesSubtitle => 'Saved on this phone · available offline';
+
+  @override
+  String get favoritesSortLabel => 'Sort by';
+
+  @override
+  String get favoritesSortRecent => 'Recent';
+
+  @override
+  String get favoritesSortName => 'Name';
+
+  @override
+  String get favoritesSortNumber => 'Number';
+
+  @override
+  String get favoritesEmptyTitle => 'No favorites yet';
+
+  @override
+  String get favoritesEmptyMessage =>
+      'Tap the heart on a Pokémon to save it here. Favorites work offline.';
+
+  @override
+  String get favoritesEmptyAction => 'Explore the Pokédex';
+
+  @override
+  String get favoritesUndo => 'Undo';
+
+  @override
+  String favoritesRemovedSnack(String name) {
+    return '$name removed from favorites';
+  }
+
+  @override
+  String favoriteAddNamed(String name) {
+    return 'Add $name to favorites';
+  }
+
+  @override
+  String favoriteRemoveNamed(String name) {
+    return 'Remove $name from favorites';
+  }
 }

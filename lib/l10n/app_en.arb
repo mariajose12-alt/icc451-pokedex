@@ -316,5 +316,20 @@
   "settingsSavedLabel": "Your Pokédex has saved",
   "settingsSavedUnit": "Pokémon",
   "settingsLastSyncValue": "Last sync · {time}",
-  "@settingsLastSyncValue": { "placeholders": { "time": { "type": "String" } } }
+  "@settingsLastSyncValue": { "placeholders": { "time": { "type": "String" } } },
+  "favoritesSubtitle": "Saved on this phone · available offline",
+  "favoritesSortLabel": "Sort by",
+  "favoritesSortRecent": "Recent",
+  "favoritesSortName": "Name",
+  "favoritesSortNumber": "Number",
+  "favoritesEmptyTitle": "No favorites yet",
+  "favoritesEmptyMessage": "Tap the heart on a Pokémon to save it here. Favorites work offline.",
+  "favoritesEmptyAction": "Explore the Pokédex",
+  "favoritesUndo": "Undo",
+  "favoritesRemovedSnack": "{name} removed from favorites",
+  "@favoritesRemovedSnack": { "placeholders": { "name": { "type": "String" } } },
+  "favoriteAddNamed": "Add {name} to favorites",
+  "@favoriteAddNamed": { "placeholders": { "name": { "type": "String" } } },
+  "favoriteRemoveNamed": "Remove {name} from favorites",
+  "@favoriteRemoveNamed": { "placeholders": { "name": { "type": "String" } } }
 }

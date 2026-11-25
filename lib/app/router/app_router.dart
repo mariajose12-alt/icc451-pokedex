@@ -32,6 +32,7 @@ import 'package:pokedex/features/settings/presentation/widgets/outage_simulator_
 import 'package:pokedex/features/settings/domain/repositories/saved_pokemon_repository.dart';
 import 'package:pokedex/features/settings/presentation/cubit/saved_count_cubit.dart';
 import 'package:pokedex/features/settings/presentation/widgets/walking_pokemon.dart';
+import 'package:pokedex/features/favorites/presentation/cubit/favorites_list_cubit.dart';
 
 import 'app_shell.dart';
 
@@ -119,7 +120,12 @@ final GoRouter appRouter = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.favorites,
-              builder: (context, state) => const FavoritesPage(),
+              builder: (context, state) => BlocProvider<FavoritesListCubit>(
+                create: (context) => FavoritesListCubit(
+                  repository: getIt<FavoritesRepository>(),
+                ),
+                child: const FavoritesPage(),
+              ),
             ),
           ],
         ),

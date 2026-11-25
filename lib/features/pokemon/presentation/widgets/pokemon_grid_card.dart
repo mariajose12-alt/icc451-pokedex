@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
 import 'package:pokedex/core/widgets/pixel_panel.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_image.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_detail_image.dart';
+import 'package:pokedex/features/favorites/presentation/widgets/favorite_heart_button.dart';
 
 import 'type_badge.dart';
 
@@ -111,10 +111,12 @@ class PokemonGridCard extends StatelessWidget {
             Positioned(
               top: -8,
               right: -8,
-              child: IconButton(
+              child: FavoriteHeartButton(
+                isFavorite: isFavorite,
+                label: isFavorite
+                    ? l10n.favoriteRemoveNamed(name)
+                    : l10n.favoriteAddNamed(name),
                 onPressed: favoriteCallback,
-                color: PixelPalette.accent,
-                icon: Icon(isFavorite ? Icons.star : Icons.star_border),
               ),
             ),
         ],

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pokedex/features/favorites/presentation/cubit/favorite_cubit.dart';
+import 'package:pokedex/features/favorites/presentation/cubit/favorites_cubit.dart';
 
 import '../../helpers/fake_favorites_repository.dart';
 

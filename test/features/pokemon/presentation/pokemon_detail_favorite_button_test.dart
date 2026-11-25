@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pokedex/features/favorites/presentation/cubit/favorite_cubit.dart';
+import 'package:pokedex/features/favorites/presentation/cubit/favorites_cubit.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_detail_favorite_button.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
 

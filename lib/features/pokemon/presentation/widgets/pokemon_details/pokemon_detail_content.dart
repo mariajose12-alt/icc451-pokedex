@@ -23,7 +23,7 @@ import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/po
 import 'package:pokedex/features/pokemon/presentation/cubit/pokemon_moves_cubit.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_detail_moves.dart';
 import 'package:pokedex/features/favorites/domain/repositories/favorites_repository.dart';
-import 'package:pokedex/features/favorites/presentation/cubit/favorite_cubit.dart';
+import 'package:pokedex/features/favorites/presentation/cubit/favorites_cubit.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
 
 /// Contenido del detalle cuando el Pokémon está guardado: header, pestañas y

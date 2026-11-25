@@ -1453,6 +1453,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Last sync · {time}'**
   String settingsLastSyncValue(String time);
+
+  /// No description provided for @favoritesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved on this phone · available offline'**
+  String get favoritesSubtitle;
+
+  /// No description provided for @favoritesSortLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by'**
+  String get favoritesSortLabel;
+
+  /// No description provided for @favoritesSortRecent.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent'**
+  String get favoritesSortRecent;
+
+  /// No description provided for @favoritesSortName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get favoritesSortName;
+
+  /// No description provided for @favoritesSortNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Number'**
+  String get favoritesSortNumber;
+
+  /// No description provided for @favoritesEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No favorites yet'**
+  String get favoritesEmptyTitle;
+
+  /// No description provided for @favoritesEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the heart on a Pokémon to save it here. Favorites work offline.'**
+  String get favoritesEmptyMessage;
+
+  /// No description provided for @favoritesEmptyAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore the Pokédex'**
+  String get favoritesEmptyAction;
+
+  /// No description provided for @favoritesUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get favoritesUndo;
+
+  /// No description provided for @favoritesRemovedSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} removed from favorites'**
+  String favoritesRemovedSnack(String name);
+
+  /// No description provided for @favoriteAddNamed.
+  ///
+  /// In en, this message translates to:
+  /// **'Add {name} to favorites'**
+  String favoriteAddNamed(String name);
+
+  /// No description provided for @favoriteRemoveNamed.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name} from favorites'**
+  String favoriteRemoveNamed(String name);
 }
 
 class _AppLocalizationsDelegate

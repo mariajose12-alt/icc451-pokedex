@@ -815,4 +815,48 @@ class AppLocalizationsEs extends AppLocalizations {
   String settingsLastSyncValue(String time) {
     return 'Última sincronización · $time';
   }
+
+  @override
+  String get favoritesSubtitle =>
+      'Guardados en este teléfono · disponibles sin conexión';
+
+  @override
+  String get favoritesSortLabel => 'Ordenar por';
+
+  @override
+  String get favoritesSortRecent => 'Recientes';
+
+  @override
+  String get favoritesSortName => 'Nombre';
+
+  @override
+  String get favoritesSortNumber => 'Número';
+
+  @override
+  String get favoritesEmptyTitle => 'Aún no tienes favoritos';
+
+  @override
+  String get favoritesEmptyMessage =>
+      'Toca el corazón en un Pokémon para guardarlo aquí. Tus favoritos funcionan sin conexión.';
+
+  @override
+  String get favoritesEmptyAction => 'Explorar el Pokédex';
+
+  @override
+  String get favoritesUndo => 'Deshacer';
+
+  @override
+  String favoritesRemovedSnack(String name) {
+    return '$name quitado de favoritos';
+  }
+
+  @override
+  String favoriteAddNamed(String name) {
+    return 'Agregar a $name a favoritos';
+  }
+
+  @override
+  String favoriteRemoveNamed(String name) {
+    return 'Quitar a $name de favoritos';
+  }
 }

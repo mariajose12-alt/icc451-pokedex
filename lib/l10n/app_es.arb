@@ -316,5 +316,20 @@
   "settingsSavedLabel": "Tu Pokédex guarda",
   "settingsSavedUnit": "Pokémon",
   "settingsLastSyncValue": "Última sincronización · {time}",
-  "@settingsLastSyncValue": { "placeholders": { "time": { "type": "String" } } }
+  "@settingsLastSyncValue": { "placeholders": { "time": { "type": "String" } } },
+  "favoritesSubtitle": "Guardados en este teléfono · disponibles sin conexión",
+  "favoritesSortLabel": "Ordenar por",
+  "favoritesSortRecent": "Recientes",
+  "favoritesSortName": "Nombre",
+  "favoritesSortNumber": "Número",
+  "favoritesEmptyTitle": "Aún no tienes favoritos",
+  "favoritesEmptyMessage": "Toca el corazón en un Pokémon para guardarlo aquí. Tus favoritos funcionan sin conexión.",
+  "favoritesEmptyAction": "Explorar el Pokédex",
+  "favoritesUndo": "Deshacer",
+  "favoritesRemovedSnack": "{name} quitado de favoritos",
+  "@favoritesRemovedSnack": { "placeholders": { "name": { "type": "String" } } },
+  "favoriteAddNamed": "Agregar a {name} a favoritos",
+  "@favoriteAddNamed": { "placeholders": { "name": { "type": "String" } } },
+  "favoriteRemoveNamed": "Quitar a {name} de favoritos",
+  "@favoriteRemoveNamed": { "placeholders": { "name": { "type": "String" } } }
 }
