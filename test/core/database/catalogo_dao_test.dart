@@ -30,7 +30,6 @@ void main() {
       pokemonTypes: [
         PokemonTypesCompanion.insert(pokemonId: 25, typeId: 13, slot: 1),
       ],
-      stats: const [],
       syncState: SyncMetadataCompanion(
         resourceKey: const Value('catalog'),
         status: const Value('ok'),
