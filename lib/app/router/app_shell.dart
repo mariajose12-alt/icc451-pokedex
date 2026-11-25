@@ -40,7 +40,6 @@ class AppShell extends StatelessWidget {
             // Indicador global de conectividad (IND-01). En el detalle lleva
             // la flecha de volver en lugar de la lente.
             ConnectivityIndicator(
-              trailing: toolsMenu,
               // Mismo camino que el botón atrás del sistema: el delegado de
               // go_router llama a maybePop, así que respeta el PopScope de
               // la partida de trivia (pide confirmación).
@@ -75,6 +74,10 @@ class AppShell extends StatelessWidget {
                 PokedexNavItem(
                   sprite: PixelSprites.quiz,
                   label: l10n.navTrivia,
+                ),
+                PokedexNavItem(
+                  sprite: PixelSprites.gear,
+                  label: l10n.navSettings,
                 ),
               ],
             ),

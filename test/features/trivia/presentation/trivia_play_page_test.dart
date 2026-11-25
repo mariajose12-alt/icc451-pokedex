@@ -102,16 +102,6 @@ void main() {
     tester.widget<PopScope>(scope).onPopInvokedWithResult!(false, null);
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
-    // Diagnóstico temporal: qué textos hay en pantalla.
-    debugPrint(
-      tester.allWidgets
-          .whereType<Text>()
-          .map((t) => t.data)
-          .whereType<String>()
-          .toList()
-          .toString(),
-    );
-    debugPrint('AlertDialog: ${find.byType(AlertDialog).evaluate().length}');
     expect(find.text('¿Salir de la partida?'), findsOneWidget);
 
     // «Seguir jugando» cierra el diálogo y la pregunta sigue ahí.

@@ -111,6 +111,20 @@ abstract final class PixelSprites {
     '.....##....',
     '...........',
   ]);
+
+  static final PixelSpriteData gear = PixelSpriteData.fromRows([
+    '....###....',
+    '.#..###..#.',
+    '.#########.',
+    '..###.###..',
+    '####...####',
+    '####...####',
+    '####...####',
+    '..###.###..',
+    '.#########.',
+    '.#..###..#.',
+    '....###....',
+  ]);
 }
 
 /// Dibuja un [PixelSpriteData]. Es decorativo: no lo leen los lectores de

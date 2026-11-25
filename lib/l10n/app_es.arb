@@ -302,5 +302,19 @@
   "triviaExitTitle": "¿Salir de la partida?",
   "triviaExitMessage": "Si sales ahora, esta partida no se guarda.",
   "triviaExitStay": "Seguir jugando",
-  "triviaExitLeave": "Salir"
+  "triviaExitLeave": "Salir",
+  "settingsTitle": "Ajustes",
+  "settingsCatalogView": "Vista del catálogo",
+  "settingsLastSync": "Última sincronización",
+  "settingsSyncNow": "Sincronizar ahora",
+  "settingsSyncNeedsConnection": "Necesitas conexión para sincronizar.",
+  "languageSpanish": "Español",
+  "languageEnglish": "Inglés",
+  "settingsTestTools": "Herramientas de prueba",
+  "settingsOutageHint": "El servicio aparece como no disponible aunque haya red.",
+  "settingsSubtitle": "Tu Pokédex y tus preferencias",
+  "settingsSavedLabel": "Tu Pokédex guarda",
+  "settingsSavedUnit": "Pokémon",
+  "settingsLastSyncValue": "Última sincronización · {time}",
+  "@settingsLastSyncValue": { "placeholders": { "time": { "type": "String" } } }
 }

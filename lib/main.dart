@@ -28,6 +28,8 @@ import 'features/pokemon/domain/repositories/pokemon_detail_repository.dart';
 import 'features/pokemon/domain/repositories/pokemon_repository.dart';
 import 'features/pokemon/domain/repositories/pokemon_moves_repository.dart';
 import 'features/pokemon/domain/repositories/type_chart_repository.dart';
+import 'features/settings/data/repositories/drift_saved_pokemon_repository.dart';
+import 'features/settings/domain/repositories/saved_pokemon_repository.dart';
 import 'features/settings/presentation/cubit/locale_cubit.dart';
 import 'core/database/app_database.dart';
 import 'core/sync/drift_sync_info_source.dart';
@@ -147,6 +149,11 @@ Future<void> main() async {
       runningChanges: coordinator.runningChanges,
       initiallyRunning: coordinator.isRunning,
     ),
+  );
+
+  // Ajustes: cuántos Pokémon hay guardados y sprites para la decoración.
+  getIt.registerSingleton<SavedPokemonRepository>(
+    DriftSavedPokemonRepository(dao: database.catalogoDao),
   );
 
   // Programador: decide cuándo se actualiza solo (reconexión y periódica).

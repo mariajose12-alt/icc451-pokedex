@@ -1,6 +1,5 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -37,27 +36,22 @@ class AppLocalizationsEs extends AppLocalizations {
   String get catalogEmptyTitle => 'Aún no hay Pokémon guardados';
 
   @override
-  String get catalogEmptyMessage =>
-      'Conéctate a Internet para descargar el catálogo. Después podrás usarlo sin conexión.';
+  String get catalogEmptyMessage => 'Conéctate a Internet para descargar el catálogo. Después podrás usarlo sin conexión.';
 
   @override
   String get catalogErrorTitle => 'No se pudo cargar el catálogo';
 
   @override
-  String get catalogRefreshFailedBanner =>
-      'No se pudo actualizar. Mostrando los datos guardados.';
+  String get catalogRefreshFailedBanner => 'No se pudo actualizar. Mostrando los datos guardados.';
 
   @override
-  String get errorNoConnection =>
-      'No hay conexión a Internet. Revisa tu red e inténtalo de nuevo.';
+  String get errorNoConnection => 'No hay conexión a Internet. Revisa tu red e inténtalo de nuevo.';
 
   @override
-  String get errorTimeout =>
-      'La solicitud tardó demasiado. Inténtalo de nuevo.';
+  String get errorTimeout => 'La solicitud tardó demasiado. Inténtalo de nuevo.';
 
   @override
-  String get errorRateLimit =>
-      'Se hicieron demasiadas solicitudes. Espera un momento e inténtalo de nuevo.';
+  String get errorRateLimit => 'Se hicieron demasiadas solicitudes. Espera un momento e inténtalo de nuevo.';
 
   @override
   String get errorService => 'El servicio no está disponible en este momento.';
@@ -140,8 +134,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get catalogRefreshFailedTitle => 'No se pudo actualizar';
 
   @override
-  String get catalogRefreshFailedMessage =>
-      'Se muestran los datos guardados. Inténtalo de nuevo.';
+  String get catalogRefreshFailedMessage => 'Se muestran los datos guardados. Inténtalo de nuevo.';
 
   @override
   String get debugSimulateOutage => 'Simular caída de la API (solo pruebas)';
@@ -150,8 +143,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get detailNotFoundTitle => 'Pokémon no encontrado';
 
   @override
-  String get detailNotFoundMessage =>
-      'Este Pokémon no está guardado en tu dispositivo.';
+  String get detailNotFoundMessage => 'Este Pokémon no está guardado en tu dispositivo.';
 
   @override
   String get detailBack => 'Volver';
@@ -267,8 +259,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get detailAbilitiesEnglishNote => 'Las descripciones están en inglés';
 
   @override
-  String get detailExtrasPending =>
-      'Estos datos se descargan al abrir el Pokémon con conexión';
+  String get detailExtrasPending => 'Estos datos se descargan al abrir el Pokémon con conexión';
 
   @override
   String get detailEggGroupsTitle => 'Grupos huevo';
@@ -417,8 +408,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get movesEmptyTitle => 'Sin movimientos por este método';
 
   @override
-  String get movesEmptyMessage =>
-      'Prueba con otro método o con otra versión del juego.';
+  String get movesEmptyMessage => 'Prueba con otro método o con otra versión del juego.';
 
   @override
   String get cardNationalDex => 'POKÉDEX NACIONAL';
@@ -453,8 +443,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get cardShareAction => 'Compartir carta';
 
   @override
-  String get cardShareError =>
-      'No se pudo generar la imagen. Inténtalo de nuevo.';
+  String get cardShareError => 'No se pudo generar la imagen. Inténtalo de nuevo.';
 
   @override
   String cardShareText(String name, String number) {
@@ -483,8 +472,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get triviaStatGames => 'PARTIDAS';
 
   @override
-  String get triviaRules =>
-      '10 Pokémon por partida · 15 segundos cada uno · las pistas restan puntos';
+  String get triviaRules => '10 Pokémon por partida · 15 segundos cada uno · las pistas restan puntos';
 
   @override
   String get triviaPlay => 'Jugar';
@@ -497,8 +485,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String triviaSavedCount(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     return '$countString Pokémon disponibles para jugar · sin conexión, solo los que ya viste';
@@ -506,8 +493,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String triviaNumber(int value) {
-    final intl.NumberFormat valueNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat valueNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String valueString = valueNumberFormat.format(value);
 
     return '$valueString';
@@ -523,8 +509,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String triviaPoints(int score) {
-    final intl.NumberFormat scoreNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat scoreNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String scoreString = scoreNumberFormat.format(score);
 
     return '$scoreString pts';
@@ -623,8 +608,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String triviaPodiumLabel(int position, int score) {
-    final intl.NumberFormat scoreNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat scoreNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String scoreString = scoreNumberFormat.format(score);
 
     return 'Puesto $position: $scoreString puntos';
@@ -639,8 +623,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get triviaRankingEmptyTitle => 'Aún no hay partidas';
 
   @override
-  String get triviaRankingEmptyMessage =>
-      'Juega una partida y tu puntaje aparecerá aquí.';
+  String get triviaRankingEmptyMessage => 'Juega una partida y tu puntaje aparecerá aquí.';
 
   @override
   String triviaUnlockedOf(int unlocked, int total) {
@@ -655,11 +638,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String triviaProgressOf(int current, int target) {
-    final intl.NumberFormat currentNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat currentNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String currentString = currentNumberFormat.format(current);
-    final intl.NumberFormat targetNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat targetNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String targetString = targetNumberFormat.format(target);
 
     return '$currentString/$targetString';
@@ -688,8 +669,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get triviaRetry => 'Reintentar';
 
   @override
-  String get triviaNoDataNote =>
-      'El ranking y los logros siguen disponibles sin conexión.';
+  String get triviaNoDataNote => 'El ranking y los logros siguen disponibles sin conexión.';
 
   @override
   String get triviaAchFirstGameName => 'Primera partida';
@@ -718,8 +698,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String triviaAchExpertDesc(int points) {
-    final intl.NumberFormat pointsNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat pointsNumberFormat = intl.NumberFormat.decimalPattern(localeName);
     final String pointsString = pointsNumberFormat.format(points);
 
     return '$pointsString puntos en una partida';
@@ -758,8 +737,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get triviaAchievementsHint =>
-      'Cada logro muestra lo que necesitas para lograrlo';
+  String get triviaAchievementsHint => 'Cada logro muestra lo que necesitas para lograrlo';
 
   @override
   String get triviaExitTitle => '¿Salir de la partida?';
@@ -772,4 +750,45 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get triviaExitLeave => 'Salir';
+
+  @override
+  String get settingsTitle => 'Ajustes';
+
+  @override
+  String get settingsCatalogView => 'Vista del catálogo';
+
+  @override
+  String get settingsLastSync => 'Última sincronización';
+
+  @override
+  String get settingsSyncNow => 'Sincronizar ahora';
+
+  @override
+  String get settingsSyncNeedsConnection => 'Necesitas conexión para sincronizar.';
+
+  @override
+  String get languageSpanish => 'Español';
+
+  @override
+  String get languageEnglish => 'Inglés';
+
+  @override
+  String get settingsTestTools => 'Herramientas de prueba';
+
+  @override
+  String get settingsOutageHint => 'El servicio aparece como no disponible aunque haya red.';
+
+  @override
+  String get settingsSubtitle => 'Tu Pokédex y tus preferencias';
+
+  @override
+  String get settingsSavedLabel => 'Tu Pokédex guarda';
+
+  @override
+  String get settingsSavedUnit => 'Pokémon';
+
+  @override
+  String settingsLastSyncValue(String time) {
+    return 'Última sincronización · $time';
+  }
 }

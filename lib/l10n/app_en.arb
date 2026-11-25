@@ -302,5 +302,19 @@
   "triviaExitTitle": "Leave the game?",
   "triviaExitMessage": "If you leave now, this game won't be saved.",
   "triviaExitStay": "Keep playing",
-  "triviaExitLeave": "Leave"
+  "triviaExitLeave": "Leave",
+  "settingsTitle": "Settings",
+  "settingsCatalogView": "Catalog view",
+  "settingsLastSync": "Last sync",
+  "settingsSyncNow": "Sync now",
+  "settingsSyncNeedsConnection": "You need a connection to sync.",
+  "languageSpanish": "Spanish",
+  "languageEnglish": "English",
+  "settingsTestTools": "Testing tools",
+  "settingsOutageHint": "The service shows as unavailable even with a network.",
+  "settingsSubtitle": "Your Pokédex and preferences",
+  "settingsSavedLabel": "Your Pokédex has saved",
+  "settingsSavedUnit": "Pokémon",
+  "settingsLastSyncValue": "Last sync · {time}",
+  "@settingsLastSyncValue": { "placeholders": { "time": { "type": "String" } } }
 }

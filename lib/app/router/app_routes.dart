@@ -17,4 +17,6 @@ abstract final class AppRoutes {
   static const String triviaPlay = '/trivia/play';
   static const String triviaRanking = '/trivia/ranking';
   static const String triviaAchievements = '/trivia/achievements';
+
+  static const String settings = '/settings';
 }

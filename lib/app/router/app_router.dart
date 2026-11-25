@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:pokedex/app/router/app_routes.dart';
 import 'package:pokedex/features/pokemon/presentation/cubit/pokemon_detail_cubit.dart';
 import 'package:pokedex/features/pokemon/presentation/pages/pokemon_detail_page.dart';
-import 'package:pokedex/app/router/tools_menu_button.dart';
 import 'package:pokedex/core/connectivity/connectivity_monitor.dart';
 import 'package:pokedex/core/connectivity/indicator/connectivity_indicator_cubit.dart';
 import 'package:pokedex/core/di/service_locator.dart';
@@ -27,6 +26,12 @@ import 'package:pokedex/features/pokemon/domain/repositories/pokemon_detail_repo
 import 'package:pokedex/features/pokemon/domain/repositories/type_chart_repository.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/pokemon_moves_repository.dart';
 import 'package:pokedex/features/favorites/domain/repositories/favorites_repository.dart';
+import 'package:pokedex/features/settings/presentation/cubit/manual_sync_cubit.dart';
+import 'package:pokedex/features/settings/presentation/pages/settings_page.dart';
+import 'package:pokedex/features/settings/presentation/widgets/outage_simulator_tile.dart';
+import 'package:pokedex/features/settings/domain/repositories/saved_pokemon_repository.dart';
+import 'package:pokedex/features/settings/presentation/cubit/saved_count_cubit.dart';
+import 'package:pokedex/features/settings/presentation/widgets/walking_pokemon.dart';
 
 import 'app_shell.dart';
 
@@ -36,11 +41,21 @@ final GoRouter appRouter = GoRouter(
   routes: [
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
-        return BlocProvider<ConnectivityIndicatorCubit>(
-          create: (context) => ConnectivityIndicatorCubit(
-            monitor: getIt<ConnectivityMonitor>(),
-            syncSource: getIt<SyncInfoSource>(),
-          ),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider<ConnectivityIndicatorCubit>(
+              create: (context) => ConnectivityIndicatorCubit(
+                monitor: getIt<ConnectivityMonitor>(),
+                syncSource: getIt<SyncInfoSource>(),
+              ),
+            ),
+            // Un solo cubit para la vista del catálogo: lo usan el catálogo
+            // y Ajustes, así un cambio se ve en los dos.
+            BlocProvider<CatalogViewModeCubit>(
+              create: (context) =>
+                  CatalogViewModeCubit(preferences: getIt<SharedPreferences>()),
+            ),
+          ],
           child: AppShell(
             navigationShell: navigationShell,
             // Pantallas abiertas encima de una pestaña: el detalle
@@ -51,12 +66,6 @@ final GoRouter appRouter = GoRouter(
             // Durante la partida no se muestra la barra de pestañas: así nadie
             // cambia de pantalla por accidente a mitad del reloj.
             hideNavBar: state.uri.path == AppRoutes.triviaPlay,
-            toolsMenu: getIt.isRegistered<ApiOutageSimulator>()
-                ? ToolsMenuButton(
-                    simulator: getIt<ApiOutageSimulator>(),
-                    monitor: getIt<ConnectivityMonitor>(),
-                  )
-                : null,
           ),
         );
       },
@@ -72,11 +81,6 @@ final GoRouter appRouter = GoRouter(
                       create: (context) =>
                           CatalogBloc(repository: getIt<PokemonRepository>())
                             ..add(const CatalogStarted()),
-                    ),
-                    BlocProvider<CatalogViewModeCubit>(
-                      create: (context) => CatalogViewModeCubit(
-                        preferences: getIt<SharedPreferences>(),
-                      ),
                     ),
                   ],
                   child: const CatalogPage(),
@@ -159,6 +163,37 @@ final GoRouter appRouter = GoRouter(
                       ),
                 ),
               ],
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: AppRoutes.settings,
+              builder: (context, state) => MultiBlocProvider(
+                providers: [
+                  BlocProvider<ManualSyncCubit>(
+                    create: (context) =>
+                        ManualSyncCubit(repository: getIt<PokemonRepository>()),
+                  ),
+                  BlocProvider<SavedCountCubit>(
+                    create: (context) => SavedCountCubit(
+                      repository: getIt<SavedPokemonRepository>(),
+                    ),
+                  ),
+                ],
+                child: SettingsPage(
+                  testTools: getIt.isRegistered<ApiOutageSimulator>()
+                      ? OutageSimulatorTile(
+                          simulator: getIt<ApiOutageSimulator>(),
+                          monitor: getIt<ConnectivityMonitor>(),
+                        )
+                      : null,
+                  footer: WalkingPokemon(
+                    repository: getIt<SavedPokemonRepository>(),
+                  ),
+                ),
+              ),
             ),
           ],
         ),
