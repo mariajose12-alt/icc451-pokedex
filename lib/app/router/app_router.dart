@@ -43,8 +43,14 @@ final GoRouter appRouter = GoRouter(
           ),
           child: AppShell(
             navigationShell: navigationShell,
-            // El detalle vive en /catalog/:id; ahí la barra muestra volver.
-            showBack: state.uri.path.startsWith('${AppRoutes.catalog}/'),
+            // Pantallas abiertas encima de una pestaña: el detalle
+            // (/catalog/:id) y la partida de trivia. Ahí la banda muestra volver.
+            showBack:
+                state.uri.path.startsWith('${AppRoutes.catalog}/') ||
+                state.uri.path == AppRoutes.triviaPlay,
+            // Durante la partida no se muestra la barra de pestañas: así nadie
+            // cambia de pantalla por accidente a mitad del reloj.
+            hideNavBar: state.uri.path == AppRoutes.triviaPlay,
             toolsMenu: getIt.isRegistered<ApiOutageSimulator>()
                 ? ToolsMenuButton(
                     simulator: getIt<ApiOutageSimulator>(),

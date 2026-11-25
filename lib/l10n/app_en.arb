@@ -298,5 +298,9 @@
   "triviaAchCollectorName": "Collector",
   "triviaAchCollectorDesc": "Play {count} games",
   "@triviaAchCollectorDesc": { "placeholders": { "count": { "type": "int" } } },
-  "triviaAchievementsHint": "Each achievement shows what you need to unlock it"
+  "triviaAchievementsHint": "Each achievement shows what you need to unlock it",
+  "triviaExitTitle": "Leave the game?",
+  "triviaExitMessage": "If you leave now, this game won't be saved.",
+  "triviaExitStay": "Keep playing",
+  "triviaExitLeave": "Leave"
 }

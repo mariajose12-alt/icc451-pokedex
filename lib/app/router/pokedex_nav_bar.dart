@@ -120,11 +120,7 @@ class _NavButton extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      PixelSprite(
-                        sprite: item.sprite,
-                        color: color,
-                        width: 22,
-                      ),
+                      PixelSprite(sprite: item.sprite, color: color, width: 22),
                       const SizedBox(height: 4),
                       // Sin límite de líneas: con texto al 200 % se parte
                       // y no se corta (RNF-ACC-04).

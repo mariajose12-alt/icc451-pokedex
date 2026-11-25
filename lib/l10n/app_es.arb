@@ -298,5 +298,9 @@
   "triviaAchCollectorName": "Coleccionista",
   "triviaAchCollectorDesc": "Juega {count} partidas",
   "@triviaAchCollectorDesc": { "placeholders": { "count": { "type": "int" } } },
-  "triviaAchievementsHint": "Cada logro muestra lo que necesitas para lograrlo"
+  "triviaAchievementsHint": "Cada logro muestra lo que necesitas para lograrlo",
+  "triviaExitTitle": "¿Salir de la partida?",
+  "triviaExitMessage": "Si sales ahora, esta partida no se guarda.",
+  "triviaExitStay": "Seguir jugando",
+  "triviaExitLeave": "Salir"
 }

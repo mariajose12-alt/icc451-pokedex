@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -36,22 +37,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get catalogEmptyTitle => 'No Pokémon saved yet';
 
   @override
-  String get catalogEmptyMessage => 'Connect to the Internet to download the catalog. After that you can use it offline.';
+  String get catalogEmptyMessage =>
+      'Connect to the Internet to download the catalog. After that you can use it offline.';
 
   @override
   String get catalogErrorTitle => 'The catalog could not be loaded';
 
   @override
-  String get catalogRefreshFailedBanner => 'Could not update. Showing saved data.';
+  String get catalogRefreshFailedBanner =>
+      'Could not update. Showing saved data.';
 
   @override
-  String get errorNoConnection => 'No Internet connection. Check your network and try again.';
+  String get errorNoConnection =>
+      'No Internet connection. Check your network and try again.';
 
   @override
   String get errorTimeout => 'The request took too long. Try again.';
 
   @override
-  String get errorRateLimit => 'Too many requests. Wait a moment and try again.';
+  String get errorRateLimit =>
+      'Too many requests. Wait a moment and try again.';
 
   @override
   String get errorService => 'The service is not available right now.';
@@ -143,7 +148,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get detailNotFoundTitle => 'Pokémon not found';
 
   @override
-  String get detailNotFoundMessage => 'This Pokémon is not saved on your device.';
+  String get detailNotFoundMessage =>
+      'This Pokémon is not saved on your device.';
 
   @override
   String get detailBack => 'Back';
@@ -259,7 +265,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get detailAbilitiesEnglishNote => 'Descriptions are in English';
 
   @override
-  String get detailExtrasPending => 'This data downloads when you open the Pokémon online';
+  String get detailExtrasPending =>
+      'This data downloads when you open the Pokémon online';
 
   @override
   String get detailEggGroupsTitle => 'Egg groups';
@@ -472,7 +479,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get triviaStatGames => 'GAMES';
 
   @override
-  String get triviaRules => '10 Pokémon per game · 15 seconds each · hints cost points';
+  String get triviaRules =>
+      '10 Pokémon per game · 15 seconds each · hints cost points';
 
   @override
   String get triviaPlay => 'Play';
@@ -485,7 +493,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String triviaSavedCount(int count) {
-    final intl.NumberFormat countNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
     return '$countString Pokémon ready to play · offline, only the ones you\'ve seen';
@@ -493,7 +502,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String triviaNumber(int value) {
-    final intl.NumberFormat valueNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat valueNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String valueString = valueNumberFormat.format(value);
 
     return '$valueString';
@@ -509,7 +519,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String triviaPoints(int score) {
-    final intl.NumberFormat scoreNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat scoreNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String scoreString = scoreNumberFormat.format(score);
 
     return '$scoreString pts';
@@ -608,7 +619,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String triviaPodiumLabel(int position, int score) {
-    final intl.NumberFormat scoreNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat scoreNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String scoreString = scoreNumberFormat.format(score);
 
     return 'Place $position: $scoreString points';
@@ -623,7 +635,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get triviaRankingEmptyTitle => 'No games yet';
 
   @override
-  String get triviaRankingEmptyMessage => 'Play a game and your score will show up here.';
+  String get triviaRankingEmptyMessage =>
+      'Play a game and your score will show up here.';
 
   @override
   String triviaUnlockedOf(int unlocked, int total) {
@@ -638,9 +651,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String triviaProgressOf(int current, int target) {
-    final intl.NumberFormat currentNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat currentNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String currentString = currentNumberFormat.format(current);
-    final intl.NumberFormat targetNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat targetNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String targetString = targetNumberFormat.format(target);
 
     return '$currentString/$targetString';
@@ -669,7 +684,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get triviaRetry => 'Retry';
 
   @override
-  String get triviaNoDataNote => 'Ranking and achievements stay available offline.';
+  String get triviaNoDataNote =>
+      'Ranking and achievements stay available offline.';
 
   @override
   String get triviaAchFirstGameName => 'First game';
@@ -698,7 +714,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String triviaAchExpertDesc(int points) {
-    final intl.NumberFormat pointsNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat pointsNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String pointsString = pointsNumberFormat.format(points);
 
     return '$pointsString points in a single game';
@@ -737,5 +754,19 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get triviaAchievementsHint => 'Each achievement shows what you need to unlock it';
+  String get triviaAchievementsHint =>
+      'Each achievement shows what you need to unlock it';
+
+  @override
+  String get triviaExitTitle => 'Leave the game?';
+
+  @override
+  String get triviaExitMessage =>
+      'If you leave now, this game won\'t be saved.';
+
+  @override
+  String get triviaExitStay => 'Keep playing';
+
+  @override
+  String get triviaExitLeave => 'Leave';
 }

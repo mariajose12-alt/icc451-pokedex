@@ -221,4 +221,32 @@ void main() {
       );
     });
   });
+
+  test('pause detiene el reloj y resume lo reanuda sin perder tiempo', () {
+    fakeAsync((async) {
+      repository = FakeTriviaRepository(questions: sampleQuestions(2));
+      cubit = TriviaGameCubit(
+        repository: repository,
+        imageGrace: Duration.zero,
+      );
+      cubit.start();
+      async.flushMicrotasks();
+
+      async.elapse(const Duration(seconds: 3));
+      cubit.pause();
+      final left = (cubit.state as TriviaGameQuestion).millisecondsLeft;
+
+      // En pausa el tiempo no baja, aunque pasen 10 s.
+      async.elapse(const Duration(seconds: 10));
+      expect((cubit.state as TriviaGameQuestion).millisecondsLeft, left);
+
+      // Al reanudar sigue desde donde estaba.
+      cubit.resume();
+      async.elapse(const Duration(seconds: 2));
+      expect(
+        (cubit.state as TriviaGameQuestion).millisecondsLeft,
+        lessThan(left),
+      );
+    });
+  });
 }

@@ -81,4 +81,60 @@ void main() {
       await _finish(tester, cubit);
     },
   );
+
+  testWidgets('con la partida en curso atrás pide confirmar; seguir '
+      'mantiene la pregunta', (tester) async {
+    tester.view.physicalSize = const Size(900, 2400);
+    addTearDown(tester.view.reset);
+
+    final cubit = TriviaGameCubit(
+      repository: FakeTriviaRepository(questions: sampleQuestions(2)),
+    );
+    await tester.pumpWidget(_host(cubit));
+    await cubit.start();
+    await tester.pump();
+
+    // En plena partida el atrás está bloqueado (PopScope).
+    final scope = find.byWidgetPredicate((w) => w is PopScope).first;
+    expect(tester.widget<PopScope>(scope).canPop, isFalse);
+
+    // Se simula el intento de salir y debe aparecer el diálogo.
+    tester.widget<PopScope>(scope).onPopInvokedWithResult!(false, null);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    // Diagnóstico temporal: qué textos hay en pantalla.
+    debugPrint(
+      tester.allWidgets
+          .whereType<Text>()
+          .map((t) => t.data)
+          .whereType<String>()
+          .toList()
+          .toString(),
+    );
+    debugPrint('AlertDialog: ${find.byType(AlertDialog).evaluate().length}');
+    expect(find.text('¿Salir de la partida?'), findsOneWidget);
+
+    // «Seguir jugando» cierra el diálogo y la pregunta sigue ahí.
+    await tester.tap(find.text('Seguir jugando'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(find.text('¿Salir de la partida?'), findsNothing);
+    expect(find.byType(TriviaQuestionPage), findsOneWidget);
+
+    await _finish(tester, cubit);
+  });
+
+  testWidgets('sin partida en curso el atrás no se bloquea', (tester) async {
+    final cubit = TriviaGameCubit(repository: FakeTriviaRepository());
+
+    await tester.pumpWidget(_host(cubit));
+    await cubit.start();
+    await tester.pump();
+
+    // Sin datos suficientes no hay partida que perder.
+    final scope = find.byWidgetPredicate((w) => w is PopScope).first;
+    expect(tester.widget<PopScope>(scope).canPop, isTrue);
+
+    await _finish(tester, cubit);
+  });
 }

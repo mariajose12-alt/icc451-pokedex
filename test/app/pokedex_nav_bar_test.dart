@@ -11,9 +11,8 @@ void main() {
   }) {
     return MaterialApp(
       builder: (context, child) => MediaQuery(
-        data: MediaQuery.of(
-          context,
-        ).copyWith(textScaler: TextScaler.linear(textScale)),
+        data: MediaQuery.of(context)
+            .copyWith(textScaler: TextScaler.linear(textScale)),
         child: child!,
       ),
       home: Scaffold(
@@ -60,8 +59,8 @@ void main() {
   });
 
   testWidgets('con texto al 200 % no se desborda y mide al menos 48 dp', (
-      tester,
-      ) async {
+    tester,
+  ) async {
     await tester.pumpWidget(
       barra(selected: 0, onSelected: (_) {}, textScale: 2),
     );

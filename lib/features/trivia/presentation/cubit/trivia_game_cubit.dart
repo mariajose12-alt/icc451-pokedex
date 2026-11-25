@@ -150,6 +150,17 @@ class TriviaGameCubit extends Cubit<TriviaGameState> {
     _startTimer();
   }
 
+  /// Detiene el reloj sin perder el tiempo ya gastado. Se usa mientras se
+  /// muestra el diálogo de salir.
+  void pause() {
+    _timer?.cancel();
+    _graceTimer?.cancel();
+  }
+
+  /// Reanuda el reloj donde se quedó. Si no hay una pregunta en curso
+  /// (por ejemplo, en la revelación) no hace nada.
+  void resume() => imageReady();
+
   void _startTimer() {
     _timer?.cancel();
     _timer = Timer.periodic(tick, (_) {

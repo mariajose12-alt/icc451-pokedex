@@ -12,6 +12,7 @@ class AppShell extends StatelessWidget {
     required this.navigationShell,
     this.toolsMenu,
     this.showBack = false,
+    this.hideNavBar = false,
     super.key,
   });
 
@@ -23,6 +24,9 @@ class AppShell extends StatelessWidget {
   /// ¿Hay una pantalla abierta encima (el detalle)? Si es true, la barra de
   /// arriba muestra la flecha de volver.
   final bool showBack;
+
+  /// ¿Se oculta la barra inferior? Es true en la partida de trivia.
+  final bool hideNavBar;
 
   @override
   Widget build(BuildContext context) {
@@ -37,27 +41,43 @@ class AppShell extends StatelessWidget {
             // la flecha de volver en lugar de la lente.
             ConnectivityIndicator(
               trailing: toolsMenu,
-              onBack: showBack ? () => context.pop() : null,
+              // Mismo camino que el botón atrás del sistema: el delegado de
+              // go_router llama a maybePop, así que respeta el PopScope de
+              // la partida de trivia (pide confirmación).
+              onBack: showBack
+                  ? () => GoRouter.of(context).routerDelegate.popRoute()
+                  : null,
             ),
             Expanded(key: const ValueKey('shell-body'), child: navigationShell),
           ],
         ),
       ),
-      bottomNavigationBar: PokedexNavBar(
-        selectedIndex: navigationShell.currentIndex,
-        onSelected: (index) {
-          // Tocar la pestaña activa vuelve a su pantalla inicial.
-          navigationShell.goBranch(
-            index,
-            initialLocation: index == navigationShell.currentIndex,
-          );
-        },
-        items: [
-          PokedexNavItem(sprite: PixelSprites.ball, label: l10n.navPokedex),
-          PokedexNavItem(sprite: PixelSprites.heart, label: l10n.navFavorites),
-          PokedexNavItem(sprite: PixelSprites.quiz, label: l10n.navTrivia),
-        ],
-      ),
+      bottomNavigationBar: hideNavBar
+          ? null
+          : PokedexNavBar(
+              selectedIndex: navigationShell.currentIndex,
+              onSelected: (index) {
+                // Tocar la pestaña activa vuelve a su pantalla inicial.
+                navigationShell.goBranch(
+                  index,
+                  initialLocation: index == navigationShell.currentIndex,
+                );
+              },
+              items: [
+                PokedexNavItem(
+                  sprite: PixelSprites.ball,
+                  label: l10n.navPokedex,
+                ),
+                PokedexNavItem(
+                  sprite: PixelSprites.heart,
+                  label: l10n.navFavorites,
+                ),
+                PokedexNavItem(
+                  sprite: PixelSprites.quiz,
+                  label: l10n.navTrivia,
+                ),
+              ],
+            ),
     );
   }
 }
