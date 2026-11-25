@@ -5,6 +5,8 @@ import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon_type.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/pokemon_repository.dart';
 
+import '../../domain/entities/catalogo_query.dart';
+
 /// Escenarios que simula el repositorio falso.
 enum FakeScenario {
   /// Base vacía; la actualización llena el catálogo.
@@ -116,4 +118,8 @@ class FakePokemonRepository implements PokemonRepository {
       return null;
     });
   }
+
+  @override
+  Stream<List<Pokemon>> watchCatalogoFiltrado(CatalogoQuery query) =>
+      watchCatalog();
 }

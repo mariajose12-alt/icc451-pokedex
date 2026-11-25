@@ -10,6 +10,8 @@ import 'package:pokedex/features/pokemon/data/models/type_efficacy_dto.dart';
 import 'package:pokedex/features/pokemon/domain/entities/type_chart.dart';
 import 'package:pokedex/features/pokemon/domain/entities/type_efficacy.dart';
 
+import '../../../domain/entities/catalogo_query.dart';
+
 /// Acceso a la base local (Drift) para el catálogo.
 /// Es el único punto donde se mezclan DTOs, filas de Drift y entidades.
 class PokemonLocalDataSource {
@@ -189,6 +191,17 @@ class PokemonLocalDataSource {
         names[row.id] = row.name;
       }
       return names;
+    });
+  }
+
+  /// Catálogo filtrado y ordenado, como entidades del dominio.
+  Stream<List<Pokemon>> watchCatalogoFiltrado(CatalogoQuery query) {
+    return _dao.watchCatalogoFiltrado(query).map((rows) {
+      final result = <Pokemon>[];
+      for (final row in rows) {
+        result.add(row.toDomain());
+      }
+      return result;
     });
   }
 }
