@@ -6,13 +6,37 @@ class PixelSpriteData {
     required this.columns,
     required this.rows,
     required this.rects,
+    this.dimRects = const [],
   });
+
+  /// Dibuja desde filas de texto: '#' = pixel pleno, '+' = pixel atenuado,
+  /// cualquier otro carácter = vacío. Es más fácil de leer que los Rect.
+  factory PixelSpriteData.fromRows(List<String> grid) {
+    final solid = <Rect>[];
+    final dim = <Rect>[];
+    for (var y = 0; y < grid.length; y++) {
+      for (var x = 0; x < grid[y].length; x++) {
+        final cell = Rect.fromLTWH(x.toDouble(), y.toDouble(), 1, 1);
+        if (grid[y][x] == '#') solid.add(cell);
+        if (grid[y][x] == '+') dim.add(cell);
+      }
+    }
+    return PixelSpriteData(
+      columns: grid.first.length,
+      rows: grid.length,
+      rects: solid,
+      dimRects: dim,
+    );
+  }
 
   final int columns;
   final int rows;
 
   /// Cada rectángulo es (x, y, ancho, alto) en la cuadrícula.
   final List<Rect> rects;
+
+  /// Rectángulos que se pintan al 45 % (sombras o mitades apagadas).
+  final List<Rect> dimRects;
 }
 
 /// Los dibujos disponibles (los mismos del diseño).
@@ -45,6 +69,48 @@ abstract final class PixelSprites {
       Rect.fromLTWH(6, 7, 2, 1),
     ],
   );
+  // Iconos de la barra inferior (los mismos del diseño).
+  static final PixelSpriteData ball = PixelSpriteData.fromRows([
+    '...#####...',
+    '..#######..',
+    '.#########.',
+    '###########',
+    '####...####',
+    '....###....',
+    '++++...++++',
+    '+++++++++++',
+    '.+++++++++.',
+    '..+++++++..',
+    '...+++++...',
+  ]);
+
+  static final PixelSpriteData heart = PixelSpriteData.fromRows([
+    '...........',
+    '..##...##..',
+    '.#########.',
+    '.#########.',
+    '.#########.',
+    '..#######..',
+    '...#####...',
+    '....###....',
+    '.....#.....',
+    '...........',
+    '...........',
+  ]);
+
+  static final PixelSpriteData quiz = PixelSpriteData.fromRows([
+    '...#####...',
+    '..##...##..',
+    '..##...##..',
+    '.......##..',
+    '......##...',
+    '.....##....',
+    '.....##....',
+    '...........',
+    '.....##....',
+    '.....##....',
+    '...........',
+  ]);
 }
 
 /// Dibuja un [PixelSpriteData]. Es decorativo: no lo leen los lectores de
@@ -94,6 +160,21 @@ class _SpritePainter extends CustomPainter {
           rect.height * unit,
         ),
         paint,
+      );
+    }
+    // Celdas atenuadas: el mismo color al 45 % de opacidad.
+    final dimPaint = Paint()
+      ..color = color.withValues(alpha: 0.45)
+      ..isAntiAlias = false;
+    for (final rect in sprite.dimRects) {
+      canvas.drawRect(
+        Rect.fromLTWH(
+          rect.left * unit,
+          rect.top * unit,
+          rect.width * unit,
+          rect.height * unit,
+        ),
+        dimPaint,
       );
     }
   }

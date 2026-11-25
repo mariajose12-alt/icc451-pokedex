@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/core/theme/pixel_palette.dart';
+import 'package:pokedex/core/widgets/pixel_sprite.dart';
 
-/// Un destino de la barra: su icono normal, el activo y su nombre.
+/// Un destino de la barra: su dibujo pixelado y su nombre.
 class PokedexNavItem {
-  const PokedexNavItem({
-    required this.icon,
-    required this.selectedIcon,
-    required this.label,
-  });
+  const PokedexNavItem({required this.sprite, required this.label});
 
-  final IconData icon;
-  final IconData selectedIcon;
+  final PixelSpriteData sprite;
   final String label;
 }
 
-/// Barra de navegación inferior con forma de carcasa de Pokédex:
-/// mismo rojo que la banda de arriba y botones redondos.
+/// Barra de navegación inferior (diseño del mock, opción B): panel oscuro con
+/// borde, sin fichas. La pestaña activa lleva un cursor amarillo arriba, fondo
+/// resaltado y texto en negrita (no depende solo del color, IND-05).
 class PokedexNavBar extends StatelessWidget {
   const PokedexNavBar({
     required this.items,
@@ -31,30 +28,33 @@ class PokedexNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: PixelPalette.shell,
+      color: PixelPalette.panel,
       child: DecoratedBox(
-        // Borde oscuro arriba: es el espejo del de la banda superior.
+        // Borde claro arriba, separa la barra del contenido.
         decoration: const BoxDecoration(
           border: Border(
-            top: BorderSide(color: PixelPalette.shellDark, width: 4),
+            top: BorderSide(color: PixelPalette.panelBorder, width: 4),
           ),
         ),
         // SafeArea respeta la barra de gestos del teléfono.
         child: SafeArea(
           top: false,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: Row(
-              children: [
-                for (var i = 0; i < items.length; i++)
-                  Expanded(
-                    child: _NavButton(
-                      item: items[i],
-                      selected: i == selectedIndex,
-                      onTap: () => onSelected(i),
+            padding: const EdgeInsets.fromLTRB(4, 6, 4, 6),
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  for (var i = 0; i < items.length; i++)
+                    Expanded(
+                      child: _NavButton(
+                        item: items[i],
+                        selected: i == selectedIndex,
+                        onTap: () => onSelected(i),
+                      ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -63,7 +63,7 @@ class PokedexNavBar extends StatelessWidget {
   }
 }
 
-/// Un botón redondo con su etiqueta debajo.
+/// Una pestaña: icono pixelado y etiqueta siempre visible.
 class _NavButton extends StatelessWidget {
   const _NavButton({
     required this.item,
@@ -78,45 +78,71 @@ class _NavButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final color = selected ? PixelPalette.accent : PixelPalette.textMuted;
 
     // Un solo bloque para el lector de pantalla: "Pokédex, botón, seleccionado".
     return Semantics(
       button: true,
       selected: selected,
       label: item.label,
+      onTap: onTap,
       excludeSemantics: true,
-      child: InkResponse(
-        onTap: onTap,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 150),
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                // Activo: amarillo encendido. Inactivo: oscuro apagado.
-                color: selected ? PixelPalette.accent : PixelPalette.shadow,
-                border: Border.all(color: PixelPalette.shellDark, width: 3),
-              ),
-              child: Icon(
-                selected ? item.selectedIcon : item.icon,
-                size: 22,
-                color: selected ? PixelPalette.shadow : PixelPalette.text,
-              ),
+      child: Material(
+        // Activo: fondo resaltado. Inactivo: transparente.
+        color: selected ? PixelPalette.panelHigh : Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          child: ConstrainedBox(
+            // 64 dp de alto: supera los 48 dp mínimos (RNF-ACC).
+            constraints: const BoxConstraints(minHeight: 64),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                // Cursor amarillo arriba (solo en la pestaña activa).
+                if (selected)
+                  const Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: FractionallySizedBox(
+                        widthFactor: 0.56,
+                        child: SizedBox(
+                          height: 4,
+                          child: ColoredBox(color: PixelPalette.accent),
+                        ),
+                      ),
+                    ),
+                  ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      PixelSprite(
+                        sprite: item.sprite,
+                        color: color,
+                        width: 22,
+                      ),
+                      const SizedBox(height: 4),
+                      // Sin límite de líneas: con texto al 200 % se parte
+                      // y no se corta (RNF-ACC-04).
+                      Text(
+                        item.label,
+                        textAlign: TextAlign.center,
+                        style: textTheme.labelSmall?.copyWith(
+                          fontSize: 12,
+                          color: color,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 2),
-            Text(
-              item.label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: textTheme.labelSmall?.copyWith(
-                color: PixelPalette.text,
-                fontWeight: selected ? FontWeight.bold : FontWeight.normal,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

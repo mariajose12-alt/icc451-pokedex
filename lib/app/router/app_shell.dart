@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pokedex/app/router/pokedex_nav_bar.dart';
 import 'package:pokedex/core/connectivity/indicator/connectivity_indicator.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
+import 'package:pokedex/core/widgets/pixel_sprite.dart';
 
 /// Estructura común de las pantallas principales: indicador de conectividad
 /// arriba (T-013) y barra de navegación abajo.
@@ -27,31 +28,17 @@ class AppShell extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    // Lo que va al final de la barra de arriba: herramientas y, si hay una
-    // pantalla encima, la flecha de volver.
-    final menu = toolsMenu;
-    final Widget? trailing = (menu == null && !showBack)
-        ? null
-        : Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ?menu,
-              if (showBack)
-                IconButton(
-                  tooltip: l10n.detailBack,
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () => context.pop(),
-                ),
-            ],
-          );
-
     return Scaffold(
       body: SafeArea(
         bottom: false,
         child: Column(
           children: [
-            // Indicador global de conectividad (IND-01).
-            ConnectivityIndicator(trailing: trailing),
+            // Indicador global de conectividad (IND-01). En el detalle lleva
+            // la flecha de volver en lugar de la lente.
+            ConnectivityIndicator(
+              trailing: toolsMenu,
+              onBack: showBack ? () => context.pop() : null,
+            ),
             Expanded(key: const ValueKey('shell-body'), child: navigationShell),
           ],
         ),
@@ -66,21 +53,9 @@ class AppShell extends StatelessWidget {
           );
         },
         items: [
-          PokedexNavItem(
-            icon: Icons.catching_pokemon_outlined,
-            selectedIcon: Icons.catching_pokemon,
-            label: l10n.navPokedex,
-          ),
-          PokedexNavItem(
-            icon: Icons.favorite_border,
-            selectedIcon: Icons.favorite,
-            label: l10n.navFavorites,
-          ),
-          PokedexNavItem(
-            icon: Icons.quiz_outlined,
-            selectedIcon: Icons.quiz,
-            label: l10n.navTrivia,
-          ),
+          PokedexNavItem(sprite: PixelSprites.ball, label: l10n.navPokedex),
+          PokedexNavItem(sprite: PixelSprites.heart, label: l10n.navFavorites),
+          PokedexNavItem(sprite: PixelSprites.quiz, label: l10n.navTrivia),
         ],
       ),
     );
