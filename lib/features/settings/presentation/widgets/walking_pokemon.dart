@@ -4,7 +4,6 @@ import 'dart:math' as math;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pokedex/core/cache/image_cache_manager.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
 import 'package:pokedex/features/settings/domain/repositories/saved_pokemon_repository.dart';
 
 /// Adorno: un Pokémon al azar camina de lado a lado sobre una línea de suelo.

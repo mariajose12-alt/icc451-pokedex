@@ -101,7 +101,7 @@ void main() {
     expect(find.text('Necesitas conexión para sincronizar.'), findsOneWidget);
   });
 
-  testWidgets('tocar English cambia el idioma y Sistema lo devuelve', (
+  testWidgets('tocar Inglés cambia el idioma y Sistema lo devuelve', (
     tester,
   ) async {
     final cubits = await _pump(
@@ -109,7 +109,7 @@ void main() {
       availability: ServiceAvailability.online,
     );
 
-    await tester.tap(find.text('English'));
+    await tester.tap(find.text('Inglés'));
     await tester.pumpAndSettle();
     expect(cubits.locale.state, const Locale('en'));
 
