@@ -7,6 +7,8 @@ import 'package:pokedex/core/database/tables/sync_metadata_table.dart';
 import 'package:pokedex/core/database/tables/pokemon_stats_table.dart';
 import 'package:pokedex/core/database/tables/type_efficacies_table.dart';
 
+import 'package:pokedex/features/pokemon/domain/entities/catalogo_query.dart';
+
 part 'catalogo_dao.g.dart';
 
 // Un Pokémon junto con sus tipos, ya ordenados por slot
@@ -252,5 +254,77 @@ class CatalogoDao extends DatabaseAccessor<AppDatabase>
       }
       return PokemonWithTypes(pokemon: pokemon, types: types, stats: stats);
     });
+  }
+
+  // Catálogo filtrado y ordenado, desde la base local (RF-FIL-05, PA-05).
+  // Cada Pokémon aparece una sola vez, aunque tenga varios tipos que coincidan.
+  Stream<List<PokemonWithTypes>> watchCatalogoFiltrado(CatalogoQuery query) {
+    final consulta = select(pokemons).join([
+      leftOuterJoin(
+        pokemonTypes,
+        pokemonTypes.pokemonId.equalsExp(pokemons.id),
+      ),
+      leftOuterJoin(pokeTypes, pokeTypes.id.equalsExp(pokemonTypes.typeId)),
+    ])..where(_condicionDelFiltro(query));
+
+    // El criterio elegido va primero. Después id y slot, para que los tipos
+    // de cada Pokémon queden juntos y en orden.
+    consulta.orderBy([
+      _terminoDeOrden(query.orden),
+      OrderingTerm.asc(pokemons.id),
+      OrderingTerm.asc(pokemonTypes.slot),
+    ]);
+
+    return consulta.watch().map((rows) {
+      final byId = <int, PokemonWithTypes>{};
+      for (final row in rows) {
+        final pokemon = row.readTable(pokemons);
+        final type = row.readTableOrNull(pokeTypes);
+        final item = byId.putIfAbsent(
+          pokemon.id,
+              () => PokemonWithTypes(pokemon: pokemon, types: <TypeEntry>[]),
+        );
+        if (type != null) {
+          item.types.add(type);
+        }
+      }
+      return byId.values.toList();
+    });
+  }
+
+  // Condición WHERE: cada filtro activo se suma con &.
+  Expression<bool> _condicionDelFiltro(CatalogoQuery query) {
+    Expression<bool> condicion = const Constant(true);
+
+    if (query.nombre.isNotEmpty) {
+      condicion &= pokemons.name.like('%${query.nombre.toLowerCase()}%');
+    }
+    if (query.generacionIds.isNotEmpty) {
+      condicion &= pokemons.generationId.isIn(query.generacionIds);
+    }
+    if (query.tipoIds.isNotEmpty) {
+      // El Pokémon tiene al menos uno de los tipos pedidos.
+      condicion &= pokemons.id.isInQuery(
+        selectOnly(pokemonTypes)
+          ..addColumns([pokemonTypes.pokemonId])
+          ..where(pokemonTypes.typeId.isIn(query.tipoIds)),
+      );
+    }
+    return condicion;
+  }
+
+  // Criterio de orden. El total base es una subconsulta que suma los stats.
+  OrderingTerm _terminoDeOrden(CatalogoOrden orden) {
+    return switch (orden) {
+      CatalogoOrden.numero => OrderingTerm.asc(pokemons.nationalDexNumber),
+      CatalogoOrden.nombre => OrderingTerm.asc(pokemons.name),
+      CatalogoOrden.totalBase => OrderingTerm.desc(
+        subqueryExpression<int>(
+          selectOnly(pokemonStats)
+            ..addColumns([pokemonStats.baseStat.sum()])
+            ..where(pokemonStats.pokemonId.equalsExp(pokemons.id)),
+        ),
+      ),
+    };
   }
 }

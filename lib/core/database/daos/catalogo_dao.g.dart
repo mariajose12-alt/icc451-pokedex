@@ -10,7 +10,6 @@ mixin _$CatalogoDaoMixin on DatabaseAccessor<AppDatabase> {
   $PokemonStatsTable get pokemonStats => attachedDatabase.pokemonStats;
   $TypeEfficaciesTable get typeEfficacies => attachedDatabase.typeEfficacies;
   $SyncMetadataTable get syncMetadata => attachedDatabase.syncMetadata;
-  $PokemonStatsTable get pokemonStats => attachedDatabase.pokemonStats;
   CatalogoDaoManager get managers => CatalogoDaoManager(this);
 }
 
@@ -32,6 +31,4 @@ class CatalogoDaoManager {
       );
   $$SyncMetadataTableTableManager get syncMetadata =>
       $$SyncMetadataTableTableManager(_db.attachedDatabase, _db.syncMetadata);
-  $$PokemonStatsTableTableManager get pokemonStats =>
-      $$PokemonStatsTableTableManager(_db.attachedDatabase, _db.pokemonStats);
 }
