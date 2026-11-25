@@ -17,6 +17,7 @@ Cada archivo documenta una decisión importante con su contexto, la decisión, l
 | [0011](0011-monitor-de-conectividad-verificacion-activa.md) | Monitor de conectividad con verificación activa de la API | Aceptado |
 | [0012](0012-sincronizador-en-la-capa-data.md) | Sincronizador del catálogo en la capa data | Aceptado |
 | [0013](0013-reglas-de-la-trivia.md) | Reglas de la trivia y logros calculados desde el historial | Propuesto |
+| [0014](0014-integridad-del-catalogo-y-online-preferred.md) | Comprobación de integridad del catálogo y política Online-Preferred | Propuesto |
 
 Estados posibles: **Propuesto**, **Aceptado**, **Reemplazado**. Si una decisión cambia, no se borra su ADR: se marca como reemplazado y se crea uno nuevo.
 

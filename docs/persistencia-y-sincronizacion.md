@@ -25,7 +25,8 @@ El enunciado (§11) pide que el equipo **defina, justifique y documente** doce d
 | PS-10 | Recuperación ante fallos | Backoff exponencial con tope; migraciones de esquema | Propuesto | Planificado (T-035) |
 | PS-11 | Separación de datos de usuario | Tablas de usuario independientes del catálogo | Decidido | Implementado (T-007) |
 | PS-12 | Detección de alteraciones locales | Sobrescritura con el dato remoto en cada actualización | Propuesto | Planificado |
-
+| PS-03 | Política de actualización | Vigencia de 10 min (catálogo) y 10 s entre sincronizaciones del detalle | Propuesto (ADR-0014) | Implementado |
+| PS-12 | Detección de alteraciones locales | Sobrescritura con el dato remoto y registro de diferencias | Propuesto (ADR-0014) | Detalle implementado y probado; catálogo completo pendiente |
 ---
 
 ## PS-01 · Modelo de datos local
@@ -70,18 +71,16 @@ Para la entrega final se agregan movimientos y evoluciones.
 
 **Justificación.** El enunciado no exige el catálogo completo desde la primera ejecución (§6.2). Descargarlo en 5 llamadas es barato para la cuota y deja disponible el listado completo sin red tras la primera sincronización.
 
-## PS-03 · Política de actualización
+**Propuesta [Propuesto].** La política es **Online-Preferred** ([ADR-0014](adr/0014-integridad-del-catalogo-y-online-preferred.md)): con conexión se prioriza traer datos frescos, y la pantalla sigue leyendo solo de la base. Un dato se considera **desactualizado** cuando:
 
-**Propuesta [Propuesto].** Un dato se considera **desactualizado** cuando su última sincronización exitosa supera:
+- Pasaron **10 minutos** desde la última sincronización exitosa del catálogo.
+- Pasaron **10 segundos** desde la última sincronización del mismo Pokémon (detalle).
 
-- **24 horas** para el catálogo.
-- **7 días** para el detalle de un Pokémon.
+Un dato desactualizado **se sigue mostrando** (nunca se oculta) y se refresca en segundo plano cuando el servicio esté disponible. La sincronización periódica sigue siendo cada 15 minutos.
 
-Un dato desactualizado **se sigue mostrando** (nunca se oculta) y se refresca en segundo plano cuando el servicio esté disponible.
+**Justificación.** Los plazos de 24 h y 7 días hacían que la app casi nunca consultara PokeAPI estando en línea. Los nuevos mantienen los datos al día y se mantienen por debajo de la cuota de 100 solicitudes por hora gracias al deduplicado de solicitudes en curso.
 
-**Justificación.** El catálogo de PokeAPI cambia poco (por ejemplo, cuando se añade una generación). Esos plazos mantienen los datos razonablemente al día sin gastar la cuota de 100 solicitudes por hora.
-
-**Pendiente:** confirmar o ajustar los plazos.
+**Pendiente:** confirmar los plazos.
 
 ## PS-04 · Sincronización automática y manual
 
@@ -178,7 +177,9 @@ Un dato desactualizado **se sigue mostrando** (nunca se oculta) y se refresca en
 
 ## PS-12 · Detección de alteraciones locales
 
-**Propuesta [Propuesto].** **Sobrescritura con el dato remoto en cada actualización** (OF-19): como cada sincronización hace upsert de todos los campos del catálogo con lo que devuelve PokeAPI, cualquier valor alterado localmente se restaura y, ante un conflicto, prevalece siempre el dato remoto.
+**Propuesta [Propuesto].** **Sobrescritura con el dato remoto en cada actualización** (OF-19), más **detección con registro**: antes de guardar el detalle se comparan nombre y tipos locales con los remotos y, si difieren, se escribe `Integridad: #id difiere de PokeAPI (...)` en el log. Ante un conflicto prevalece siempre el dato remoto.
+
+**Alcance actual.** La detección con registro cubre el detalle. El catálogo completo se restaura por sobrescritura al sincronizar, pero aún sin registro de diferencias. Los favoritos, la trivia y los logros nunca se sobrescriben (OF-21).
 
 **Frecuencia.** Al iniciar, al recuperar la conectividad, al abrir el detalle y de forma periódica mientras el servicio esté disponible (OF-20).
 

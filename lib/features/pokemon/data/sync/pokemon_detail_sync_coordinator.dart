@@ -9,7 +9,7 @@ import 'package:pokedex/features/pokemon/data/datasources/remote/pokemon_remote_
 ///
 /// Política de vigencia (PS-03): se consulta en CADA apertura del detalle,
 /// salvo que ya se haya consultado con éxito hace menos de [minInterval]
-/// (2 minutos). Así se cumple OF-20, se cuida la cuota de 100 llamadas por
+/// (10 segundos). Así se cumple OF-20, se cuida la cuota de 100 llamadas por
 /// hora y se evita pedir lo mismo si el usuario entra y sale rápido.
 class PokemonDetailSyncCoordinator {
   PokemonDetailSyncCoordinator({
@@ -19,7 +19,9 @@ class PokemonDetailSyncCoordinator {
     this.retryDelays = defaultRetryDelays,
   });
 
-  static const Duration defaultMinInterval = Duration(minutes: 2);
+  /// Solo evita pedir lo mismo si el usuario entra y sale del detalle en
+  /// segundos. Debe ser corto: la comprobación de OF-19 ocurre al abrirlo.
+  static const Duration defaultMinInterval = Duration(seconds: 10);
 
   /// Mismas esperas que el catálogo: 2, 4 y 6 segundos (RNF-RES-02).
   static const List<Duration> defaultRetryDelays = <Duration>[

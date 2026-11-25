@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart' show Value;
+import 'package:flutter/foundation.dart';
 import 'package:pokedex/core/database/app_database.dart';
 import 'package:pokedex/core/database/daos/detalle_dao.dart';
 import 'package:pokedex/core/sync/sync_status.dart';
@@ -32,9 +33,14 @@ class PokemonDetailLocalDataSource {
   }
 
   /// Guarda el detalle y deja su estado en 'ok' con la fecha de ahora.
-  Future<void> save(PokemonDetailDto dto) {
+  /// Antes de sobrescribir compara con lo guardado: si alguien alteró el
+  /// catálogo en la base, se registra la diferencia y se restaura con la
+  /// versión de PokeAPI (OF-19). Los favoritos no se tocan (OF-21).
+  Future<void> save(PokemonDetailDto dto) async {
+    await _reportDifferences(dto);
+
     final now = DateTime.now();
-    return _dao.saveDetail(
+    await _dao.saveDetail(
       detailToRows(dto, now),
       SyncMetadataCompanion(
         resourceKey: Value(SyncResources.detail(dto.base.id)),
@@ -42,6 +48,35 @@ class PokemonDetailLocalDataSource {
         lastSuccessfulAt: Value(now),
       ),
     );
+  }
+
+  Future<void> _reportDifferences(PokemonDetailDto dto) async {
+    final id = dto.base.id;
+    final local = await _dao.readBase(id);
+    // Primera vez que se guarda: no hay nada con qué comparar.
+    if (local == null) {
+      return;
+    }
+
+    // Los tipos remotos, en orden de slot, para compararlos con los locales.
+    final remoteTypes = List.of(dto.base.types)
+      ..sort((a, b) => a.slot.compareTo(b.slot));
+    final remoteTypeIds = [for (final t in remoteTypes) t.typeId];
+
+    final differences = <String>[];
+    if (local.name != dto.base.name) {
+      differences.add('nombre "${local.name}" -> "${dto.base.name}"');
+    }
+    if (!listEquals(local.typeIds, remoteTypeIds)) {
+      differences.add('tipos ${local.typeIds} -> $remoteTypeIds');
+    }
+
+    if (differences.isNotEmpty) {
+      debugPrint(
+        'Integridad: #$id difiere de PokeAPI (${differences.join('; ')}). '
+            'Se restaura con la versión remota (OF-19).',
+      );
+    }
   }
 
   /// Anota que el último intento falló. No toca los datos guardados ni la

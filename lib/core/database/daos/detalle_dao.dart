@@ -327,6 +327,23 @@ class DetalleDao extends DatabaseAccessor<AppDatabase> with _$DetalleDaoMixin {
       ],
     );
   }
+
+  /// Nombre y tipos guardados de un Pokémon, para compararlos con PokeAPI
+  /// antes de sobrescribir (OF-19). Devuelve null si todavía no existe.
+  Future<({String name, List<int> typeIds})?> readBase(int id) async {
+    final row = await (select(
+      pokemons,
+    )..where((p) => p.id.equals(id))).getSingleOrNull();
+    if (row == null) {
+      return null;
+    }
+    final types =
+    await (select(pokemonTypes)
+      ..where((t) => t.pokemonId.equals(id))
+      ..orderBy([(t) => OrderingTerm.asc(t.slot)]))
+        .get();
+    return (name: row.name, typeIds: [for (final t in types) t.typeId]);
+  }
 }
 
 /// Una habilidad junto con si es oculta para ESTE Pokémon.
