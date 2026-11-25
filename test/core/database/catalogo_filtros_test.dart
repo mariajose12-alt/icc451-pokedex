@@ -39,34 +39,35 @@ void main() {
   });
 
   test('el filtro por generación devuelve solo esa generación', () async {
-    expect(
-      await nombres(const CatalogoQuery(generacionIds: {2})),
-      ['chikorita'],
-    );
+    expect(await nombres(const CatalogoQuery(generacionIds: {2})), [
+      'chikorita',
+    ]);
   });
 
   test('los filtros se combinan: tipo y generación', () async {
     // Grass en generación 1: Bulbasaur, pero no Chikorita (generación 2).
     expect(
-      await nombres(
-        const CatalogoQuery(tipoIds: {12}, generacionIds: {1}),
-      ),
+      await nombres(const CatalogoQuery(tipoIds: {12}, generacionIds: {1})),
       ['bulbasaur'],
     );
   });
 
   test('el orden por número va de menor a mayor', () async {
-    expect(
-      await nombres(const CatalogoQuery(orden: CatalogoOrden.numero)),
-      ['bulbasaur', 'charmander', 'pikachu', 'chikorita'],
-    );
+    expect(await nombres(const CatalogoQuery(orden: CatalogoOrden.numero)), [
+      'bulbasaur',
+      'charmander',
+      'pikachu',
+      'chikorita',
+    ]);
   });
 
   test('el orden por nombre va en orden alfabético', () async {
-    expect(
-      await nombres(const CatalogoQuery(orden: CatalogoOrden.nombre)),
-      ['bulbasaur', 'charmander', 'chikorita', 'pikachu'],
-    );
+    expect(await nombres(const CatalogoQuery(orden: CatalogoOrden.nombre)), [
+      'bulbasaur',
+      'charmander',
+      'chikorita',
+      'pikachu',
+    ]);
   });
 
   test('el orden por total base va de mayor a menor', () async {
