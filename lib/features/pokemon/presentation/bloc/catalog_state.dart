@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:pokedex/core/errors/failures.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
+import 'package:pokedex/features/pokemon/domain/entities/catalogo_query.dart';
 
 /// Estados de la pantalla del catálogo.
 sealed class CatalogState extends Equatable {
@@ -42,12 +43,14 @@ final class CatalogSuccess extends CatalogState {
     required this.pokemon,
     this.isRefreshing = false,
     this.refreshFailure,
+    this.query = const CatalogoQuery(),
   });
 
   final List<Pokemon> pokemon;
   final bool isRefreshing;
   final Failure? refreshFailure;
+  final CatalogoQuery query;
 
   @override
-  List<Object?> get props => [pokemon, isRefreshing, refreshFailure];
+  List<Object?> get props => [pokemon, isRefreshing, refreshFailure, query];
 }
