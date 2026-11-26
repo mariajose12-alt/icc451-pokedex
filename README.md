@@ -223,7 +223,7 @@ Las tablas de movimientos, habilidades, evoluciones y trivia se agregan en la en
 
 ## 12. Funcionalidades adicionales implementadas
 
-**Estado: Planificado.** Tema oscuro, internacionalización español/inglés en toda la app, Pokémon Card compartible, animaciones Hero y microinteracciones. Se listarán aquí las que se terminen.
+**Estado: Planificado.** Tema claro y oscuro, internacionalización español/inglés en toda la app, Pokémon Card compartible, animaciones Hero y microinteracciones. Se listarán aquí las que se terminen.
 
 ## 13. Limitaciones conocidas
 
