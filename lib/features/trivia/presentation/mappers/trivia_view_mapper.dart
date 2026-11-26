@@ -131,7 +131,20 @@ TriviaResultData resultData(TriviaGameFinished state, AppLocalizations l10n) {
   );
 }
 
-List<TriviaRankingEntry> rankingEntries(List<TriviaRankingItem> items) {
+/// Convierte el ranking en filas para la pantalla. [now] es la hora actual
+/// (se recibe para poder probar la insignia sin esperar minutos).
+List<TriviaRankingEntry> rankingEntries(
+  List<TriviaRankingItem> items, {
+  required DateTime now,
+}) {
+  // La partida más reciente de la lista.
+  DateTime? latest;
+  for (final item in items) {
+    if (latest == null || item.playedAt.isAfter(latest)) {
+      latest = item.playedAt;
+    }
+  }
+
   return [
     for (final item in items)
       TriviaRankingEntry(
@@ -139,6 +152,10 @@ List<TriviaRankingEntry> rankingEntries(List<TriviaRankingItem> items) {
         correctCount: item.correctCount,
         total: item.totalQuestions,
         date: item.playedAt,
+        // NUEVO: solo la partida más reciente, y solo si se jugó hace poco.
+        isNew:
+            item.playedAt == latest &&
+            now.difference(item.playedAt) <= TriviaRules.newBadgeWindow,
       ),
   ];
 }

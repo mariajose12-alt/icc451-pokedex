@@ -19,4 +19,8 @@ abstract final class TriviaRules {
   static const int noHintsMinCorrect = 7;
   static const int trainerCorrectTarget = 50;
   static const int collectorGamesTarget = 25;
+
+  /// La insignia NUEVO del ranking se muestra en la partida más reciente
+  /// mientras hayan pasado como máximo estos minutos desde que se jugó.
+  static const Duration newBadgeWindow = Duration(minutes: 5);
 }

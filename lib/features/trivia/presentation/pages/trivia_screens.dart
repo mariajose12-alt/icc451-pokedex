@@ -36,7 +36,7 @@ class TriviaRankingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<TriviaRankingCubit, List<TriviaRankingItem>>(
       builder: (context, items) => TriviaRankingPage(
-        entries: rankingEntries(items),
+        entries: rankingEntries(items, now: DateTime.now()),
         onBack: () => context.go(AppRoutes.trivia),
       ),
     );
