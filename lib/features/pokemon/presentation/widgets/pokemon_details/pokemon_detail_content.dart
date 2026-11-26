@@ -22,6 +22,7 @@ import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/po
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_detail_section_title.dart';
 import 'package:pokedex/features/pokemon/presentation/cubit/pokemon_moves_cubit.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_detail_moves.dart';
+import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_detail_regions.dart';
 import 'package:pokedex/features/favorites/domain/repositories/favorites_repository.dart';
 import 'package:pokedex/features/favorites/presentation/cubit/favorites_cubit.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
@@ -172,6 +173,11 @@ class _PokemonDetailContentState extends State<PokemonDetailContent> {
         widget.movesRepository == null
             ? const SliverToBoxAdapter(child: PokemonDetailPendingSection())
             : const PokemonDetailMoves(),
+      PokemonDetailTab.map => SliverToBoxAdapter(
+        child: widget.movesRepository == null
+            ? const PokemonDetailPendingSection()
+            : const PokemonDetailRegions(),
+      ),
     };
   }
 

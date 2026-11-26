@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon_stat.dart';
 
 /// Gráfico de radar con los stats base. Es un resumen visual: los valores
@@ -47,6 +47,7 @@ class PokemonDetailStatsRadar extends StatelessWidget {
                   painter: _RadarPainter(
                     fractions: fractions,
                     progress: progress,
+                    colors: context.pixel,
                   ),
                 );
               },
@@ -59,7 +60,14 @@ class PokemonDetailStatsRadar extends StatelessWidget {
 }
 
 class _RadarPainter extends CustomPainter {
-  _RadarPainter({required this.fractions, required this.progress});
+  _RadarPainter({
+    required this.fractions,
+    required this.progress,
+    required this.colors,
+  });
+
+  /// Colores del tema actual.
+  final PixelColors colors;
 
   /// Valor de cada stat entre 0 y 1 (base / 255).
   final List<double> fractions;
@@ -89,7 +97,7 @@ class _RadarPainter extends CustomPainter {
       ..isAntiAlias = false
       ..style = PaintingStyle.stroke
       ..strokeJoin = StrokeJoin.miter
-      ..color = PixelPalette.panelBorder;
+      ..color = colors.panelBorder;
 
     // Hexágonos de fondo; el exterior es más grueso.
     for (var ring = 1; ring <= _rings; ring++) {
@@ -130,7 +138,7 @@ class _RadarPainter extends CustomPainter {
       Paint()
         ..isAntiAlias = false
         ..style = PaintingStyle.fill
-        ..color = PixelPalette.accent.withValues(alpha: 0.35),
+        ..color = colors.accent.withValues(alpha: 0.35),
     );
     canvas.drawPath(
       shape,
@@ -139,13 +147,13 @@ class _RadarPainter extends CustomPainter {
         ..style = PaintingStyle.stroke
         ..strokeWidth = 3
         ..strokeJoin = StrokeJoin.miter
-        ..color = PixelPalette.accent,
+        ..color = colors.accentText,
     );
 
     // Un cuadrito en cada vértice.
     final dotPaint = Paint()
       ..isAntiAlias = false
-      ..color = PixelPalette.accent;
+      ..color = colors.accentText;
     for (final point in points) {
       canvas.drawRect(
         Rect.fromCenter(center: point, width: 7, height: 7),
@@ -158,6 +166,7 @@ class _RadarPainter extends CustomPainter {
   bool shouldRepaint(covariant _RadarPainter oldDelegate) {
     // Solo se vuelve a dibujar si cambian los datos o la animación avanza.
     return oldDelegate.progress != progress ||
-        oldDelegate.fractions != fractions;
+        oldDelegate.fractions != fractions ||
+        oldDelegate.colors != colors;
   }
 }

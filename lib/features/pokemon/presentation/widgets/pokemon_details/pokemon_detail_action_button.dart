@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
+
+// Estos botones van sobre el color del tipo del Pokémon, que no cambia con el
+// tema. Por eso usan siempre los colores oscuros.
+const PixelColors _fixed = PixelColors.dark;
 
 /// Botón de acción de la cabecera: 32 px visibles y 48 px tocables.
 /// - [onPressed] null: botón desactivado.
@@ -28,8 +32,8 @@ class PokemonDetailActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final enabled = onPressed != null;
     final active = selected ?? false;
-    final fill = active ? PixelPalette.accent : PixelPalette.background;
-    final ink = active ? PixelPalette.background : iconColor;
+    final fill = active ? _fixed.accent : _fixed.background;
+    final ink = active ? _fixed.background : iconColor;
 
     return Semantics(
       button: true,
@@ -56,14 +60,11 @@ class PokemonDetailActionButton extends StatelessWidget {
                     DecoratedBox(
                       decoration: BoxDecoration(
                         color: fill,
-                        border: Border.all(
-                          color: PixelPalette.background,
-                          width: 3,
-                        ),
-                        boxShadow: const [
+                        border: Border.all(color: _fixed.background, width: 3),
+                        boxShadow: [
                           BoxShadow(
-                            color: PixelPalette.shadow,
-                            offset: Offset(3, 3),
+                            color: _fixed.shadow,
+                            offset: const Offset(3, 3),
                           ),
                         ],
                       ),
@@ -79,9 +80,9 @@ class PokemonDetailActionButton extends StatelessWidget {
                         right: -6,
                         child: DecoratedBox(
                           decoration: BoxDecoration(
-                            color: PixelPalette.accent,
+                            color: _fixed.accent,
                             border: Border.all(
-                              color: PixelPalette.background,
+                              color: _fixed.background,
                               width: 2,
                             ),
                           ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
 
 /// Altura y peso del Pokémon (RF-DET-07).
@@ -80,13 +80,14 @@ class _MetricTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colors = context.pixel;
 
     // MergeSemantics: el lector de pantalla dice "Altura, 0,7 m" de una vez.
     return MergeSemantics(
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: PixelPalette.panelHigh,
-          border: Border.all(color: PixelPalette.panelBorder, width: 2),
+          color: colors.panelHigh,
+          border: Border.all(color: colors.panelBorder, width: 2),
         ),
         child: Padding(
           padding: const EdgeInsets.all(12),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon_extras.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon_form.dart';
@@ -20,6 +20,10 @@ import 'package:pokedex/features/pokemon/presentation/share/pokemon_card_data_bu
 import 'package:pokedex/features/pokemon/presentation/share/pokemon_card_dialog.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_detail_favorite_button.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
+
+// El header va sobre el color del tipo, que no cambia con el tema. Sus textos
+// y botones usan siempre los colores oscuros.
+const PixelColors _fixed = PixelColors.dark;
 
 /// Cabecera del detalle (RF-DET-01): franja con los colores de los tipos,
 /// imagen en un marco que sobresale, número, nombre y tipos. Incluye los
@@ -171,9 +175,7 @@ class _PokemonDetailHeaderState extends State<PokemonDetailHeader> {
                               if (formText != null)
                                 TextSpan(
                                   text: ' · $formText',
-                                  style: const TextStyle(
-                                    color: PixelPalette.accent,
-                                  ),
+                                  style: TextStyle(color: _fixed.accent),
                                 ),
                             ],
                           ),
@@ -225,7 +227,7 @@ class _PokemonDetailHeaderState extends State<PokemonDetailHeader> {
               PokemonDetailActionButton(
                 icon: Icons.auto_awesome,
                 label: l10n.detailActionShiny,
-                iconColor: PixelPalette.accent,
+                iconColor: _fixed.accent,
                 selected: selection.shinyOn,
                 // Solo si la forma actual tiene imagen shiny.
                 onPressed: selection.canShiny
@@ -340,23 +342,23 @@ class _ArtworkFrame extends StatelessWidget {
       height: size,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: PixelPalette.panel,
+          color: context.pixel.panel,
           border: Border.fromBorderSide(
             BorderSide(
-              color: shiny ? PixelPalette.accent : PixelPalette.background,
+              color: shiny ? _fixed.accent : _fixed.background,
               width: 3,
             ),
           ),
-          boxShadow: const [
-            BoxShadow(color: PixelPalette.shadow, offset: Offset(4, 4)),
+          boxShadow: [
+            BoxShadow(color: _fixed.shadow, offset: const Offset(4, 4)),
           ],
         ),
         child: Padding(
           padding: const EdgeInsets.all(4),
           child: DecoratedBox(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               border: Border.fromBorderSide(
-                BorderSide(color: PixelPalette.panelBorder, width: 2),
+                BorderSide(color: context.pixel.panelBorder, width: 2),
               ),
             ),
             // El Hero envuelve la imagen: es lo que "vuela" desde el

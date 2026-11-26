@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 
 /// Título de sección del detalle: cuadrito amarillo + texto en negrita.
 class PokemonDetailSectionTitle extends StatelessWidget {
@@ -18,10 +18,11 @@ class PokemonDetailSectionTitle extends StatelessWidget {
         header: true,
         child: Row(
           children: [
-            const SizedBox(
+            // Adorno de relleno: el amarillo puro sirve en los dos temas.
+            SizedBox(
               width: 8,
               height: 8,
-              child: ColoredBox(color: PixelPalette.accent),
+              child: ColoredBox(color: context.pixel.accent),
             ),
             const SizedBox(width: 8),
             Expanded(

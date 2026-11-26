@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/features/pokemon/domain/entities/move_learn_method.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon_move.dart';
 import 'package:pokedex/features/pokemon/presentation/cubit/pokemon_moves_cubit.dart';
@@ -35,9 +35,9 @@ class PokemonDetailMoves extends StatelessWidget {
             else
               // Solo se construyen las filas que se ven (RNF-REN-01).
               DecoratedSliver(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   border: Border.fromBorderSide(
-                    BorderSide(color: PixelPalette.panelBorder, width: 2),
+                    BorderSide(color: context.pixel.panelBorder, width: 2),
                   ),
                 ),
                 sliver: SliverList.builder(
@@ -100,9 +100,9 @@ class _VersionButton extends StatelessWidget {
       label: l10n.movesVersionButtonLabel(name),
       excludeSemantics: true,
       child: Material(
-        color: PixelPalette.panelHigh,
-        shape: const Border.fromBorderSide(
-          BorderSide(color: PixelPalette.panelBorder, width: 3),
+        color: context.pixel.panelHigh,
+        shape: Border.fromBorderSide(
+          BorderSide(color: context.pixel.panelBorder, width: 3),
         ),
         child: InkWell(
           onTap: () async {
@@ -260,10 +260,12 @@ class _ChoiceButton extends StatelessWidget {
       label: label,
       excludeSemantics: true,
       child: Material(
-        color: isSelected ? PixelPalette.accent : PixelPalette.panelHigh,
+        color: isSelected ? context.pixel.accent : context.pixel.panelHigh,
         shape: Border.fromBorderSide(
           BorderSide(
-            color: isSelected ? PixelPalette.accent : PixelPalette.panelBorder,
+            color: isSelected
+                ? context.pixel.accent
+                : context.pixel.panelBorder,
             width: 3,
           ),
         ),
@@ -276,7 +278,7 @@ class _ChoiceButton extends StatelessWidget {
                 label,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.labelLarge?.copyWith(
-                  color: isSelected ? PixelPalette.background : null,
+                  color: isSelected ? context.pixel.onAccent : null,
                   fontVariations: const [FontVariation('wght', 700)],
                 ),
               ),
@@ -312,7 +314,7 @@ class _MoveRow extends StatelessWidget {
     // MergeSemantics: «Nv.7, Ember» se lee como una sola fila.
     return MergeSemantics(
       child: ColoredBox(
-        color: shaded ? PixelPalette.panelHigh : PixelPalette.panel,
+        color: shaded ? context.pixel.panelHigh : context.pixel.panel,
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: 44),
           child: Padding(
@@ -322,7 +324,7 @@ class _MoveRow extends StatelessWidget {
                 ConstrainedBox(
                   constraints: const BoxConstraints(minWidth: 44),
                   child: ColoredBox(
-                    color: PixelPalette.accent,
+                    color: context.pixel.accent,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 4,
@@ -332,7 +334,7 @@ class _MoveRow extends StatelessWidget {
                         tag,
                         textAlign: TextAlign.center,
                         style: theme.textTheme.labelMedium?.copyWith(
-                          color: PixelPalette.background,
+                          color: context.pixel.onAccent,
                           fontVariations: const [FontVariation('wght', 700)],
                         ),
                       ),
