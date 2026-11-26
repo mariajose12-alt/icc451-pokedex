@@ -221,5 +221,11 @@
     }
   },
   "detailFavoriteAdd": "Add to favorites",
-  "detailFavoriteRemove": "Remove from favorites"
+  "detailFavoriteRemove": "Remove from favorites",
+   "catalogTypeSheetTitle": "Type",
+   "catalogSortNumber": "Number",
+   "catalogSortName": "Name",
+   "catalogSortTotal": "Base total",
+   "catalogPartialNotice": "Filtering only the Pokémon saved on this device",
+   "catalogClearAll": "Clear filters"
 }

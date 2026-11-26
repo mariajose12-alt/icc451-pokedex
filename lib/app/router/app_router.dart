@@ -69,7 +69,11 @@ final GoRouter appRouter = GoRouter(
                       ),
                     ),
                   ],
-                  child: const CatalogPage(),
+                  // El catálogo lee los nombres de tipo para el filtro (RF-FIL-01).
+                  child: RepositoryProvider<TypeChartRepository>.value(
+                    value: getIt<TypeChartRepository>(),
+                    child: const CatalogPage(),
+                  ),
                 );
               },
               routes: [

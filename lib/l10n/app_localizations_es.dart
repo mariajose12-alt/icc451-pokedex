@@ -523,4 +523,23 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get detailFavoriteRemove => 'Quitar de favoritos';
+
+  @override
+  String get catalogTypeSheetTitle => 'Tipo';
+
+  @override
+  String get catalogSortNumber => 'Número';
+
+  @override
+  String get catalogSortName => 'Nombre';
+
+  @override
+  String get catalogSortTotal => 'Total base';
+
+  @override
+  String get catalogPartialNotice =>
+      'Filtrando solo los Pokémon guardados en este dispositivo';
+
+  @override
+  String get catalogClearAll => 'Quitar filtros';
 }

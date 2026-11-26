@@ -10,6 +10,7 @@ import 'package:pokedex/features/pokemon/presentation/cubit/catalog_view_mode_cu
 import 'package:pokedex/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokedex/app/router/app_routes.dart';
+import 'package:pokedex/features/pokemon/presentation/widgets/catalog_active_filters.dart';
 
 import 'pokemon_card.dart';
 import 'pokemon_grid_card.dart';
@@ -116,6 +117,8 @@ class _CatalogResultsState extends State<CatalogResults> {
                     },
                   ),
                 ),
+                // Filtros aplicados y aviso de catálogo parcial.
+                const CatalogActiveFilters(),
                 // Contador debajo de la barra, a la izquierda.
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),

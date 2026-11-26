@@ -519,4 +519,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get detailFavoriteRemove => 'Remove from favorites';
+
+  @override
+  String get catalogTypeSheetTitle => 'Type';
+
+  @override
+  String get catalogSortNumber => 'Number';
+
+  @override
+  String get catalogSortName => 'Name';
+
+  @override
+  String get catalogSortTotal => 'Base total';
+
+  @override
+  String get catalogPartialNotice =>
+      'Filtering only the Pokémon saved on this device';
+
+  @override
+  String get catalogClearAll => 'Clear filters';
 }

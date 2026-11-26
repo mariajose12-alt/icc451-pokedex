@@ -1039,6 +1039,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remove from favorites'**
   String get detailFavoriteRemove;
+
+  /// No description provided for @catalogTypeSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get catalogTypeSheetTitle;
+
+  /// No description provided for @catalogSortNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Number'**
+  String get catalogSortNumber;
+
+  /// No description provided for @catalogSortName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get catalogSortName;
+
+  /// No description provided for @catalogSortTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Base total'**
+  String get catalogSortTotal;
+
+  /// No description provided for @catalogPartialNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Filtering only the Pokémon saved on this device'**
+  String get catalogPartialNotice;
+
+  /// No description provided for @catalogClearAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filters'**
+  String get catalogClearAll;
 }
 
 class _AppLocalizationsDelegate
