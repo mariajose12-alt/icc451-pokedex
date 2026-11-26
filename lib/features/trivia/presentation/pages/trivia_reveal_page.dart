@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/core/theme/pixel_palette.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/type_badge.dart';
 import 'package:pokedex/features/trivia/presentation/models/trivia_view_data.dart';
@@ -95,7 +96,7 @@ class TriviaRevealPage extends StatelessWidget {
                         correct ? number : l10n.triviaWasNumber(number),
                         textAlign: TextAlign.center,
                         style: theme.textTheme.labelLarge?.copyWith(
-                          color: PixelPalette.textMuted,
+                          color: context.pixel.textMuted,
                           fontVariations: const [FontVariation('wght', 700)],
                         ),
                       ),
@@ -138,7 +139,7 @@ class TriviaRevealPage extends StatelessWidget {
                                 l10n.triviaStreakReset(data.streakLost),
                                 textAlign: TextAlign.center,
                                 style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: PixelPalette.textMuted,
+                                  color: context.pixel.textMuted,
                                 ),
                               ),
                       ),
@@ -219,7 +220,7 @@ class _Row extends StatelessWidget {
           child: Text(
             label,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: PixelPalette.textMuted,
+              color: context.pixel.textMuted,
             ),
           ),
         ),

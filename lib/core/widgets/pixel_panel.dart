@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 
 /// Panel con aspecto pixelado: esquinas rectas, borde grueso y sombra dura
 /// desplazada (sin desenfoque), como las ventanas de un juego retro.
@@ -17,20 +17,23 @@ class PixelPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Los colores salen del tema actual (claro u oscuro).
+    final colors = context.pixel;
+
     // El espacio extra a la derecha y abajo es para la sombra dura.
     return Padding(
       padding: const EdgeInsets.only(right: 4, bottom: 4),
       child: DecoratedBox(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           boxShadow: [
-            BoxShadow(color: PixelPalette.shadow, offset: Offset(4, 4)),
+            BoxShadow(color: colors.shadow, offset: const Offset(4, 4)),
           ],
         ),
         child: Material(
-          color: PixelPalette.panel,
+          color: colors.panel,
           clipBehavior: Clip.antiAlias,
-          shape: const RoundedRectangleBorder(
-            side: BorderSide(color: PixelPalette.panelBorder, width: 3),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(color: colors.panelBorder, width: 3),
           ),
           child: InkWell(
             onTap: onTap,

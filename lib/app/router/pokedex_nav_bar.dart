@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/core/widgets/pixel_sprite.dart';
 
 /// Un destino de la barra: su dibujo pixelado y su nombre.
@@ -10,7 +10,7 @@ class PokedexNavItem {
   final String label;
 }
 
-/// Barra de navegación inferior (diseño del mock, opción B): panel oscuro con
+/// Barra de navegación inferior (diseño del mock, opción B): panel con
 /// borde, sin fichas. La pestaña activa lleva un cursor amarillo arriba, fondo
 /// resaltado y texto en negrita (no depende solo del color, IND-05).
 class PokedexNavBar extends StatelessWidget {
@@ -27,14 +27,14 @@ class PokedexNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.pixel;
+
     return Material(
-      color: PixelPalette.panel,
+      color: colors.panel,
       child: DecoratedBox(
-        // Borde claro arriba, separa la barra del contenido.
-        decoration: const BoxDecoration(
-          border: Border(
-            top: BorderSide(color: PixelPalette.panelBorder, width: 4),
-          ),
+        // Borde arriba, separa la barra del contenido.
+        decoration: BoxDecoration(
+          border: Border(top: BorderSide(color: colors.panelBorder, width: 4)),
         ),
         // SafeArea respeta la barra de gestos del teléfono.
         child: SafeArea(
@@ -78,7 +78,9 @@ class _NavButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final color = selected ? PixelPalette.accent : PixelPalette.textMuted;
+    final colors = context.pixel;
+    // Icono y texto: amarillo "de texto" si está activa, gris si no.
+    final color = selected ? colors.accentText : colors.textMuted;
 
     // Un solo bloque para el lector de pantalla: "Pokédex, botón, seleccionado".
     return Semantics(
@@ -89,7 +91,7 @@ class _NavButton extends StatelessWidget {
       excludeSemantics: true,
       child: Material(
         // Activo: fondo resaltado. Inactivo: transparente.
-        color: selected ? PixelPalette.panelHigh : Colors.transparent,
+        color: selected ? colors.panelHigh : Colors.transparent,
         child: InkWell(
           onTap: onTap,
           child: ConstrainedBox(
@@ -100,7 +102,7 @@ class _NavButton extends StatelessWidget {
               children: [
                 // Cursor amarillo arriba (solo en la pestaña activa).
                 if (selected)
-                  const Positioned(
+                  Positioned(
                     top: 0,
                     left: 0,
                     right: 0,
@@ -110,7 +112,7 @@ class _NavButton extends StatelessWidget {
                         widthFactor: 0.56,
                         child: SizedBox(
                           height: 4,
-                          child: ColoredBox(color: PixelPalette.accent),
+                          child: ColoredBox(color: colors.accent),
                         ),
                       ),
                     ),

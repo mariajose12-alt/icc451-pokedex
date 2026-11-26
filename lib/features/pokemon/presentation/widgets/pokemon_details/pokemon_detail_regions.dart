@@ -133,6 +133,10 @@ class _RegionStage extends StatelessWidget {
                         selected: selected,
                         names: names,
                         textStyle: textStyle,
+                        // Mar nocturno en tema oscuro y celeste en el claro.
+                        colors: Theme.of(context).brightness == Brightness.dark
+                            ? RegionMapColors.dark
+                            : RegionMapColors.light,
                       ),
                     ),
                   ),

@@ -15,6 +15,8 @@ geográficos convencionales sin justificación funcional.
 - Una pestaña «Mapa» en el detalle dibuja un escenario hecho a mano con Flutter
   (`CustomPainter`): mar, nueve islas pixeladas de colores (una por generación),
   rutas, insignias ✓/✕ y brújula. No hay imágenes externas ni teselas.
+- El mar tiene dos paletas (`RegionMapColors`): nocturna en tema oscuro y
+  celeste con textos oscuros en tema claro, para no romper el tema claro.
 - Las regiones son las nueve principales (Kanto a Paldea). Hisui (Leyendas:
   Arceus) cuenta como Sinnoh y Orre (Colosseum/XD) no se muestra.
 - Al tocar una isla se listan, por entrega y con su nombre oficial, los juegos

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/core/theme/pixel_palette.dart';
 import 'package:pokedex/core/widgets/pixel_panel.dart';
 import 'package:pokedex/features/trivia/presentation/models/trivia_view_data.dart';
@@ -99,7 +100,7 @@ class TriviaRankingPage extends StatelessWidget {
                             l10n.triviaRankingEmptyMessage,
                             textAlign: TextAlign.center,
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: PixelPalette.textMuted,
+                              color: context.pixel.textMuted,
                             ),
                           ),
                         ],
@@ -279,7 +280,7 @@ class _RankRow extends StatelessWidget {
             child: Text(
               '$position',
               style: theme.textTheme.titleLarge?.copyWith(
-                color: PixelPalette.textMuted,
+                color: context.pixel.textMuted,
                 fontVariations: const [FontVariation('wght', 700)],
               ),
             ),
@@ -292,7 +293,7 @@ class _RankRow extends StatelessWidget {
                 dateText,
               ),
               style: theme.textTheme.bodySmall?.copyWith(
-                color: PixelPalette.textMuted,
+                color: context.pixel.textMuted,
               ),
             ),
           ),
@@ -300,7 +301,7 @@ class _RankRow extends StatelessWidget {
           Text(
             l10n.triviaPoints(entry.score),
             style: theme.textTheme.titleMedium?.copyWith(
-              color: PixelPalette.accent,
+              color: context.pixel.accentText,
               fontVariations: const [FontVariation('wght', 700)],
             ),
           ),

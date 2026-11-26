@@ -22,7 +22,6 @@ import 'package:pokedex/features/trivia/presentation/cubit/trivia_home_cubit.dar
 import 'package:pokedex/features/trivia/presentation/cubit/trivia_ranking_cubit.dart';
 import 'package:pokedex/features/trivia/presentation/pages/trivia_play_page.dart';
 import 'package:pokedex/features/trivia/presentation/pages/trivia_screens.dart';
-import 'package:pokedex/features/trivia/presentation/widgets/trivia_dark_theme.dart';
 import 'package:pokedex/features/onboarding/domain/repositories/onboarding_repository.dart';
 import 'package:pokedex/features/onboarding/presentation/onboarding_page.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/pokemon_detail_repository.dart';
@@ -168,7 +167,7 @@ final GoRouter appRouter = GoRouter(
               builder: (context, state) => BlocProvider<TriviaHomeCubit>(
                 create: (_) =>
                     TriviaHomeCubit(repository: getIt<TriviaRepository>()),
-                child: const TriviaDarkTheme(child: TriviaHomeScreen()),
+                child: const TriviaHomeScreen(),
               ),
               routes: [
                 GoRoute(
@@ -178,7 +177,7 @@ final GoRouter appRouter = GoRouter(
                     create: (_) =>
                         TriviaGameCubit(repository: getIt<TriviaRepository>())
                           ..start(),
-                    child: const TriviaDarkTheme(child: TriviaPlayPage()),
+                    child: const TriviaPlayPage(),
                   ),
                 ),
                 GoRoute(
@@ -187,7 +186,7 @@ final GoRouter appRouter = GoRouter(
                     create: (_) => TriviaRankingCubit(
                       repository: getIt<TriviaRepository>(),
                     ),
-                    child: const TriviaDarkTheme(child: TriviaRankingScreen()),
+                    child: const TriviaRankingScreen(),
                   ),
                 ),
                 GoRoute(
@@ -197,9 +196,7 @@ final GoRouter appRouter = GoRouter(
                         create: (_) => TriviaAchievementsCubit(
                           repository: getIt<TriviaRepository>(),
                         ),
-                        child: const TriviaDarkTheme(
-                          child: TriviaAchievementsScreen(),
-                        ),
+                        child: const TriviaAchievementsScreen(),
                       ),
                 ),
               ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/features/trivia/domain/usecases/normalize_answer.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
 
@@ -115,9 +115,9 @@ class _LetterBox extends StatelessWidget {
       height: 38,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: PixelPalette.background,
+        color: context.pixel.background,
         border: Border.all(
-          color: isNext ? PixelPalette.accent : PixelPalette.panelBorder,
+          color: isNext ? context.pixel.accent : context.pixel.panelBorder,
           width: 3,
         ),
       ),
@@ -127,7 +127,7 @@ class _LetterBox extends StatelessWidget {
         child: Text(
           letter.toUpperCase(),
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            color: isHint ? PixelPalette.textMuted : PixelPalette.text,
+            color: isHint ? context.pixel.textMuted : context.pixel.text,
           ),
         ),
       ),

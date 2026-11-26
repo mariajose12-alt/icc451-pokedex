@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/core/theme/pixel_palette.dart';
 import 'package:pokedex/core/widgets/pixel_panel.dart';
 import 'package:pokedex/features/trivia/presentation/models/trivia_view_data.dart';
@@ -117,7 +118,7 @@ class TriviaHomePage extends StatelessWidget {
                       Text(
                         l10n.triviaRules,
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color: PixelPalette.textMuted,
+                          color: context.pixel.textMuted,
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -149,10 +150,10 @@ class TriviaHomePage extends StatelessWidget {
                       const SizedBox(height: 16),
                       Row(
                         children: [
-                          const ExcludeSemantics(
+                          ExcludeSemantics(
                             child: SizedBox.square(
                               dimension: 10,
-                              child: ColoredBox(color: PixelPalette.success),
+                              child: ColoredBox(color: context.pixel.success),
                             ),
                           ),
                           const SizedBox(width: 8),
@@ -160,7 +161,7 @@ class TriviaHomePage extends StatelessWidget {
                             child: Text(
                               l10n.triviaSavedCount(data.savedPokemon),
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: PixelPalette.textMuted,
+                                color: context.pixel.textMuted,
                               ),
                             ),
                           ),
@@ -202,7 +203,7 @@ class _StatCard extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: theme.textTheme.labelSmall?.copyWith(
-              color: PixelPalette.textMuted,
+              color: context.pixel.textMuted,
               fontVariations: const [FontVariation('wght', 700)],
             ),
           ),
@@ -211,7 +212,7 @@ class _StatCard extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: theme.textTheme.titleLarge?.copyWith(
-              color: highlight ? PixelPalette.accent : PixelPalette.text,
+              color: highlight ? context.pixel.accentText : context.pixel.text,
               fontVariations: const [FontVariation('wght', 700)],
             ),
           ),

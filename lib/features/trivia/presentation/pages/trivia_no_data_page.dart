@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/core/theme/pixel_palette.dart';
 import 'package:pokedex/core/widgets/pixel_panel.dart';
 import 'package:pokedex/features/trivia/presentation/models/trivia_view_data.dart';
@@ -117,7 +118,7 @@ class TriviaNoDataPage extends StatelessWidget {
                       Text(
                         l10n.triviaNoDataMessage(data.required),
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color: PixelPalette.textMuted,
+                          color: context.pixel.textMuted,
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -139,7 +140,7 @@ class TriviaNoDataPage extends StatelessWidget {
                         child: Text(
                           l10n.triviaNoDataNote,
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: PixelPalette.textMuted,
+                            color: context.pixel.textMuted,
                           ),
                         ),
                       ),

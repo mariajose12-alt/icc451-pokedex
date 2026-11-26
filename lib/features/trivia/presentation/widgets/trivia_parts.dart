@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/core/theme/pixel_palette.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
 import 'package:pokedex/core/cache/image_cache_manager.dart';
@@ -130,18 +131,21 @@ class SegmentedBar extends StatelessWidget {
   const SegmentedBar({
     required this.filled,
     required this.total,
-    this.color = PixelPalette.accent,
+    this.color,
     this.height = 12,
     super.key,
   });
 
   final int filled;
   final int total;
-  final Color color;
+
+  /// Color de los segmentos llenos. Si es null, el amarillo del tema.
+  final Color? color;
   final double height;
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.pixel;
     return ExcludeSemantics(
       child: Row(
         children: [
@@ -151,8 +155,10 @@ class SegmentedBar extends StatelessWidget {
                 height: height,
                 margin: const EdgeInsets.symmetric(horizontal: 1),
                 decoration: BoxDecoration(
-                  color: i < filled ? color : PixelPalette.panelHigh,
-                  border: Border.all(color: PixelPalette.background, width: 2),
+                  color: i < filled
+                      ? (color ?? colors.accent)
+                      : colors.panelHigh,
+                  border: Border.all(color: colors.background, width: 2),
                 ),
               ),
             ),

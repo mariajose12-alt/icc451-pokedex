@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:pokedex/core/connectivity/connectivity_monitor.dart';
 import 'package:pokedex/core/network/api_outage_simulator.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
 import 'package:pokedex/core/widgets/pixel_panel.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 
 /// Interruptor para simular la caída de la API con la red activa (PA-08).
 /// Solo se muestra cuando el simulador está habilitado (debug, o release con
@@ -31,6 +31,7 @@ class OutageSimulatorTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
+    final colors = context.pixel;
 
     // El simulador es un ValueNotifier: el interruptor se redibuja solo.
     return ValueListenableBuilder<bool>(
@@ -58,7 +59,7 @@ class OutageSimulatorTile extends StatelessWidget {
                         Text(
                           l10n.settingsOutageHint,
                           style: textTheme.bodySmall?.copyWith(
-                            color: PixelPalette.textMuted,
+                            color: colors.textMuted,
                           ),
                         ),
                       ],

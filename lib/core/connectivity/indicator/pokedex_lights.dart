@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 
 /// Cuál de las tres luces está encendida.
 enum IndicatorLed { red, yellow, green, none }
+
+// El lente y las luces están sobre la carcasa roja de la Pokédex, que es igual
+// en el tema claro y en el oscuro. Por eso usan siempre estos colores.
+const PixelColors _fixed = PixelColors.dark;
 
 /// Lente azul de la Pokédex con un icono adentro.
 /// Si [pulsing] es true, el borde brilla y se apaga despacio (sincronizando).
@@ -70,25 +74,22 @@ class _PokedexLensState extends State<PokedexLens>
           child: DecoratedBox(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: PixelPalette.lens,
-              border: Border.all(color: PixelPalette.text, width: 3),
+              color: _fixed.lens,
+              border: Border.all(color: _fixed.onShell, width: 3),
               boxShadow: [
                 // Aro de brillo, sin desenfoque, para mantener el estilo pixel.
                 BoxShadow(
-                  color: PixelPalette.lens.withValues(alpha: glow * 0.8),
+                  color: _fixed.lens.withValues(alpha: glow * 0.8),
                   spreadRadius: glow * 6,
                 ),
                 // Sombra dura, igual que los paneles de la app.
-                const BoxShadow(
-                  color: PixelPalette.shadow,
-                  offset: Offset(3, 3),
-                ),
+                BoxShadow(color: _fixed.shadow, offset: const Offset(3, 3)),
               ],
             ),
             child: Stack(
               alignment: Alignment.center,
               children: [
-                Icon(widget.icon, color: PixelPalette.text, size: 24),
+                Icon(widget.icon, color: _fixed.onShell, size: 24),
                 // Reflejo del cristal, arriba a la izquierda.
                 Positioned(
                   left: 7,
@@ -98,7 +99,7 @@ class _PokedexLensState extends State<PokedexLens>
                     height: 9,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: PixelPalette.text.withValues(alpha: 0.7),
+                      color: _fixed.onShell.withValues(alpha: 0.7),
                     ),
                   ),
                 ),
@@ -121,7 +122,7 @@ class PokedexLeds extends StatelessWidget {
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: PixelPalette.shadow,
+        color: _fixed.shadow,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
@@ -137,13 +138,13 @@ class PokedexLeds extends StatelessWidget {
             const SizedBox(width: 6),
             _Led(
               on: lit == IndicatorLed.yellow,
-              onColor: PixelPalette.accent,
+              onColor: _fixed.accent,
               offColor: const Color(0xFF5A4A12),
             ),
             const SizedBox(width: 6),
             _Led(
               on: lit == IndicatorLed.green,
-              onColor: PixelPalette.success,
+              onColor: _fixed.success,
               offColor: const Color(0xFF1F4A2A),
             ),
           ],
@@ -170,7 +171,7 @@ class _Led extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: on ? onColor : offColor,
-        border: Border.all(color: PixelPalette.panelBorder, width: 2),
+        border: Border.all(color: _fixed.panelBorder, width: 2),
       ),
     );
   }

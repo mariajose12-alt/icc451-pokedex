@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/core/theme/pixel_palette.dart';
 import 'package:pokedex/core/widgets/pixel_panel.dart';
 import 'package:pokedex/core/widgets/pixel_sprite.dart';
@@ -110,7 +111,7 @@ class TriviaResultPage extends StatelessWidget {
                                   child: Text(
                                     l10n.triviaCorrectLabel,
                                     style: theme.textTheme.bodyMedium?.copyWith(
-                                      color: PixelPalette.textMuted,
+                                      color: context.pixel.textMuted,
                                     ),
                                   ),
                                 ),
@@ -201,10 +202,10 @@ class _AchievementCard extends StatelessWidget {
       container: true,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: PixelPalette.panelHigh,
-          border: Border.all(color: PixelPalette.accent, width: 3),
-          boxShadow: const [
-            BoxShadow(color: PixelPalette.shadow, offset: Offset(4, 4)),
+          color: context.pixel.panelHigh,
+          border: Border.all(color: context.pixel.accent, width: 3),
+          boxShadow: [
+            BoxShadow(color: context.pixel.shadow, offset: const Offset(4, 4)),
           ],
         ),
         child: Padding(
@@ -233,7 +234,7 @@ class _AchievementCard extends StatelessWidget {
                     Text(
                       title,
                       style: theme.textTheme.labelSmall?.copyWith(
-                        color: PixelPalette.accent,
+                        color: context.pixel.accentText,
                         fontVariations: const [FontVariation('wght', 700)],
                       ),
                     ),
@@ -246,7 +247,7 @@ class _AchievementCard extends StatelessWidget {
                     Text(
                       description,
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: PixelPalette.textMuted,
+                        color: context.pixel.textMuted,
                       ),
                     ),
                   ],

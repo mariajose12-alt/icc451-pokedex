@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/core/theme/pixel_palette.dart';
 import 'package:pokedex/core/widgets/pixel_sprite.dart';
 import 'package:pokedex/features/trivia/presentation/models/trivia_view_data.dart';
@@ -206,13 +207,13 @@ class _AchievementTile extends StatelessWidget {
       container: true,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: unlocked ? PixelPalette.panelHigh : PixelPalette.panel,
+          color: unlocked ? context.pixel.panelHigh : context.pixel.panel,
           border: Border.all(
-            color: unlocked ? PixelPalette.accent : PixelPalette.panelBorder,
+            color: unlocked ? context.pixel.accent : context.pixel.panelBorder,
             width: 3,
           ),
-          boxShadow: const [
-            BoxShadow(color: PixelPalette.shadow, offset: Offset(4, 4)),
+          boxShadow: [
+            BoxShadow(color: context.pixel.shadow, offset: const Offset(4, 4)),
           ],
         ),
         child: Padding(
@@ -226,8 +227,8 @@ class _AchievementTile extends StatelessWidget {
                     child: PixelSprite(
                       sprite: PixelSprites.star,
                       color: unlocked
-                          ? PixelPalette.accent
-                          : PixelPalette.panelBorder,
+                          ? context.pixel.accentText
+                          : context.pixel.panelBorder,
                       width: 20,
                     ),
                   ),
@@ -238,8 +239,8 @@ class _AchievementTile extends StatelessWidget {
                       unlocked ? l10n.triviaUnlocked : l10n.triviaLocked,
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: unlocked
-                            ? PixelPalette.accent
-                            : PixelPalette.textMuted,
+                            ? context.pixel.accentText
+                            : context.pixel.textMuted,
                         fontVariations: const [FontVariation('wght', 700)],
                       ),
                     ),
@@ -256,7 +257,7 @@ class _AchievementTile extends StatelessWidget {
               Text(
                 data.description,
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: PixelPalette.textMuted,
+                  color: context.pixel.textMuted,
                 ),
               ),
               if (!unlocked) ...[
@@ -264,7 +265,7 @@ class _AchievementTile extends StatelessWidget {
                 Text(
                   l10n.triviaProgressOf(data.progress, data.target),
                   style: theme.textTheme.labelSmall?.copyWith(
-                    color: PixelPalette.textMuted,
+                    color: context.pixel.textMuted,
                   ),
                 ),
                 const SizedBox(height: 4),

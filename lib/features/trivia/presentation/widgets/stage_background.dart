@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:pokedex/core/theme/app_theme.dart';
 import 'package:pokedex/core/theme/pixel_palette.dart';
 
 /// Ambiente del escenario. Cada pantalla de la trivia usa uno.
@@ -98,6 +99,17 @@ class StageBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // El escenario es una escena: siempre oscuro, sin importar el tema. Así los
+    // textos blancos y las píldoras de encima se leen igual en claro y oscuro.
+    final dark = AppTheme.dark;
+    final content = Theme(
+      data: dark,
+      child: DefaultTextStyle.merge(
+        style: TextStyle(color: dark.colorScheme.onSurface),
+        child: child,
+      ),
+    );
+
     // Se repinta solo si cambia el ambiente.
     final background = RepaintBoundary(
       child: CustomPaint(painter: _StagePainter(_palettes[mood]!)),
@@ -115,7 +127,7 @@ class StageBackground extends StatelessWidget {
         child: DecoratedBox(
           decoration: border,
           child: ClipRect(
-            child: Stack(fit: StackFit.expand, children: [background, child]),
+            child: Stack(fit: StackFit.expand, children: [background, content]),
           ),
         ),
       );
@@ -134,7 +146,7 @@ class StageBackground extends StatelessWidget {
                 minWidth: double.infinity,
                 minHeight: minHeight!,
               ),
-              child: child,
+              child: content,
             ),
           ],
         ),

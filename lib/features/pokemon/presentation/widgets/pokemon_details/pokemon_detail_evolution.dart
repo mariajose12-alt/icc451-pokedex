@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/features/pokemon/domain/entities/evolution_node.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon_extras.dart';
 import 'package:pokedex/features/pokemon/presentation/cubit/pokemon_extras_cubit.dart';
@@ -111,9 +111,9 @@ class _EvolutionBranch extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 16),
             child: DecoratedBox(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 border: Border(
-                  left: BorderSide(color: PixelPalette.panelBorder, width: 2),
+                  left: BorderSide(color: context.pixel.panelBorder, width: 2),
                 ),
               ),
               child: Padding(
@@ -171,7 +171,7 @@ class _TriggerRow extends StatelessWidget {
             child: Text(
               label,
               style: theme.textTheme.labelLarge?.copyWith(
-                color: PixelPalette.accent,
+                color: context.pixel.accentText,
                 fontVariations: const [FontVariation('wght', 700)],
               ),
             ),
@@ -243,10 +243,10 @@ class _StageCard extends StatelessWidget {
       label: semanticLabel,
       excludeSemantics: true,
       child: Material(
-        color: PixelPalette.panelHigh,
+        color: context.pixel.panelHigh,
         shape: Border.fromBorderSide(
           BorderSide(
-            color: isCurrent ? PixelPalette.accent : PixelPalette.panelBorder,
+            color: isCurrent ? context.pixel.accent : context.pixel.panelBorder,
             width: 3,
           ),
         ),
@@ -273,7 +273,7 @@ class _StageCard extends StatelessWidget {
                         Text(
                           name,
                           style: theme.textTheme.titleMedium?.copyWith(
-                            color: isCurrent ? PixelPalette.accent : null,
+                            color: isCurrent ? context.pixel.accentText : null,
                             fontVariations: const [FontVariation('wght', 700)],
                           ),
                         ),
@@ -307,10 +307,10 @@ class _StageImage extends StatelessWidget {
     final theme = Theme.of(context);
 
     return DecoratedBox(
-      decoration: const BoxDecoration(
-        color: PixelPalette.panel,
+      decoration: BoxDecoration(
+        color: context.pixel.panel,
         border: Border.fromBorderSide(
-          BorderSide(color: PixelPalette.panelBorder, width: 2),
+          BorderSide(color: context.pixel.panelBorder, width: 2),
         ),
       ),
       child: SizedBox(

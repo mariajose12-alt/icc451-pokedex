@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon_form.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_detail_badge.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_detail_labels.dart';
@@ -21,7 +21,7 @@ Future<int?> showPokemonFormSheet(
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
-    backgroundColor: PixelPalette.panel,
+    backgroundColor: context.pixel.panel,
     // Esquinas rectas, como el resto de la interfaz pixelada.
     shape: const RoundedRectangleBorder(),
     builder: (context) => _FormSheet(
@@ -106,10 +106,12 @@ class _FormTile extends StatelessWidget {
     // MergeSemantics: «Mega X, fire, dragon» se lee como un solo botón.
     return MergeSemantics(
       child: Material(
-        color: isSelected ? PixelPalette.panelHigh : PixelPalette.panel,
+        color: isSelected ? context.pixel.panelHigh : context.pixel.panel,
         shape: Border.fromBorderSide(
           BorderSide(
-            color: isSelected ? PixelPalette.accent : PixelPalette.panelBorder,
+            color: isSelected
+                ? context.pixel.accent
+                : context.pixel.panelBorder,
             width: 3,
           ),
         ),

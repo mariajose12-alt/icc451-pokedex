@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 
 enum TriviaButtonKind { primary, secondary }
 
@@ -23,8 +23,9 @@ class TriviaButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.pixel;
     final primary = kind == TriviaButtonKind.primary;
-    final textColor = primary ? PixelPalette.background : PixelPalette.text;
+    final textColor = primary ? colors.onAccent : colors.text;
 
     return Semantics(
       button: true,
@@ -33,18 +34,16 @@ class TriviaButton extends StatelessWidget {
         // Espacio para la sombra dura, igual que PixelPanel.
         padding: const EdgeInsets.only(right: 4, bottom: 4),
         child: DecoratedBox(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             boxShadow: [
-              BoxShadow(color: PixelPalette.shadow, offset: Offset(4, 4)),
+              BoxShadow(color: colors.shadow, offset: const Offset(4, 4)),
             ],
           ),
           child: Material(
-            color: primary ? PixelPalette.accent : PixelPalette.panelHigh,
+            color: primary ? colors.accent : colors.panelHigh,
             shape: RoundedRectangleBorder(
               side: BorderSide(
-                color: primary
-                    ? PixelPalette.background
-                    : PixelPalette.panelBorder,
+                color: primary ? colors.onAccent : colors.panelBorder,
                 width: 3,
               ),
             ),

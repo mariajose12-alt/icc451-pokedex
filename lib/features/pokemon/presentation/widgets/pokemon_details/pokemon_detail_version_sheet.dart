@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/features/pokemon/domain/entities/move_version_group.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_detail_badge.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_detail_labels.dart';
@@ -17,7 +17,7 @@ Future<int?> showPokemonVersionSheet(
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
-    backgroundColor: PixelPalette.panel,
+    backgroundColor: context.pixel.panel,
     shape: const RoundedRectangleBorder(),
     builder: (context) => _VersionSheet(groups: groups, selectedId: selectedId),
   );
@@ -85,10 +85,12 @@ class _VersionTile extends StatelessWidget {
 
     return MergeSemantics(
       child: Material(
-        color: isSelected ? PixelPalette.panelHigh : PixelPalette.panel,
+        color: isSelected ? context.pixel.panelHigh : context.pixel.panel,
         shape: Border.fromBorderSide(
           BorderSide(
-            color: isSelected ? PixelPalette.accent : PixelPalette.panelBorder,
+            color: isSelected
+                ? context.pixel.accent
+                : context.pixel.panelBorder,
             width: 3,
           ),
         ),

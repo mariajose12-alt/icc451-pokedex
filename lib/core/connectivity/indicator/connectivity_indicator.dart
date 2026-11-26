@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
 
 import '../service_availability.dart';
@@ -79,14 +79,16 @@ class ConnectivityIndicator extends StatelessWidget {
         // como una sola (IND-05) y avisa cuando cambia (liveRegion).
         // La flecha y el menú quedan fuera de esa frase: son botones aparte.
         final hasBack = onBack != null;
+        // La barra es la carcasa roja: sus textos son blancos en ambos temas.
+        final colors = context.pixel;
 
         return Material(
           // Rojo de la carcasa de la Pokédex.
-          color: PixelPalette.shell,
+          color: colors.shell,
           child: DecoratedBox(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(color: PixelPalette.shellDark, width: 4),
+                bottom: BorderSide(color: colors.shellDark, width: 4),
               ),
             ),
             child: Padding(
@@ -100,7 +102,7 @@ class ConnectivityIndicator extends StatelessWidget {
                       tooltip: l10n.detailBack,
                       onPressed: onBack,
                       iconSize: 28,
-                      color: PixelPalette.text,
+                      color: colors.onShell,
                       icon: const Icon(Icons.arrow_back),
                     ),
                   Expanded(
@@ -130,7 +132,7 @@ class ConnectivityIndicator extends StatelessWidget {
                                         Icon(
                                           icon,
                                           size: 18,
-                                          color: PixelPalette.text,
+                                          color: colors.onShell,
                                         ),
                                         const SizedBox(width: 6),
                                       ],
@@ -140,7 +142,7 @@ class ConnectivityIndicator extends StatelessWidget {
                                         child: Text(
                                           title,
                                           style: textTheme.titleSmall?.copyWith(
-                                            color: PixelPalette.text,
+                                            color: colors.onShell,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
@@ -151,7 +153,7 @@ class ConnectivityIndicator extends StatelessWidget {
                                   Text(
                                     detail,
                                     style: textTheme.bodySmall?.copyWith(
-                                      color: PixelPalette.text,
+                                      color: colors.onShell,
                                     ),
                                   ),
                                 ],
