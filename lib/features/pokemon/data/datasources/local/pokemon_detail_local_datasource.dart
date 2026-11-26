@@ -74,7 +74,7 @@ class PokemonDetailLocalDataSource {
     if (differences.isNotEmpty) {
       debugPrint(
         'Integridad: #$id difiere de PokeAPI (${differences.join('; ')}). '
-            'Se restaura con la versión remota (OF-19).',
+        'Se restaura con la versión remota (OF-19).',
       );
     }
   }

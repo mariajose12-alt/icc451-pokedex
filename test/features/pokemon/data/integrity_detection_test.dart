@@ -68,7 +68,7 @@ void main() {
     final otherTypeId = original!.typeIds[1];
 
     await (db.update(db.pokemonTypes)
-      ..where((t) => t.pokemonId.equals(1) & t.slot.equals(1)))
+          ..where((t) => t.pokemonId.equals(1) & t.slot.equals(1)))
         .write(PokemonTypesCompanion(typeId: Value(otherTypeId)));
     final altered = await db.detalleDao.readBase(1);
     expect(altered!.typeIds, isNot(original.typeIds));

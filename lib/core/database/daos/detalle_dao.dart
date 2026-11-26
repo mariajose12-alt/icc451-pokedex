@@ -338,10 +338,10 @@ class DetalleDao extends DatabaseAccessor<AppDatabase> with _$DetalleDaoMixin {
       return null;
     }
     final types =
-    await (select(pokemonTypes)
-      ..where((t) => t.pokemonId.equals(id))
-      ..orderBy([(t) => OrderingTerm.asc(t.slot)]))
-        .get();
+        await (select(pokemonTypes)
+              ..where((t) => t.pokemonId.equals(id))
+              ..orderBy([(t) => OrderingTerm.asc(t.slot)]))
+            .get();
     return (name: row.name, typeIds: [for (final t in types) t.typeId]);
   }
 }
