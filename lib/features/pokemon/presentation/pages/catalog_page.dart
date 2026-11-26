@@ -101,11 +101,21 @@ class CatalogPage extends StatelessWidget {
 
               // Hay datos: se muestran siempre, aunque la actualización falle.
               // El aviso de fallo ya no vive aquí: sale como toast arriba.
-              case CatalogSuccess(:final pokemon, :final isRefreshing):
+              // La barra de herramientas la dibuja CatalogResults.
+              case CatalogSuccess(
+                :final pokemon,
+                :final isRefreshing,
+                :final query,
+              ):
                 return Column(
                   children: [
                     if (isRefreshing) const LinearProgressIndicator(),
-                    Expanded(child: CatalogResults(pokemon: pokemon)),
+                    Expanded(
+                      child: CatalogResults(
+                        pokemon: pokemon,
+                        initialText: query.nombre,
+                      ),
+                    ),
                   ],
                 );
             }

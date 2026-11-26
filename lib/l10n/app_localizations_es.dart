@@ -144,6 +144,63 @@ class AppLocalizationsEs extends AppLocalizations {
       'Se muestran los datos guardados. Inténtalo de nuevo.';
 
   @override
+  String get catalogSearchHint => 'Buscar por nombre';
+
+  @override
+  String get catalogSearchClear => 'Limpiar búsqueda';
+
+  @override
+  String get catalogSearchOpen => 'Buscar';
+
+  @override
+  String get catalogSearchClose => 'Cerrar búsqueda';
+
+  @override
+  String get catalogFilterType => 'Tipo';
+
+  @override
+  String get catalogFilterGeneration => 'Generación';
+
+  @override
+  String get catalogSortLabel => 'Orden';
+
+  @override
+  String get catalogRegion1 => 'Kanto';
+
+  @override
+  String get catalogRegion2 => 'Johto';
+
+  @override
+  String get catalogRegion3 => 'Hoenn';
+
+  @override
+  String get catalogRegion4 => 'Sinnoh';
+
+  @override
+  String get catalogRegion5 => 'Teselia';
+
+  @override
+  String get catalogRegion6 => 'Kalos';
+
+  @override
+  String get catalogRegion7 => 'Alola';
+
+  @override
+  String get catalogRegion8 => 'Galar';
+
+  @override
+  String get catalogRegion9 => 'Paldea';
+
+  @override
+  String get catalogGenerationSheetTitle => 'Generación';
+
+  @override
+  String get catalogApplyFilter => 'Aplicar';
+
+  @override
+  String get catalogClearFilter => 'Limpiar';
+
+  @override
   String get debugSimulateOutage => 'Simular caída de la API (solo pruebas)';
 
   @override

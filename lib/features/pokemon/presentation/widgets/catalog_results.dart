@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedex/features/pokemon/presentation/widgets/catalog_toolbar.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex/features/pokemon/presentation/bloc/catalog_bloc.dart';
 import 'package:pokedex/features/pokemon/presentation/bloc/catalog_event.dart';
@@ -15,9 +16,16 @@ import 'pokemon_grid_card.dart';
 
 /// Resultados del catálogo: contador, selector Cuadrícula/Lista y el listado.
 class CatalogResults extends StatefulWidget {
-  const CatalogResults({required this.pokemon, super.key});
+  const CatalogResults({
+    required this.pokemon,
+    required this.initialText,
+    super.key,
+  });
 
   final List<Pokemon> pokemon;
+
+  /// Último criterio de búsqueda guardado, para la barra.
+  final String initialText;
 
   @override
   State<CatalogResults> createState() => _CatalogResultsState();
@@ -80,45 +88,45 @@ class _CatalogResultsState extends State<CatalogResults> {
             constraints: const BoxConstraints(maxWidth: 720),
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
-                  child: Row(
-                    children: [
-                      // Contador a la izquierda.
-                      Expanded(
-                        child: Text(
-                          l10n.pokemonCount(pokemon.length),
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
+                // Barra de herramientas: lupa y filtros a la izquierda,
+                // selector Cuadrícula/Lista a la derecha.
+                CatalogToolbar(
+                  initialText: widget.initialText,
+                  trailing: SegmentedButton<CatalogViewMode>(
+                    showSelectedIcon: false,
+                    style: const ButtonStyle(
+                      // Objetivo táctil de 48 dp (RNF-ACC-03).
+                      minimumSize: WidgetStatePropertyAll(Size(48, 48)),
+                    ),
+                    segments: [
+                      ButtonSegment<CatalogViewMode>(
+                        value: CatalogViewMode.grid,
+                        icon: const Icon(Icons.grid_view),
+                        tooltip: l10n.viewGrid,
                       ),
-                      // Selector a la derecha: solo iconos. El texto queda
-                      // como tooltip y como etiqueta para lectores de pantalla.
-                      SegmentedButton<CatalogViewMode>(
-                        showSelectedIcon: false,
-                        style: const ButtonStyle(
-                          // Objetivo táctil de 48 dp (RNF-ACC-03).
-                          minimumSize: WidgetStatePropertyAll(Size(48, 48)),
-                        ),
-                        segments: [
-                          ButtonSegment<CatalogViewMode>(
-                            value: CatalogViewMode.grid,
-                            icon: const Icon(Icons.grid_view),
-                            tooltip: l10n.viewGrid,
-                          ),
-                          ButtonSegment<CatalogViewMode>(
-                            value: CatalogViewMode.list,
-                            icon: const Icon(Icons.view_list),
-                            tooltip: l10n.viewList,
-                          ),
-                        ],
-                        selected: <CatalogViewMode>{mode},
-                        onSelectionChanged: (selection) {
-                          _changeMode(selection.first);
-                        },
+                      ButtonSegment<CatalogViewMode>(
+                        value: CatalogViewMode.list,
+                        icon: const Icon(Icons.view_list),
+                        tooltip: l10n.viewList,
                       ),
                     ],
+                    selected: <CatalogViewMode>{mode},
+                    onSelectionChanged: (selection) {
+                      _changeMode(selection.first);
+                    },
+                  ),
+                ),
+                // Contador debajo de la barra, a la izquierda.
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      l10n.pokemonCount(pokemon.length),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
                   ),
                 ),
                 Expanded(
