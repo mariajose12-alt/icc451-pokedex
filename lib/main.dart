@@ -31,6 +31,9 @@ import 'features/pokemon/domain/repositories/type_chart_repository.dart';
 import 'features/settings/data/repositories/drift_saved_pokemon_repository.dart';
 import 'features/settings/domain/repositories/saved_pokemon_repository.dart';
 import 'features/settings/presentation/cubit/locale_cubit.dart';
+import 'features/settings/presentation/cubit/theme_mode_cubit.dart';
+import 'features/onboarding/data/repositories/preferences_onboarding_repository.dart';
+import 'features/onboarding/domain/repositories/onboarding_repository.dart';
 import 'core/database/app_database.dart';
 import 'core/sync/drift_sync_info_source.dart';
 import 'core/sync/sync_status.dart';
@@ -55,6 +58,9 @@ Future<void> main() async {
   // Preferencias del usuario
   final preferences = await SharedPreferences.getInstance();
   getIt.registerSingleton<SharedPreferences>(preferences);
+  getIt.registerSingleton<OnboardingRepository>(
+    PreferencesOnboardingRepository(preferences: preferences),
+  );
 
   // Registro de dependencias
   // Orden: de abajo hacia arriba (red/base de datos -> fuentes de datos
@@ -165,5 +171,10 @@ Future<void> main() async {
   getIt.registerSingleton<CatalogSyncScheduler>(scheduler);
   scheduler.start();
 
-  runApp(PokedexApp(localeCubit: LocaleCubit(preferences: preferences)));
+  runApp(
+    PokedexApp(
+      localeCubit: LocaleCubit(preferences: preferences),
+      themeModeCubit: ThemeModeCubit(preferences: preferences),
+    ),
+  );
 }

@@ -1525,6 +1525,276 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remove {name} from favorites'**
   String favoriteRemoveNamed(String name);
+
+  /// No description provided for @themeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get themeTitle;
+
+  /// No description provided for @themeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get themeSystem;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLight;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
+
+  /// No description provided for @onboardingSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get onboardingSkip;
+
+  /// No description provided for @onboardingNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get onboardingNext;
+
+  /// No description provided for @onboardingStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Get started'**
+  String get onboardingStart;
+
+  /// No description provided for @onboardingStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {current} of {total}'**
+  String onboardingStep(int current, int total);
+
+  /// No description provided for @onboardingTitle1.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore every Pokémon'**
+  String get onboardingTitle1;
+
+  /// No description provided for @onboardingBody1.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a card to see its types and stats. This one is just for practice.'**
+  String get onboardingBody1;
+
+  /// No description provided for @onboardingTitle2.
+  ///
+  /// In en, this message translates to:
+  /// **'Save your favorites'**
+  String get onboardingTitle2;
+
+  /// No description provided for @onboardingBody2.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the heart to save a Pokémon and find it later in Favorites.'**
+  String get onboardingBody2;
+
+  /// No description provided for @onboardingTitle3.
+  ///
+  /// In en, this message translates to:
+  /// **'See if you are online'**
+  String get onboardingTitle3;
+
+  /// No description provided for @onboardingBody3.
+  ///
+  /// In en, this message translates to:
+  /// **'The lens at the top changes with your connection. The app works the same without internet.'**
+  String get onboardingBody3;
+
+  /// No description provided for @onboardingTitle4.
+  ///
+  /// In en, this message translates to:
+  /// **'Play the trivia'**
+  String get onboardingTitle4;
+
+  /// No description provided for @onboardingBody4.
+  ///
+  /// In en, this message translates to:
+  /// **'Guess who the hidden Pokémon is and climb the ranking.'**
+  String get onboardingBody4;
+
+  /// No description provided for @onboardingWhereTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Where: “{tab}” tab'**
+  String onboardingWhereTab(String tab);
+
+  /// No description provided for @onboardingWhereTop.
+  ///
+  /// In en, this message translates to:
+  /// **'Where: at the top, in the status bar'**
+  String get onboardingWhereTop;
+
+  /// No description provided for @onboardingTryCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Try it: tap the card'**
+  String get onboardingTryCard;
+
+  /// No description provided for @onboardingTryHeart.
+  ///
+  /// In en, this message translates to:
+  /// **'Try it: tap the heart'**
+  String get onboardingTryHeart;
+
+  /// No description provided for @onboardingTryLens.
+  ///
+  /// In en, this message translates to:
+  /// **'Try it: tap the lens'**
+  String get onboardingTryLens;
+
+  /// No description provided for @onboardingTryQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Try it: tap the “?”'**
+  String get onboardingTryQuestion;
+
+  /// No description provided for @onboardingDoneCard.
+  ///
+  /// In en, this message translates to:
+  /// **'That easy! Every Pokémon in the Pokédex opens the same way.'**
+  String get onboardingDoneCard;
+
+  /// No description provided for @onboardingDoneHeart.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved! Your favorites show even without a connection.'**
+  String get onboardingDoneHeart;
+
+  /// No description provided for @onboardingDoneLens.
+  ///
+  /// In en, this message translates to:
+  /// **'That is how you know your data is up to date. Keep tapping to see the other states.'**
+  String get onboardingDoneLens;
+
+  /// No description provided for @onboardingDoneQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'It\'s Pikachu! In the trivia you will have to guess it.'**
+  String get onboardingDoneQuestion;
+
+  /// No description provided for @onboardingDemoType.
+  ///
+  /// In en, this message translates to:
+  /// **'Electric'**
+  String get onboardingDemoType;
+
+  /// No description provided for @onboardingDemoSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed'**
+  String get onboardingDemoSpeed;
+
+  /// No description provided for @onboardingDemoCardLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Practice card: Pikachu'**
+  String get onboardingDemoCardLabel;
+
+  /// No description provided for @onboardingDemoFavorite.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as favorite'**
+  String get onboardingDemoFavorite;
+
+  /// No description provided for @onboardingDemoUnfavorite.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from favorites'**
+  String get onboardingDemoUnfavorite;
+
+  /// No description provided for @onboardingDemoLensLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Practice lens: changes the state'**
+  String get onboardingDemoLensLabel;
+
+  /// No description provided for @onboardingDemoQuestionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden Pokémon: tap to reveal it'**
+  String get onboardingDemoQuestionLabel;
+
+  /// No description provided for @settingsShowIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Show introduction'**
+  String get settingsShowIntro;
+
+  /// No description provided for @detailTabMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Map'**
+  String get detailTabMap;
+
+  /// No description provided for @regionsNoGames.
+  ///
+  /// In en, this message translates to:
+  /// **'No data for this Pokémon in {region} games.'**
+  String regionsNoGames(String region);
+
+  /// No description provided for @regionAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{{region}: 1 release} other{{region}: {count} releases}}'**
+  String regionAvailable(int count, String region);
+
+  /// No description provided for @regionUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'{region}: no data'**
+  String regionUnavailable(String region);
+
+  /// No description provided for @regionsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No games saved for this Pokémon yet.'**
+  String get regionsEmpty;
+
+  /// No description provided for @regionsDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Counts the games where the Pokémon has recorded moves.'**
+  String get regionsDisclaimer;
+
+  /// No description provided for @regionUnova.
+  ///
+  /// In en, this message translates to:
+  /// **'Unova'**
+  String get regionUnova;
+
+  /// No description provided for @regionsMapLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Region map. Appears in {count} of {total} regions.'**
+  String regionsMapLabel(int count, int total);
+
+  /// No description provided for @regionPanelLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{region} · GENERATION {generation}'**
+  String regionPanelLabel(String region, String generation);
+
+  /// No description provided for @regionEntregas.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Appears in 1 release} other{Appears in {count} releases}}'**
+  String regionEntregas(int count);
+
+  /// No description provided for @regionStarters.
+  ///
+  /// In en, this message translates to:
+  /// **'Region starters: {names}'**
+  String regionStarters(String names);
 }
 
 class _AppLocalizationsDelegate

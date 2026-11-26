@@ -7,6 +7,7 @@ import 'package:pokedex/core/sync/fake_sync_info_source.dart';
 import 'package:pokedex/features/pokemon/data/repositories/fake_pokemon_repository.dart';
 import 'package:pokedex/features/pokemon/presentation/cubit/catalog_view_mode_cubit.dart';
 import 'package:pokedex/features/settings/presentation/cubit/locale_cubit.dart';
+import 'package:pokedex/features/settings/presentation/cubit/theme_mode_cubit.dart';
 import 'package:pokedex/features/settings/presentation/cubit/manual_sync_cubit.dart';
 import 'package:pokedex/features/settings/presentation/cubit/saved_count_cubit.dart';
 import 'package:pokedex/features/settings/presentation/pages/settings_page.dart';
@@ -16,7 +17,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../helpers/fake_connectivity_monitor.dart';
 import '../../helpers/fake_saved_pokemon_repository.dart';
 
-Future<({LocaleCubit locale, CatalogViewModeCubit view})> _pump(
+Future<({LocaleCubit locale, CatalogViewModeCubit view, ThemeModeCubit theme})>
+_pump(
   WidgetTester tester, {
   required ServiceAvailability availability,
   double textScale = 1,
@@ -25,6 +27,7 @@ Future<({LocaleCubit locale, CatalogViewModeCubit view})> _pump(
   final preferences = await SharedPreferences.getInstance();
   final localeCubit = LocaleCubit(preferences: preferences);
   final viewCubit = CatalogViewModeCubit(preferences: preferences);
+  final themeCubit = ThemeModeCubit(preferences: preferences);
 
   await tester.pumpWidget(
     MaterialApp(
@@ -40,6 +43,7 @@ Future<({LocaleCubit locale, CatalogViewModeCubit view})> _pump(
         providers: [
           BlocProvider<LocaleCubit>.value(value: localeCubit),
           BlocProvider<CatalogViewModeCubit>.value(value: viewCubit),
+          BlocProvider<ThemeModeCubit>.value(value: themeCubit),
           BlocProvider<ConnectivityIndicatorCubit>(
             create: (_) => ConnectivityIndicatorCubit(
               monitor: FakeConnectivityMonitor(availability),
@@ -67,7 +71,7 @@ Future<({LocaleCubit locale, CatalogViewModeCubit view})> _pump(
     ),
   );
   await tester.pump();
-  return (locale: localeCubit, view: viewCubit);
+  return (locale: localeCubit, view: viewCubit, theme: themeCubit);
 }
 
 void main() {
@@ -113,7 +117,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(cubits.locale.state, const Locale('en'));
 
-    await tester.tap(find.text('Sistema'));
+    await tester.tap(find.text('Sistema').first);
     await tester.pumpAndSettle();
     expect(cubits.locale.state, isNull);
   });
@@ -124,10 +128,30 @@ void main() {
       availability: ServiceAvailability.online,
     );
 
+    await tester.ensureVisible(find.text('Lista'));
     await tester.tap(find.text('Lista'));
     await tester.pumpAndSettle();
 
     expect(cubits.view.state, CatalogViewMode.list);
+  });
+
+  testWidgets('tocar Oscuro cambia el tema y Sistema lo devuelve', (
+    tester,
+  ) async {
+    final cubits = await _pump(
+      tester,
+      availability: ServiceAvailability.online,
+    );
+
+    await tester.ensureVisible(find.text('Oscuro'));
+    await tester.tap(find.text('Oscuro'));
+    await tester.pumpAndSettle();
+    expect(cubits.theme.state, ThemeMode.dark);
+
+    // El «Sistema» del tema es el segundo (el primero es el del idioma).
+    await tester.tap(find.text('Sistema').last);
+    await tester.pumpAndSettle();
+    expect(cubits.theme.state, ThemeMode.system);
   });
 
   testWidgets('con texto al 200 % no se desborda', (tester) async {

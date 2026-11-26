@@ -2,15 +2,18 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:pokedex/app/router/app_routes.dart';
 import 'package:pokedex/core/connectivity/indicator/connectivity_indicator_cubit.dart';
 import 'package:pokedex/core/connectivity/indicator/connectivity_indicator_state.dart';
 import 'package:pokedex/core/connectivity/service_availability.dart';
 import 'package:pokedex/core/errors/failures.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/core/widgets/pixel_panel.dart';
 import 'package:pokedex/features/pokemon/presentation/cubit/catalog_view_mode_cubit.dart';
 import 'package:pokedex/features/settings/presentation/cubit/locale_cubit.dart';
+import 'package:pokedex/features/settings/presentation/cubit/theme_mode_cubit.dart';
 import 'package:pokedex/features/settings/presentation/cubit/manual_sync_cubit.dart';
 import 'package:pokedex/features/settings/presentation/cubit/saved_count_cubit.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
@@ -31,6 +34,7 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
+    final colors = context.pixel;
 
     return BlocListener<ManualSyncCubit, ManualSyncState>(
       // Solo avisa cuando la sincronización falla.
@@ -44,12 +48,12 @@ class SettingsPage extends StatelessWidget {
           );
       },
       child: Scaffold(
-        body: Column(
+        body: Stack(
           children: [
             // Con el texto grande la lista se desplaza; el pie queda fijo.
-            Expanded(
+            Positioned.fill(
               child: ListView(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 80),
                 children: [
                   Semantics(
                     header: true,
@@ -64,7 +68,7 @@ class SettingsPage extends StatelessWidget {
                   Text(
                     l10n.settingsSubtitle,
                     style: textTheme.bodyMedium?.copyWith(
-                      color: PixelPalette.textMuted,
+                      color: colors.textMuted,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -98,6 +102,23 @@ class SettingsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
 
+                  // Tema (RF-COM-06): claro, oscuro o el del sistema.
+                  BlocBuilder<ThemeModeCubit, ThemeMode>(
+                    builder: (context, mode) => _Choice<ThemeMode>(
+                      label: l10n.themeTitle,
+                      selected: mode,
+                      options: [
+                        (ThemeMode.system, l10n.themeSystem, null),
+                        (ThemeMode.light, l10n.themeLight, null),
+                        (ThemeMode.dark, l10n.themeDark, null),
+                      ],
+                      onChanged: (value) => unawaited(
+                        context.read<ThemeModeCubit>().select(value),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
                   // Vista del catálogo (RF-FIL-04).
                   BlocBuilder<CatalogViewModeCubit, CatalogViewMode>(
                     builder: (context, mode) => _Choice<CatalogViewMode>(
@@ -121,7 +142,7 @@ class SettingsPage extends StatelessWidget {
                       child: Text(
                         l10n.settingsTestTools,
                         style: textTheme.titleMedium?.copyWith(
-                          color: PixelPalette.textMuted,
+                          color: colors.textMuted,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -129,10 +150,32 @@ class SettingsPage extends StatelessWidget {
                     const SizedBox(height: 8),
                     testTools!,
                   ],
+
+                  // Enlace discreto para volver a ver la introducción
+                  // (RF-COM-08). Mide 48 dp de alto aunque el texto sea chico.
+                  const SizedBox(height: 24),
+                  Center(
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        minimumSize: const Size(48, 48),
+                        foregroundColor: colors.textMuted,
+                        textStyle: textTheme.labelMedium,
+                      ),
+                      onPressed: () =>
+                          unawaited(context.push(AppRoutes.onboarding)),
+                      child: Text(l10n.settingsShowIntro),
+                    ),
+                  ),
                 ],
               ),
             ),
-            ?footer,
+            if (footer != null)
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: IgnorePointer(child: footer),
+              ),
           ],
         ),
       ),
@@ -161,6 +204,7 @@ class _SavedCard extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final localeName = Localizations.localeOf(context).toString();
     final count = context.select((SavedCountCubit cubit) => cubit.state);
+    final colors = context.pixel;
 
     return PixelPanel(
       padding: const EdgeInsets.all(14),
@@ -175,7 +219,7 @@ class _SavedCard extends StatelessWidget {
                 Text(
                   l10n.settingsSavedLabel,
                   style: textTheme.bodyMedium?.copyWith(
-                    color: PixelPalette.textMuted,
+                    color: colors.textMuted,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -187,7 +231,7 @@ class _SavedCard extends StatelessWidget {
                     Text(
                       '$count',
                       style: textTheme.headlineLarge?.copyWith(
-                        color: PixelPalette.accent,
+                        color: colors.accent,
                         fontWeight: FontWeight.bold,
                         height: 1.1,
                       ),
@@ -215,7 +259,7 @@ class _SavedCard extends StatelessWidget {
                     return Text(
                       l10n.settingsLastSyncValue(time),
                       style: textTheme.bodySmall?.copyWith(
-                        color: PixelPalette.textMuted,
+                        color: colors.textMuted,
                       ),
                     );
                   },
@@ -240,6 +284,7 @@ class _SyncButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
+    final colors = context.pixel;
 
     return BlocBuilder<ConnectivityIndicatorCubit, ConnectivityIndicatorState>(
       builder: (context, indicator) {
@@ -270,7 +315,7 @@ class _SyncButton extends StatelessWidget {
                       l10n.settingsSyncNeedsConnection,
                       textAlign: TextAlign.center,
                       style: textTheme.bodySmall?.copyWith(
-                        color: PixelPalette.textMuted,
+                        color: colors.textMuted,
                       ),
                     ),
                   ),
@@ -302,6 +347,7 @@ class _Choice<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final colors = context.pixel;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -309,7 +355,7 @@ class _Choice<T> extends StatelessWidget {
         Text(
           label,
           style: textTheme.titleSmall?.copyWith(
-            color: PixelPalette.textMuted,
+            color: colors.textMuted,
             fontWeight: FontWeight.bold,
           ),
         ),

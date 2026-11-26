@@ -22,6 +22,9 @@ import 'package:pokedex/features/trivia/presentation/cubit/trivia_home_cubit.dar
 import 'package:pokedex/features/trivia/presentation/cubit/trivia_ranking_cubit.dart';
 import 'package:pokedex/features/trivia/presentation/pages/trivia_play_page.dart';
 import 'package:pokedex/features/trivia/presentation/pages/trivia_screens.dart';
+import 'package:pokedex/features/trivia/presentation/widgets/trivia_dark_theme.dart';
+import 'package:pokedex/features/onboarding/domain/repositories/onboarding_repository.dart';
+import 'package:pokedex/features/onboarding/presentation/onboarding_page.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/pokemon_detail_repository.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/type_chart_repository.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/pokemon_moves_repository.dart';
@@ -39,7 +42,36 @@ import 'app_shell.dart';
 /// Router de la aplicación. Cada pestaña es una rama con su propio estado.
 final GoRouter appRouter = GoRouter(
   initialLocation: AppRoutes.catalog,
+  // La primera vez, cualquier ruta lleva antes a la introducción. Una vez
+  // vista, se puede volver a abrir desde Ajustes.
+  redirect: (context, state) {
+    final seen = getIt<OnboardingRepository>().hasSeen;
+    final onOnboarding = state.uri.path == AppRoutes.onboarding;
+    if (!seen && !onOnboarding) {
+      return AppRoutes.onboarding;
+    }
+    return null;
+  },
   routes: [
+    // Fuera del shell: la introducción no lleva barra de pestañas ni banda.
+    GoRoute(
+      path: AppRoutes.onboarding,
+      builder: (context, state) => OnboardingPage(
+        onFinished: () async {
+          await getIt<OnboardingRepository>().markSeen();
+          if (!context.mounted) {
+            return;
+          }
+          // Desde Ajustes se vuelve a donde se estaba; la primera vez, al
+          // catálogo.
+          if (context.canPop()) {
+            context.pop();
+          } else {
+            context.go(AppRoutes.catalog);
+          }
+        },
+      ),
+    ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return MultiBlocProvider(
@@ -136,7 +168,7 @@ final GoRouter appRouter = GoRouter(
               builder: (context, state) => BlocProvider<TriviaHomeCubit>(
                 create: (_) =>
                     TriviaHomeCubit(repository: getIt<TriviaRepository>()),
-                child: const TriviaHomeScreen(),
+                child: const TriviaDarkTheme(child: TriviaHomeScreen()),
               ),
               routes: [
                 GoRoute(
@@ -146,7 +178,7 @@ final GoRouter appRouter = GoRouter(
                     create: (_) =>
                         TriviaGameCubit(repository: getIt<TriviaRepository>())
                           ..start(),
-                    child: const TriviaPlayPage(),
+                    child: const TriviaDarkTheme(child: TriviaPlayPage()),
                   ),
                 ),
                 GoRoute(
@@ -155,7 +187,7 @@ final GoRouter appRouter = GoRouter(
                     create: (_) => TriviaRankingCubit(
                       repository: getIt<TriviaRepository>(),
                     ),
-                    child: const TriviaRankingScreen(),
+                    child: const TriviaDarkTheme(child: TriviaRankingScreen()),
                   ),
                 ),
                 GoRoute(
@@ -165,7 +197,9 @@ final GoRouter appRouter = GoRouter(
                         create: (_) => TriviaAchievementsCubit(
                           repository: getIt<TriviaRepository>(),
                         ),
-                        child: const TriviaAchievementsScreen(),
+                        child: const TriviaDarkTheme(
+                          child: TriviaAchievementsScreen(),
+                        ),
                       ),
                 ),
               ],

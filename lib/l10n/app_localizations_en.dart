@@ -854,4 +854,178 @@ class AppLocalizationsEn extends AppLocalizations {
   String favoriteRemoveNamed(String name) {
     return 'Remove $name from favorites';
   }
+
+  @override
+  String get themeTitle => 'Theme';
+
+  @override
+  String get themeSystem => 'System';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get onboardingSkip => 'Skip';
+
+  @override
+  String get onboardingNext => 'Next';
+
+  @override
+  String get onboardingStart => 'Get started';
+
+  @override
+  String onboardingStep(int current, int total) {
+    return 'Step $current of $total';
+  }
+
+  @override
+  String get onboardingTitle1 => 'Explore every Pokémon';
+
+  @override
+  String get onboardingBody1 =>
+      'Tap a card to see its types and stats. This one is just for practice.';
+
+  @override
+  String get onboardingTitle2 => 'Save your favorites';
+
+  @override
+  String get onboardingBody2 =>
+      'Tap the heart to save a Pokémon and find it later in Favorites.';
+
+  @override
+  String get onboardingTitle3 => 'See if you are online';
+
+  @override
+  String get onboardingBody3 =>
+      'The lens at the top changes with your connection. The app works the same without internet.';
+
+  @override
+  String get onboardingTitle4 => 'Play the trivia';
+
+  @override
+  String get onboardingBody4 =>
+      'Guess who the hidden Pokémon is and climb the ranking.';
+
+  @override
+  String onboardingWhereTab(String tab) {
+    return 'Where: “$tab” tab';
+  }
+
+  @override
+  String get onboardingWhereTop => 'Where: at the top, in the status bar';
+
+  @override
+  String get onboardingTryCard => 'Try it: tap the card';
+
+  @override
+  String get onboardingTryHeart => 'Try it: tap the heart';
+
+  @override
+  String get onboardingTryLens => 'Try it: tap the lens';
+
+  @override
+  String get onboardingTryQuestion => 'Try it: tap the “?”';
+
+  @override
+  String get onboardingDoneCard =>
+      'That easy! Every Pokémon in the Pokédex opens the same way.';
+
+  @override
+  String get onboardingDoneHeart =>
+      'Saved! Your favorites show even without a connection.';
+
+  @override
+  String get onboardingDoneLens =>
+      'That is how you know your data is up to date. Keep tapping to see the other states.';
+
+  @override
+  String get onboardingDoneQuestion =>
+      'It\'s Pikachu! In the trivia you will have to guess it.';
+
+  @override
+  String get onboardingDemoType => 'Electric';
+
+  @override
+  String get onboardingDemoSpeed => 'Speed';
+
+  @override
+  String get onboardingDemoCardLabel => 'Practice card: Pikachu';
+
+  @override
+  String get onboardingDemoFavorite => 'Mark as favorite';
+
+  @override
+  String get onboardingDemoUnfavorite => 'Remove from favorites';
+
+  @override
+  String get onboardingDemoLensLabel => 'Practice lens: changes the state';
+
+  @override
+  String get onboardingDemoQuestionLabel => 'Hidden Pokémon: tap to reveal it';
+
+  @override
+  String get settingsShowIntro => 'Show introduction';
+
+  @override
+  String get detailTabMap => 'Map';
+
+  @override
+  String regionsNoGames(String region) {
+    return 'No data for this Pokémon in $region games.';
+  }
+
+  @override
+  String regionAvailable(int count, String region) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$region: $count releases',
+      one: '$region: 1 release',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String regionUnavailable(String region) {
+    return '$region: no data';
+  }
+
+  @override
+  String get regionsEmpty => 'No games saved for this Pokémon yet.';
+
+  @override
+  String get regionsDisclaimer =>
+      'Counts the games where the Pokémon has recorded moves.';
+
+  @override
+  String get regionUnova => 'Unova';
+
+  @override
+  String regionsMapLabel(int count, int total) {
+    return 'Region map. Appears in $count of $total regions.';
+  }
+
+  @override
+  String regionPanelLabel(String region, String generation) {
+    return '$region · GENERATION $generation';
+  }
+
+  @override
+  String regionEntregas(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Appears in $count releases',
+      one: 'Appears in 1 release',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String regionStarters(String names) {
+    return 'Region starters: $names';
+  }
 }

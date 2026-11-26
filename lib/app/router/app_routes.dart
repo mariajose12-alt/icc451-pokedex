@@ -19,4 +19,7 @@ abstract final class AppRoutes {
   static const String triviaAchievements = '/trivia/achievements';
 
   static const String settings = '/settings';
+
+  /// Introducción animada. Vive fuera de las pestañas (RF-COM-08).
+  static const String onboarding = '/onboarding';
 }

@@ -859,4 +859,179 @@ class AppLocalizationsEs extends AppLocalizations {
   String favoriteRemoveNamed(String name) {
     return 'Quitar a $name de favoritos';
   }
+
+  @override
+  String get themeTitle => 'Tema';
+
+  @override
+  String get themeSystem => 'Sistema';
+
+  @override
+  String get themeLight => 'Claro';
+
+  @override
+  String get themeDark => 'Oscuro';
+
+  @override
+  String get onboardingSkip => 'Saltar';
+
+  @override
+  String get onboardingNext => 'Siguiente';
+
+  @override
+  String get onboardingStart => 'Empezar';
+
+  @override
+  String onboardingStep(int current, int total) {
+    return 'Paso $current de $total';
+  }
+
+  @override
+  String get onboardingTitle1 => 'Explora cada Pokémon';
+
+  @override
+  String get onboardingBody1 =>
+      'Toca una tarjeta para ver sus tipos y estadísticas. Esta es de práctica.';
+
+  @override
+  String get onboardingTitle2 => 'Guarda tus favoritos';
+
+  @override
+  String get onboardingBody2 =>
+      'Toca el corazón para guardar un Pokémon y encuéntralo después en Favoritos.';
+
+  @override
+  String get onboardingTitle3 => 'Mira si estás en línea';
+
+  @override
+  String get onboardingBody3 =>
+      'El lente de arriba cambia según tu conexión. La app funciona igual sin internet.';
+
+  @override
+  String get onboardingTitle4 => 'Juega a la trivia';
+
+  @override
+  String get onboardingBody4 =>
+      'Adivina quién es el Pokémon escondido y sube en el ranking.';
+
+  @override
+  String onboardingWhereTab(String tab) {
+    return 'Dónde: pestaña «$tab»';
+  }
+
+  @override
+  String get onboardingWhereTop => 'Dónde: arriba, en la barra de estado';
+
+  @override
+  String get onboardingTryCard => 'Pruébalo: toca la tarjeta';
+
+  @override
+  String get onboardingTryHeart => 'Pruébalo: toca el corazón';
+
+  @override
+  String get onboardingTryLens => 'Pruébalo: toca el lente';
+
+  @override
+  String get onboardingTryQuestion => 'Pruébalo: toca el «?»';
+
+  @override
+  String get onboardingDoneCard =>
+      '¡Así de fácil! Cada Pokémon de la Pokédex se abre igual.';
+
+  @override
+  String get onboardingDoneHeart =>
+      '¡Guardado! Tus favoritos se ven aunque no tengas conexión.';
+
+  @override
+  String get onboardingDoneLens =>
+      'Así sabes si tus datos están al día. Sigue tocando para ver los demás estados.';
+
+  @override
+  String get onboardingDoneQuestion =>
+      '¡Es Pikachu! En la trivia lo tendrás que adivinar tú.';
+
+  @override
+  String get onboardingDemoType => 'Eléctrico';
+
+  @override
+  String get onboardingDemoSpeed => 'Velocidad';
+
+  @override
+  String get onboardingDemoCardLabel => 'Tarjeta de práctica: Pikachu';
+
+  @override
+  String get onboardingDemoFavorite => 'Marcar como favorito';
+
+  @override
+  String get onboardingDemoUnfavorite => 'Quitar de favoritos';
+
+  @override
+  String get onboardingDemoLensLabel => 'Lente de práctica: cambia el estado';
+
+  @override
+  String get onboardingDemoQuestionLabel =>
+      'Pokémon escondido: toca para revelarlo';
+
+  @override
+  String get settingsShowIntro => 'Ver introducción';
+
+  @override
+  String get detailTabMap => 'Mapa';
+
+  @override
+  String regionsNoGames(String region) {
+    return 'No hay datos de este Pokémon en juegos de $region.';
+  }
+
+  @override
+  String regionAvailable(int count, String region) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$region: $count entregas',
+      one: '$region: 1 entrega',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String regionUnavailable(String region) {
+    return '$region: sin datos';
+  }
+
+  @override
+  String get regionsEmpty => 'Todavía no hay juegos guardados de este Pokémon.';
+
+  @override
+  String get regionsDisclaimer =>
+      'Se cuentan los juegos donde el Pokémon tiene movimientos registrados.';
+
+  @override
+  String get regionUnova => 'Teselia';
+
+  @override
+  String regionsMapLabel(int count, int total) {
+    return 'Mapa de regiones. Aparece en $count de $total regiones.';
+  }
+
+  @override
+  String regionPanelLabel(String region, String generation) {
+    return '$region · GENERACIÓN $generation';
+  }
+
+  @override
+  String regionEntregas(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Aparece en $count entregas',
+      one: 'Aparece en 1 entrega',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String regionStarters(String names) {
+    return 'Iniciales de la región: $names';
+  }
 }
