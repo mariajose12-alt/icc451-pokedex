@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pokedex/features/settings/presentation/widgets/outage_simulator_tile.dart';
+import 'package:pokedex/app/router/tools_menu_button.dart' show ToolsMenuButton;
 import 'package:pokedex/core/network/api_outage_simulator.dart';
 import 'package:pokedex/core/network/network_exceptions.dart';
 import 'package:pokedex/core/network/simulated_outage_poke_api_client.dart';
@@ -48,12 +48,27 @@ void main() {
 
     // Tocar el interruptor activa la caída.
     await tester.tap(find.byType(Switch));
+    // Abrir el menú y elegir la opción.
+    await tester.tap(find.byIcon(Icons.more_vert));
+    await tester.pumpAndSettle();
+
+    final opcion = find.text('Simular caída de la API (solo pruebas)');
+    await tester.ensureVisible(opcion);
+    await tester.pumpAndSettle();
+    await tester.tap(opcion);
     await tester.pumpAndSettle();
     expect(simulator.value, isTrue);
     expect(tester.widget<Switch>(find.byType(Switch)).value, isTrue);
 
     // Otra vez: se apaga.
     await tester.tap(find.byType(Switch));
+    await tester.tap(find.byIcon(Icons.more_vert));
+    await tester.pumpAndSettle();
+
+    final opcionDeNuevo = find.text('Simular caída de la API (solo pruebas)');
+    await tester.ensureVisible(opcionDeNuevo);
+    await tester.pumpAndSettle();
+    await tester.tap(opcionDeNuevo);
     await tester.pumpAndSettle();
     expect(simulator.value, isFalse);
   });

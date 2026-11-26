@@ -1,3 +1,5 @@
+import 'package:pokedex/features/pokemon/domain/entities/catalogo_query.dart';
+
 /// Eventos que recibe el Bloc del catálogo.
 sealed class CatalogEvent {
   const CatalogEvent();
@@ -15,4 +17,30 @@ final class CatalogRefreshRequested extends CatalogEvent {
   const CatalogRefreshRequested({this.onlyIfStale = false});
 
   final bool onlyIfStale;
+}
+
+/// El usuario escribió en la barra de búsqueda. Se aplica tras una pausa.
+final class CatalogSearchChanged extends CatalogEvent {
+  const CatalogSearchChanged(this.texto);
+
+  final String texto;
+}
+
+/// Cambiaron tipos, generaciones u orden. Se aplican al momento.
+final class CatalogFilterChanged extends CatalogEvent {
+  const CatalogFilterChanged({
+    this.tipoIds = const <int>{},
+    this.generacionIds = const <int>{},
+    this.orden = CatalogoOrden.numero,
+  });
+
+  final Set<int> tipoIds;
+  final Set<int> generacionIds;
+  final CatalogoOrden orden;
+}
+
+/// Interno: vuelve a observar la base con el criterio actual.
+/// Lo dispara el Bloc, no la pantalla.
+final class CatalogCriteriaApplied extends CatalogEvent {
+  const CatalogCriteriaApplied();
 }

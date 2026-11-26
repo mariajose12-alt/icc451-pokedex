@@ -20,6 +20,7 @@ import 'features/favorites/data/repositories/offline_first_favorites_repository.
 import 'features/favorites/domain/repositories/favorites_repository.dart';
 import 'features/pokemon/data/datasources/local/pokemon_detail_local_datasource.dart';
 import 'features/pokemon/data/datasources/local/pokemon_moves_local_datasource.dart';
+import 'features/pokemon/data/preferences/catalog_query_store.dart';
 import 'features/pokemon/data/repositories/offline_first_pokemon_detail_repository.dart';
 import 'features/pokemon/data/repositories/offline_first_type_chart_repository.dart';
 import 'features/pokemon/data/repositories/offline_first_pokemon_moves_repository.dart';
@@ -60,6 +61,10 @@ Future<void> main() async {
   getIt.registerSingleton<SharedPreferences>(preferences);
   getIt.registerSingleton<OnboardingRepository>(
     PreferencesOnboardingRepository(preferences: preferences),
+  );
+
+  getIt.registerSingleton<CatalogQueryStore>(
+    CatalogQueryStore(preferences: getIt<SharedPreferences>()),
   );
 
   // Registro de dependencias

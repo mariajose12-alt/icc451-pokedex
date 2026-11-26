@@ -2,6 +2,7 @@ import 'package:pokedex/core/errors/failure_mapper.dart';
 import 'package:pokedex/core/network/network_exceptions.dart';
 import 'package:pokedex/features/pokemon/data/datasources/local/pokemon_local_datasource.dart';
 import 'package:pokedex/features/pokemon/data/sync/catalog_sync_coordinator.dart';
+import 'package:pokedex/features/pokemon/domain/entities/catalogo_query.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/pokemon_repository.dart';
 
@@ -48,4 +49,9 @@ class OfflineFirstPokemonRepository implements PokemonRepository {
 
   @override
   Stream<Pokemon?> watchPokemon(int id) => _local.watchPokemon(id);
+
+  @override
+  Stream<List<Pokemon>> watchCatalogoFiltrado(CatalogoQuery query) {
+    return _local.watchCatalogoFiltrado(query);
+  }
 }
