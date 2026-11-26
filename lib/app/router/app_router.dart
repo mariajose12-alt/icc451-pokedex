@@ -69,9 +69,17 @@ final GoRouter appRouter = GoRouter(
                       ),
                     ),
                   ],
-                  // El catálogo lee los nombres de tipo para el filtro (RF-FIL-01).
-                  child: RepositoryProvider<TypeChartRepository>.value(
-                    value: getIt<TypeChartRepository>(),
+                  // El catálogo lee los nombres de tipo para el filtro (RF-FIL-01)
+                  // y los favoritos para mostrar la estrella (RF-FAV-04).
+                  child: MultiRepositoryProvider(
+                    providers: [
+                      RepositoryProvider<TypeChartRepository>.value(
+                        value: getIt<TypeChartRepository>(),
+                      ),
+                      RepositoryProvider<FavoritesRepository>.value(
+                        value: getIt<FavoritesRepository>(),
+                      ),
+                    ],
                     child: const CatalogPage(),
                   ),
                 );

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedex/features/favorites/domain/repositories/favorites_repository.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/catalog_toolbar.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex/features/pokemon/presentation/bloc/catalog_bloc.dart';
@@ -15,7 +16,7 @@ import 'package:pokedex/features/pokemon/presentation/widgets/catalog_active_fil
 import 'pokemon_card.dart';
 import 'pokemon_grid_card.dart';
 
-/// Resultados del catálogo: contador, selector Cuadrícula/Lista y el listado.
+/// Resultados del catálogo: barra, filtros activos, contador y el listado.
 class CatalogResults extends StatefulWidget {
   const CatalogResults({
     required this.pokemon,
@@ -36,6 +37,15 @@ class _CatalogResultsState extends State<CatalogResults> {
   // Un solo controlador para las dos vistas: así se puede leer y mover la
   // posición del scroll al cambiar de una a otra.
   final ScrollController _controller = ScrollController();
+
+  // Ids de los favoritos. Se lee una vez y el stream avisa los cambios.
+  Stream<Set<int>>? _favoritos;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _favoritos ??= context.read<FavoritesRepository>().watchFavoriteIds();
+  }
 
   @override
   void dispose() {
@@ -133,54 +143,70 @@ class _CatalogResultsState extends State<CatalogResults> {
                   ),
                 ),
                 Expanded(
-                  child: RefreshIndicator(
-                    onRefresh: () async {
-                      context.read<CatalogBloc>().add(
-                        const CatalogRefreshRequested(),
+                  // Se reconstruye cada vez que cambian los favoritos, así las
+                  // estrellas se actualizan sin recargar el catálogo.
+                  child: StreamBuilder<Set<int>>(
+                    stream: _favoritos,
+                    initialData: const <int>{},
+                    builder: (context, snapshot) {
+                      final favoritos = snapshot.data ?? const <int>{};
+                      final repository = context.read<FavoritesRepository>();
+
+                      return RefreshIndicator(
+                        onRefresh: () async {
+                          context.read<CatalogBloc>().add(
+                            const CatalogRefreshRequested(),
+                          );
+                        },
+                        // Ambas formas construyen sus elementos de forma diferida
+                        // (RNF-REN-01).
+                        child: showGrid
+                            ? GridView.builder(
+                                controller: _controller,
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                padding: const EdgeInsets.all(12),
+                                gridDelegate:
+                                    SliverGridDelegateWithMaxCrossAxisExtent(
+                                      maxCrossAxisExtent: 220,
+                                      mainAxisExtent: 290 * textScale,
+                                      crossAxisSpacing: 4,
+                                      mainAxisSpacing: 4,
+                                    ),
+                                itemCount: pokemon.length,
+                                itemBuilder: (context, index) {
+                                  final item = pokemon[index];
+                                  return PokemonGridCard(
+                                    pokemon: item,
+                                    isFavorite: favoritos.contains(item.id),
+                                    // Marcar o quitar desde el catálogo: la base
+                                    // avisa y el stream vuelve a dibujar.
+                                    onToggleFavorite: () =>
+                                        unawaited(repository.toggle(item.id)),
+                                    // push: abre el detalle encima y "atrás"
+                                    // regresa al catálogo en el mismo punto.
+                                    onTap: () => context.push(
+                                      AppRoutes.pokemonDetail(item.id),
+                                    ),
+                                  );
+                                },
+                              )
+                            : ListView.builder(
+                                controller: _controller,
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                padding: const EdgeInsets.all(12),
+                                itemCount: pokemon.length,
+                                itemBuilder: (context, index) {
+                                  final item = pokemon[index];
+                                  return PokemonCard(
+                                    pokemon: item,
+                                    onTap: () => context.push(
+                                      AppRoutes.pokemonDetail(item.id),
+                                    ),
+                                  );
+                                },
+                              ),
                       );
                     },
-                    // Ambas formas construyen sus elementos de forma diferida
-                    // (RNF-REN-01).
-                    child: showGrid
-                        ? GridView.builder(
-                            controller: _controller,
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            padding: const EdgeInsets.all(12),
-                            gridDelegate:
-                                SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 220,
-                                  mainAxisExtent: 290 * textScale,
-                                  crossAxisSpacing: 4,
-                                  mainAxisSpacing: 4,
-                                ),
-                            itemCount: pokemon.length,
-                            itemBuilder: (context, index) {
-                              final item = pokemon[index];
-                              return PokemonGridCard(
-                                pokemon: item,
-                                // push: abre el detalle encima y "atrás"
-                                // regresa al catálogo en el mismo punto.
-                                onTap: () => context.push(
-                                  AppRoutes.pokemonDetail(item.id),
-                                ),
-                              );
-                            },
-                          )
-                        : ListView.builder(
-                            controller: _controller,
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            padding: const EdgeInsets.all(12),
-                            itemCount: pokemon.length,
-                            itemBuilder: (context, index) {
-                              final item = pokemon[index];
-                              return PokemonCard(
-                                pokemon: item,
-                                onTap: () => context.push(
-                                  AppRoutes.pokemonDetail(item.id),
-                                ),
-                              );
-                            },
-                          ),
                   ),
                 ),
               ],

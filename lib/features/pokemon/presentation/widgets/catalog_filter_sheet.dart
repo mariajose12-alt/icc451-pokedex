@@ -46,7 +46,7 @@ class _CatalogFilterSheet extends StatefulWidget {
 
 class _CatalogFilterSheetState extends State<_CatalogFilterSheet> {
   // Copia local para que los chips respondan al instante.
-  late Set<int> _seleccion = {...widget.selected};
+  late final Set<int> _seleccion = {...widget.selected};
 
   void _alternar(int id) {
     if (!widget.multiple) {
