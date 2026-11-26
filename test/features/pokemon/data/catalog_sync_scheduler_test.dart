@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pokedex/core/connectivity/service_availability.dart';
 import 'package:pokedex/features/pokemon/data/sync/catalog_sync_scheduler.dart';
+import 'package:pokedex/features/pokemon/domain/entities/catalogo_query.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/pokemon_repository.dart';
 
@@ -20,6 +21,10 @@ class _RecordingRepository implements PokemonRepository {
   Future<void> refreshCatalog({bool onlyIfStale = false}) async {
     calls.add(onlyIfStale);
   }
+
+  @override
+  Stream<List<Pokemon>> watchCatalogoFiltrado(CatalogoQuery query) =>
+      watchCatalog();
 }
 
 // Deja correr los eventos pendientes de los streams.

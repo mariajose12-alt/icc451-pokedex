@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:pokedex/features/pokemon/domain/entities/catalogo_query.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/pokemon_repository.dart';
 
@@ -25,4 +26,8 @@ class ControllablePokemonRepository implements PokemonRepository {
 
   @override
   Future<void> refreshCatalog({bool onlyIfStale = false}) async {}
+
+  @override
+  Stream<List<Pokemon>> watchCatalogoFiltrado(CatalogoQuery query) =>
+      watchCatalog();
 }

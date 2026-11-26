@@ -142,6 +142,63 @@ class AppLocalizationsEn extends AppLocalizations {
   String get catalogRefreshFailedMessage => 'Showing saved data. Try again.';
 
   @override
+  String get catalogSearchHint => 'Search by name';
+
+  @override
+  String get catalogSearchClear => 'Clear search';
+
+  @override
+  String get catalogSearchOpen => 'Search';
+
+  @override
+  String get catalogSearchClose => 'Close search';
+
+  @override
+  String get catalogFilterType => 'Type';
+
+  @override
+  String get catalogFilterGeneration => 'Generation';
+
+  @override
+  String get catalogSortLabel => 'Sort';
+
+  @override
+  String get catalogRegion1 => 'Kanto';
+
+  @override
+  String get catalogRegion2 => 'Johto';
+
+  @override
+  String get catalogRegion3 => 'Hoenn';
+
+  @override
+  String get catalogRegion4 => 'Sinnoh';
+
+  @override
+  String get catalogRegion5 => 'Unova';
+
+  @override
+  String get catalogRegion6 => 'Kalos';
+
+  @override
+  String get catalogRegion7 => 'Alola';
+
+  @override
+  String get catalogRegion8 => 'Galar';
+
+  @override
+  String get catalogRegion9 => 'Paldea';
+
+  @override
+  String get catalogGenerationSheetTitle => 'Generation';
+
+  @override
+  String get catalogApplyFilter => 'Apply';
+
+  @override
+  String get catalogClearFilter => 'Clear';
+
+  @override
   String get debugSimulateOutage => 'Simulate API outage (testing only)';
 
   @override
@@ -462,4 +519,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get detailFavoriteRemove => 'Remove from favorites';
+
+  @override
+  String get catalogTypeSheetTitle => 'Type';
+
+  @override
+  String get catalogSortNumber => 'Number';
+
+  @override
+  String get catalogSortName => 'Name';
+
+  @override
+  String get catalogSortTotal => 'Base total';
+
+  @override
+  String get catalogPartialNotice =>
+      'Filtering only the Pokémon saved on this device';
+
+  @override
+  String get catalogClearAll => 'Clear filters';
 }

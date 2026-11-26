@@ -1,5 +1,7 @@
 import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
 
+import '../entities/catalogo_query.dart';
+
 /// Contrato de acceso al catálogo de Pokémon. Lo implementa la capa data;
 /// la presentación solo conoce esta interfaz (OF-17, OF-18).
 abstract interface class PokemonRepository {
@@ -21,4 +23,8 @@ abstract interface class PokemonRepository {
   /// cuando los datos locales todavía están vigentes (PS-03). Con false
   /// (actualización manual) siempre sincroniza.
   Future<void> refreshCatalog({bool onlyIfStale = false});
+
+  /// Catálogo filtrado y ordenado, desde la base local (RF-FIL-05).
+  /// Emite una lista nueva cada vez que cambia la base o el criterio.
+  Stream<List<Pokemon>> watchCatalogoFiltrado(CatalogoQuery query);
 }

@@ -9,6 +9,7 @@ import 'package:pokedex/core/connectivity/indicator/connectivity_indicator_cubit
 import 'package:pokedex/core/di/service_locator.dart';
 import 'package:pokedex/core/network/api_outage_simulator.dart';
 import 'package:pokedex/core/sync/sync_info.dart';
+import 'package:pokedex/features/pokemon/data/preferences/catalog_query_store.dart';
 import 'package:pokedex/features/favorites/presentation/favorites_page.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/pokemon_repository.dart';
 import 'package:pokedex/features/pokemon/presentation/bloc/catalog_bloc.dart';
@@ -57,9 +58,10 @@ final GoRouter appRouter = GoRouter(
                 return MultiBlocProvider(
                   providers: [
                     BlocProvider<CatalogBloc>(
-                      create: (context) =>
-                          CatalogBloc(repository: getIt<PokemonRepository>())
-                            ..add(const CatalogStarted()),
+                      create: (context) => CatalogBloc(
+                        repository: getIt<PokemonRepository>(),
+                        queryStore: getIt<CatalogQueryStore>(),
+                      )..add(const CatalogStarted()),
                     ),
                     BlocProvider<CatalogViewModeCubit>(
                       create: (context) => CatalogViewModeCubit(
@@ -67,7 +69,19 @@ final GoRouter appRouter = GoRouter(
                       ),
                     ),
                   ],
-                  child: const CatalogPage(),
+                  // El catálogo lee los nombres de tipo para el filtro (RF-FIL-01)
+                  // y los favoritos para mostrar la estrella (RF-FAV-04).
+                  child: MultiRepositoryProvider(
+                    providers: [
+                      RepositoryProvider<TypeChartRepository>.value(
+                        value: getIt<TypeChartRepository>(),
+                      ),
+                      RepositoryProvider<FavoritesRepository>.value(
+                        value: getIt<FavoritesRepository>(),
+                      ),
+                    ],
+                    child: const CatalogPage(),
+                  ),
                 );
               },
               routes: [

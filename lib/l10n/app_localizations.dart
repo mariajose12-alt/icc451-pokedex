@@ -326,6 +326,120 @@ abstract class AppLocalizations {
   /// **'Showing saved data. Try again.'**
   String get catalogRefreshFailedMessage;
 
+  /// No description provided for @catalogSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by name'**
+  String get catalogSearchHint;
+
+  /// No description provided for @catalogSearchClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get catalogSearchClear;
+
+  /// No description provided for @catalogSearchOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get catalogSearchOpen;
+
+  /// No description provided for @catalogSearchClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close search'**
+  String get catalogSearchClose;
+
+  /// No description provided for @catalogFilterType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get catalogFilterType;
+
+  /// No description provided for @catalogFilterGeneration.
+  ///
+  /// In en, this message translates to:
+  /// **'Generation'**
+  String get catalogFilterGeneration;
+
+  /// No description provided for @catalogSortLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort'**
+  String get catalogSortLabel;
+
+  /// No description provided for @catalogRegion1.
+  ///
+  /// In en, this message translates to:
+  /// **'Kanto'**
+  String get catalogRegion1;
+
+  /// No description provided for @catalogRegion2.
+  ///
+  /// In en, this message translates to:
+  /// **'Johto'**
+  String get catalogRegion2;
+
+  /// No description provided for @catalogRegion3.
+  ///
+  /// In en, this message translates to:
+  /// **'Hoenn'**
+  String get catalogRegion3;
+
+  /// No description provided for @catalogRegion4.
+  ///
+  /// In en, this message translates to:
+  /// **'Sinnoh'**
+  String get catalogRegion4;
+
+  /// No description provided for @catalogRegion5.
+  ///
+  /// In en, this message translates to:
+  /// **'Unova'**
+  String get catalogRegion5;
+
+  /// No description provided for @catalogRegion6.
+  ///
+  /// In en, this message translates to:
+  /// **'Kalos'**
+  String get catalogRegion6;
+
+  /// No description provided for @catalogRegion7.
+  ///
+  /// In en, this message translates to:
+  /// **'Alola'**
+  String get catalogRegion7;
+
+  /// No description provided for @catalogRegion8.
+  ///
+  /// In en, this message translates to:
+  /// **'Galar'**
+  String get catalogRegion8;
+
+  /// No description provided for @catalogRegion9.
+  ///
+  /// In en, this message translates to:
+  /// **'Paldea'**
+  String get catalogRegion9;
+
+  /// No description provided for @catalogGenerationSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Generation'**
+  String get catalogGenerationSheetTitle;
+
+  /// No description provided for @catalogApplyFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get catalogApplyFilter;
+
+  /// No description provided for @catalogClearFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get catalogClearFilter;
+
   /// No description provided for @debugSimulateOutage.
   ///
   /// In en, this message translates to:
@@ -925,6 +1039,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remove from favorites'**
   String get detailFavoriteRemove;
+
+  /// No description provided for @catalogTypeSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get catalogTypeSheetTitle;
+
+  /// No description provided for @catalogSortNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Number'**
+  String get catalogSortNumber;
+
+  /// No description provided for @catalogSortName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get catalogSortName;
+
+  /// No description provided for @catalogSortTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Base total'**
+  String get catalogSortTotal;
+
+  /// No description provided for @catalogPartialNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Filtering only the Pokémon saved on this device'**
+  String get catalogPartialNotice;
+
+  /// No description provided for @catalogClearAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filters'**
+  String get catalogClearAll;
 }
 
 class _AppLocalizationsDelegate
