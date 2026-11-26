@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pokedex/app/router/tools_menu_button.dart' show ToolsMenuButton;
 import 'package:pokedex/core/network/api_outage_simulator.dart';
 import 'package:pokedex/core/network/network_exceptions.dart';
 import 'package:pokedex/core/network/simulated_outage_poke_api_client.dart';
+import 'package:pokedex/features/settings/presentation/widgets/outage_simulator_tile.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
 
 import '../../helpers/fake_connectivity_monitor.dart';
