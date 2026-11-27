@@ -1,6 +1,6 @@
 # ADR-0014: Comprobación de integridad del catálogo y política Online-Preferred
 
-- **Estado:** Propuesto
+- **Estado:** Aceptado
 - **Fecha:** 2026-11-25
 - **Decidido por:** María
 
@@ -38,7 +38,7 @@ La pantalla solo lee de Drift (OF-16, OF-17). Leer datos remotos directamente en
 
 **En contra**
 - Más sincronizaciones consumen más de la cuota de 100 solicitudes por hora. Lo amortiguan el deduplicado de solicitudes en curso y los reintentos de 2, 4 y 6 s.
-- La detección con registro cubre hoy el **detalle**. La del catálogo completo (`savePage`) queda pendiente hasta integrar la rama de búsqueda y filtros; mientras tanto el catálogo se restaura por sobrescritura sin registro.
+- La detección con registro cubre el detalle; el catálogo completo se restaura por sobrescritura al sincronizar (cada 10 min como máximo, o al abrir el detalle), sin registro.
 - Se compara solo nombre y tipos, no cada campo.
 
 **Pruebas:** `test/features/pokemon/data/integrity_detection_test.dart` (nombre alterado, sin alteración y tipo alterado) y `pokemon_detail_sync_test.dart` (restauración sin tocar favoritos, PA-16).

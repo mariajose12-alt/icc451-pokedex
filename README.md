@@ -7,12 +7,24 @@ Docente: Freddy Peña (fr.pena@ce.pucmm.edu.do).
 
 **Equipo:** María José Cruz · Almy Otoniela
 
-> **Estado de este documento: primera entrega (avance), 10-nov-2026.**
-> Cada sección indica si lo descrito está **Implementado**, **En desarrollo** o **Planificado**. Este README se actualiza a medida que avanza el proyecto.
+> **Estado de este documento: entrega final, 2-dic-2026.**
+> Cada sección indica el estado de lo descrito. Las pruebas de aceptación (PA-01 a PA-16) se demuestran en vivo.
 
 ## Estado del proyecto
 
 | Área | Estado |
+|---|---|
+| Estructura Clean Architecture por funcionalidades, DI con get_it y BLoC | Implementado |
+| Base de datos local con Drift (19 tablas, esquema v4) | Implementado |
+| Cliente GraphQL con timeout, errores tipados y reintentos con backoff | Implementado |
+| Sincronización remoto → local del catálogo y del detalle, con restauración (OF-19 a OF-21) | Implementado |
+| Monitor de conectividad e indicador global (4 estados) | Implementado |
+| Catálogo con búsqueda, filtros por tipo y generación, orden y vista cuadrícula/lista | Implementado |
+| Detalle (stats, habilidades, evoluciones, movimientos, matchups, formas, regiones) | Implementado |
+| Favoritos | Implementado |
+| Trivia (silueta, tiempo, pistas, ranking, logros) | Implementado |
+| Accesibilidad, i18n ES/EN, tema claro/oscuro | Implementado |
+| Pokémon Card compartible, Hero, mapa ilustrado de regiones, onboarding | Implementado || Área | Estado |
 |---|---|
 | Proyecto Flutter, linter estricto y repositorio (T-001) | Implementado |
 | Estructura Clean Architecture por funcionalidades (T-002) | Implementado |
@@ -43,7 +55,7 @@ Los datos del usuario (favoritos, resultados de trivia) viven solo en el disposi
 
 ## 2. Requisitos de ejecución
 
-- Flutter SDK (canal estable) con su versión de Dart. Versión usada: `[completar con la salida de flutter --version]`.
+- Flutter SDK (canal estable) con su versión de Dart. Versión usada: `3.47.7`.
 - Android SDK y un dispositivo Android físico o un emulador.
 - Conexión a Internet **en la primera ejecución** para descargar el catálogo. Después funciona sin conexión.
 - iOS: el código es multiplataforma, pero el equipo desarrolló en Windows y **no se pudo compilar ni probar en iOS** (ver Limitaciones).
@@ -83,6 +95,11 @@ flutter test
 | `shared_preferences` | Preferencias | Filtros y orden entre sesiones |
 | `intl` | Internacionalización | Español e inglés |
 | `flutter_lints` (dev) | Calidad de código | Linter estricto (`strict-casts`, `strict-inference`, `strict-raw-types`) |
+| `bloc_concurrency` | Concurrencia en los Blocs | `droppable()` evita lanzar dos actualizaciones a la vez desde la UI |
+| `skeletonizer` | Esqueletos de carga | Estado de carga visible sin bloquear la interfaz |
+| `share_plus` | Compartir la Pokémon Card | Comparte la tarjeta como imagen (RF-COM-01) |
+| `file` | Sistema de archivos abstracto | Permite probar la caché de imágenes sin disco real |
+| `flutter_launcher_icons`, `fake_async` (dev) | Ícono de la app y pruebas con tiempo simulado | Pruebas de reintentos y temporizadores sin esperas reales |
 
 Decisión sobre tipografías: **no se usa `google_fonts`**, porque descarga las fuentes por red y rompería el funcionamiento offline.
 
@@ -127,8 +144,9 @@ lib/
   features/
     pokemon/        presentation/ domain/ data/
     favorites/      presentation/ domain/ data/
-    trivia/         presentation/
-    settings/       presentation/
+    trivia/         presentation/ domain/ data/
+    settings/       presentation/ domain/ data/
+    onboarding/     presentation/ domain/ data/
 docs/
   adr/                           registros de decisiones de arquitectura
   decisiones-y-funcionamiento.md
@@ -136,7 +154,7 @@ docs/
 
 ## 7. Estrategia Offline-First
 
-**Estado: En desarrollo.**
+**Estado: Implementado.**
 
 1. La interfaz **solo** observa un `Stream` de la base local (a través del repositorio).
 2. Las respuestas de GraphQL se validan y se guardan en la base; la UI se actualiza porque la base emite el cambio.
@@ -149,7 +167,7 @@ Esto no es una caché HTTP: los datos están estructurados (entidades, relacione
 
 ## 8. Uso de GraphQL y estrategia de paginación
 
-**Estado: cliente Implementado; queries En desarrollo.**
+**Estado: cliente Implementado; queries Implementado.**
 
 - Endpoint: `https://graphql.pokeapi.co/v1beta2` (solo acepta POST).
 - Timeout explícito de **20 s** por solicitud.
@@ -186,44 +204,189 @@ Errores diferenciados (excepciones tipadas): sin conexión, timeout, límite de 
 
 ## 9. Estrategia de sincronización
 
-**Estado: Planificado (T-014, T-035, T-036, T-044).**
+**Estado: Implementado.**
 
-- Dirección única: **remoto → local**. PokeAPI es la autoridad de los datos del catálogo; los favoritos y la trivia no se sincronizan.
-- Cada página se guarda en **una transacción** junto con el último id procesado (`sync_metadata`). Si se interrumpe, se reanuda desde ahí.
-- Inserción con **upsert** por clave estable (id de PokeAPI): repetir la sincronización no duplica registros.
-- Disparadores: al iniciar, al recuperar conectividad, al abrir un detalle, de forma periódica y por actualización manual.
-- Reintentos con backoff exponencial y máximo de intentos; una sola sincronización a la vez por recurso.
-- Restauración de datos alterados localmente con la versión de PokeAPI (solo catálogo, nunca favoritos ni trivia).
+- Dirección única: **remoto → local**. PokeAPI es la autoridad del catálogo; favoritos, trivia y logros no se sincronizan ni se sobrescriben (OF-21).
+- **Catálogo:** páginas de 250 por cursor de id; cada página y su cursor se guardan en **una transacción**. Si se interrumpe, se reanuda desde el cursor (PS-07).
+- **Detalle:** se descarga al abrir el Pokémon, con 10 s mínimo entre consultas del mismo id.
+- **Sin duplicados:** upsert por el id de PokeAPI (nunca `insertOrReplace`).
+- **Reintentos:** backoff exponencial de 2, 4 y 6 s (máximo 3 reintentos) en catálogo y detalle.
+- **Concurrencia:** una sola sincronización a la vez por recurso; las demás reciben el mismo `Future`.
+- **Disparadores:** al iniciar (si el catálogo tiene más de 10 min), al reconectar (separación mínima de 2 min), al abrir el detalle, cada 15 min si el servicio está Online y manualmente desde Ajustes.
+- **Restauración (OF-19):** cada sync sobrescribe con el dato remoto. Al guardar un detalle se compara nombre y tipos y la diferencia queda en el log (`Integridad: #id difiere…`). Ver [ADR-0014](docs/adr/0014-integridad-del-catalogo-y-online-preferred.md).
+
+```mermaid
+flowchart TD
+    A[Disparador: inicio / reconexión / periódico / detalle / manual] --> B{¿Servicio disponible?}
+    B -- No --> Z[Se conservan los datos locales]
+    B -- Sí --> C{¿Ya hay una sync en curso?}
+    C -- Sí --> D[Se reutiliza la misma]
+    C -- No --> E[Leer cursor de sync_metadata]
+    E --> F[Pedir página con reintentos 2/4/6 s]
+    F -- Falla --> G[Estado failed, cursor intacto]
+    F -- OK --> H[Transacción: upsert + cursor]
+    H --> I{¿Última página?}
+    I -- No --> F
+    I -- Sí --> J[Estado ok + fecha de última sync]
+```
 
 ## 10. Persistencia local
 
-**Estado: En desarrollo (T-006 a T-008).**
+**Estado: Implementado.**
 
-Base SQLite con Drift. Tablas del avance:
+Base SQLite con Drift, esquema v4, con 19 tablas:
 
-| Tabla | Clave | Índices | Notas |
-|---|---|---|---|
-| `pokemons` | `id` (el de PokeAPI) | `name`, `national_dex_number`, `generation_id` | Catálogo |
-| `types` | `id` | — | Tipos elementales |
-| `pokemon_types` | (`pokemon_id`, `slot`) | `type_id` | Relación Pokémon–tipo |
-| `favorites` | `pokemon_id` | — | Datos del usuario, sin borrado en cascada |
-| `sync_metadata` | `resource_key` | — | Última sincronización, estado y cursor |
+| Grupo | Tablas |
+|---|---|
+| Catálogo | `pokemons`, `poke_types`, `pokemon_types`, `pokemon_stats`, `type_efficacies` |
+| Detalle | `abilities`, `pokemon_abilities`, `pokemon_egg_groups`, `pokemon_forms`, `pokemon_form_types`, `evolution_nodes`, `moves`, `version_groups`, `pokemon_moves` |
+| Datos del usuario | `favorites`, `trivia_results`, `trivia_answers`, `trivia_achievements` |
+| Control | `sync_metadata` (última sync, estado y cursor por recurso) |
 
+```mermaid
+erDiagram
+    POKEMONS {
+        int id PK
+        text name
+        int national_dex_number UK
+        int generation_id
+        int height
+        int weight
+        text artwork_url
+        text sprite_url
+        text artwork_local_path
+        datetime updated_at
+    }
+    POKE_TYPES {
+        int id PK
+        text name UK
+    }
+    POKEMON_TYPES {
+        int pokemon_id PK,FK
+        int slot PK
+        int type_id FK
+    }
+    POKEMON_STATS {
+        int pokemon_id PK,FK
+        int stat_id PK
+        int base_stat
+    }
+    ABILITIES {
+        int id PK
+        text name
+        text effect_summary
+    }
+    POKEMON_ABILITIES {
+        int pokemon_id PK,FK
+        int ability_id PK,FK
+        bool is_hidden
+    }
+    POKEMON_EGG_GROUPS {
+        int pokemon_id PK,FK
+        text egg_group PK
+    }
+    MOVES {
+        int id PK
+        text name
+    }
+    VERSION_GROUPS {
+        int id PK
+        text name
+    }
+    POKEMON_MOVES {
+        int pokemon_id
+        int version_group_id FK
+        int learn_method_id
+        int move_id FK
+        int level
+    }
+    EVOLUTION_NODES {
+        int chain_id PK
+        int species_id PK
+        int from_species_id
+        text trigger
+    }
+    POKEMON_FORMS {
+        int id PK
+        int species_id
+        text name
+        bool is_default
+    }
+    POKEMON_FORM_TYPES {
+        int form_id PK
+        int slot PK
+        int type_id
+    }
+    TYPE_EFFICACIES {
+        int damage_type_id PK
+        int target_type_id PK
+        int damage_factor
+    }
+    FAVORITES {
+        int pokemon_id PK,FK
+        datetime created_at
+    }
+    TRIVIA_RESULTS {
+        int id PK
+        int score
+        int correct_answers
+        int total_questions
+        int hints_used
+        datetime played_at
+    }
+    TRIVIA_ANSWERS {
+        int id PK
+        int trivia_result_id FK
+        int pokemon_id FK
+        bool correct
+        int milliseconds_used
+        int hints_used
+        int points
+    }
+    TRIVIA_ACHIEVEMENTS {
+        text id PK
+        datetime unlocked_at
+    }
+    SYNC_METADATA {
+        text resource_key PK
+        datetime last_successful_at
+        text status
+        text cursor_or_offset
+    }
+
+    POKEMONS ||--o{ POKEMON_TYPES : "tiene"
+    POKE_TYPES ||--o{ POKEMON_TYPES : "es"
+    POKEMONS ||--o{ POKEMON_STATS : "tiene"
+    POKEMONS ||--o{ POKEMON_ABILITIES : "tiene"
+    ABILITIES ||--o{ POKEMON_ABILITIES : "es"
+    POKEMONS ||--o{ POKEMON_EGG_GROUPS : "pertenece"
+    POKEMONS ||--o{ POKEMON_MOVES : "aprende"
+    MOVES ||--o{ POKEMON_MOVES : "es"
+    VERSION_GROUPS ||--o{ POKEMON_MOVES : "en"
+    POKEMONS ||--o| FAVORITES : "marcado"
+    TRIVIA_RESULTS ||--o{ TRIVIA_ANSWERS : "contiene"
+    POKEMONS ||--o{ TRIVIA_ANSWERS : "pregunta"
+    POKEMON_FORMS ||--o{ POKEMON_FORM_TYPES : "tiene"
+```
+**Nota de diseño.** `evolution_nodes`, `pokemon_forms`, `pokemon_form_types`, `type_efficacies` y `pokemon_moves.pokemon_id` se relacionan por identificadores de PokeAPI (id de especie, de cadena o de tipo) sin clave foránea declarada: llegan por consultas distintas y una FK obligaría a un orden de inserción que no controlamos. `pokemon_moves.pokemon_id` tampoco tiene FK, así que al borrar un Pokémon sus movimientos no se borran en cascada. `favorites` y `trivia_answers` referencian a `pokemons` **sin cascada**, a propósito: los datos del usuario no se pierden si una fila del catálogo se reemplaza (OF-21).
+
+Los datos del usuario nunca se tocan al sincronizar.
 Las tablas de movimientos, habilidades, evoluciones y trivia se agregan en la entrega final.
 
 ## 11. Gestión de conectividad
 
-**Estado: En desarrollo (T-012, T-013).**
+**Estado: Implementado.**
 
 - La disponibilidad del servicio y la sincronización son **dos dimensiones independientes** y se modelan por separado.
 - El estado Online se decide con una **verificación activa de la API**, no solo con la presencia de red.
 - Un indicador global y fijo (en el shell de navegación) muestra el estado con texto, icono y etiqueta de accesibilidad:
   `Online` · `Offline` · `Servicio no disponible` · `Sincronizando`, además del origen y la vigencia de los datos.
-- Las verificaciones se espacian para no gastar la cuota de PokeAPI.
+- El monitor comprueba la API activamente; con el servicio Online repite la comprobación cada 5 min y, tras una caída, reintenta a 30 s, 1, 2 y 5 min.
+- En **Ajustes** hay un simulador de caída de la API para demostrar el estado «Servicio no disponible» con red activa (PA-08).
 
 ## 12. Funcionalidades adicionales implementadas
 
-**Estado: Planificado.** Tema claro y oscuro, internacionalización español/inglés en toda la app, Pokémon Card compartible, animaciones Hero y microinteracciones. Se listarán aquí las que se terminen.
+**Estado: Implementado.** Tema claro y oscuro (ADR-0015), español/inglés, Pokémon Card compartible, animaciones Hero y microinteracciones, mapa ilustrado de regiones (ADR-0016), onboarding, vista cuadrícula/lista y trivia con ranking, logros y pistas.
 
 ## 13. Limitaciones conocidas
 
@@ -243,9 +406,7 @@ Las tablas de movimientos, habilidades, evoluciones y trivia se agregan en la en
 
 ## 15. Declaración de uso de herramientas de IA
 
-El equipo utilizó **Claude (Anthropic)** como asistente para analizar los requisitos, planificar las tareas, revisar decisiones de arquitectura y generar borradores de código y documentación. El equipo revisó el material generado, lo adaptó al proyecto y **es responsable de todo el código entregado y puede explicar cualquier parte de él**.
-
-> Nota para el equipo: ajusten este párrafo a lo que realmente hayan hecho; el enunciado exige declarar el uso de IA o de código de terceros (§17.6).
+El equipo utilizó **Claude (Anthropic)** como asistente para analizar los requisitos, planificar tareas, revisar decisiones de arquitectura y generar borradores de código y documentación. Todo el código fue revisado y adaptado por el equipo, que es responsable de él y puede explicar cualquier parte. Las dependencias de terceros están listadas en la sección 4.
 
 ## 16. Documentación
 

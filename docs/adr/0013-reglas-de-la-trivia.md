@@ -1,6 +1,6 @@
 # ADR-0013: Reglas de la trivia y logros calculados desde el historial
 
-**Estado:** Propuesto
+**Estado:** Aceptado
 **Requisitos:** RF-TRV-01..06, OF-09, OF-21, PA-11, PA-15, RNF-MAN-02
 
 ## Contexto
@@ -41,6 +41,13 @@ con tiempo, pistas y puntos) y solo la *fecha* de desbloqueo de cada logro.
 El avance (por ejemplo 12/50) y las estadísticas se calculan siempre desde el
 historial. La partida y sus logros nuevos se guardan en una sola transacción.
 La racha continúa entre partidas y un fallo la reinicia.
+
+**Funcionamiento sin conexión (RF-TRV-05, PA-11, PA-15).**
+- Los nombres y las reglas salen de la base local; ninguna pregunta consulta la red.
+- La silueta necesita la imagen. Con servicio Online se juega con todo el catálogo guardado. Estando **Offline** o con **Servicio no disponible**, solo entran las preguntas cuya imagen ya está en la caché de disco (`isCached`): primero el artwork y, si no está, el sprite que guarda el catálogo. Así no aparece una silueta rota.
+- El umbral es de **20 Pokémon jugables** (`TriviaRules.minPokemonToPlay`). Con menos, `pickQuestions()` devuelve una lista vacía y la pantalla muestra un mensaje explicativo con el número disponible.
+- El conteo disponible se recalcula si cambia el catálogo o la conectividad, así el botón de jugar se activa solo al recuperar red o al terminar de descargar.
+- Partida, puntos, ranking y logros se guardan en Drift, sin red.
 
 ## Alternativas consideradas
 
