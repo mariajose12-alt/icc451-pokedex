@@ -95,6 +95,17 @@ class CatalogoDao extends DatabaseAccessor<AppDatabase>
     return consulta.map((fila) => fila.read(conteo) ?? 0).watchSingle();
   }
 
+  // Direcciones de sprites de Pokémon al azar. Solo sirven para decorar
+  // la pantalla de Ajustes.
+  Future<List<String>> randomSpriteUrls(int limit) async {
+    final consulta = select(pokemons)
+      ..where((p) => p.spriteUrl.isNotNull())
+      ..orderBy([(_) => OrderingTerm.random()])
+      ..limit(limit);
+    final filas = await consulta.get();
+    return filas.map((fila) => fila.spriteUrl).whereType<String>().toList();
+  }
+
   // Tipos de un Pokémon, en orden de slot (el 1 es el principal).
   Stream<List<PokemonTypeEntry>> watchTypesOf(int pokemonId) {
     return (select(pokemonTypes)

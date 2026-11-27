@@ -11,4 +11,10 @@ class TriviaResults extends Table {
   IntColumn get correctAnswers => integer()();
 
   DateTimeColumn get playedAt => dateTime()();
+
+  // Cuántas preguntas tenía la partida (las partidas viejas quedan en 10).
+  IntColumn get totalQuestions => integer().withDefault(const Constant(10))();
+
+  // Pistas usadas en toda la partida.
+  IntColumn get hintsUsed => integer().withDefault(const Constant(0))();
 }

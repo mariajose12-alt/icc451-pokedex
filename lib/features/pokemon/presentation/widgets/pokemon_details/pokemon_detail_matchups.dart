@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/features/pokemon/domain/entities/damage_matchups.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/type_chart_repository.dart';
 import 'package:pokedex/features/pokemon/presentation/cubit/pokemon_matchups_cubit.dart';
@@ -186,7 +186,9 @@ class _MatchupCard extends StatelessWidget {
               Text(
                 matchupMultiplierLabel(multiplierPercent),
                 style: theme.textTheme.titleMedium?.copyWith(
-                  color: multiplierPercent >= 400 ? PixelPalette.accent : null,
+                  color: multiplierPercent >= 400
+                      ? context.pixel.accentText
+                      : null,
                   fontVariations: const [FontVariation('wght', 700)],
                 ),
               ),

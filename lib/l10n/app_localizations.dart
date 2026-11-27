@@ -440,6 +440,36 @@ abstract class AppLocalizations {
   /// **'Clear'**
   String get catalogClearFilter;
 
+  /// No description provided for @catalogFiltersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters and view'**
+  String get catalogFiltersTitle;
+
+  /// No description provided for @catalogFiltersButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get catalogFiltersButton;
+
+  /// No description provided for @catalogFiltersActive.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Filters: 1 active} other{Filters: {count} active}}'**
+  String catalogFiltersActive(int count);
+
+  /// No description provided for @catalogViewLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get catalogViewLabel;
+
+  /// No description provided for @catalogShowResults.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No results} =1{Show 1 result} other{Show {count} results}}'**
+  String catalogShowResults(int count);
+
   /// No description provided for @debugSimulateOutage.
   ///
   /// In en, this message translates to:
@@ -1075,6 +1105,888 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Clear filters'**
   String get catalogClearAll;
+
+  /// No description provided for @triviaBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'TRIVIA'**
+  String get triviaBadge;
+
+  /// No description provided for @triviaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Who is this Pokémon?'**
+  String get triviaTitle;
+
+  /// No description provided for @triviaStatBest.
+  ///
+  /// In en, this message translates to:
+  /// **'BEST'**
+  String get triviaStatBest;
+
+  /// No description provided for @triviaStatStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'STREAK'**
+  String get triviaStatStreak;
+
+  /// No description provided for @triviaStatGames.
+  ///
+  /// In en, this message translates to:
+  /// **'GAMES'**
+  String get triviaStatGames;
+
+  /// No description provided for @triviaRules.
+  ///
+  /// In en, this message translates to:
+  /// **'10 Pokémon per game · 15 seconds each · hints cost points'**
+  String get triviaRules;
+
+  /// No description provided for @triviaPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Play'**
+  String get triviaPlay;
+
+  /// No description provided for @triviaRanking.
+  ///
+  /// In en, this message translates to:
+  /// **'Ranking'**
+  String get triviaRanking;
+
+  /// No description provided for @triviaAchievements.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements'**
+  String get triviaAchievements;
+
+  /// No description provided for @triviaSavedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Pokémon ready to play · offline, only the ones you\'ve seen'**
+  String triviaSavedCount(int count);
+
+  /// No description provided for @triviaNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}'**
+  String triviaNumber(int value);
+
+  /// No description provided for @triviaSilhouetteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Silhouette of a mystery Pokémon'**
+  String get triviaSilhouetteLabel;
+
+  /// No description provided for @triviaQuestionProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'QUESTION {current}/{total}'**
+  String triviaQuestionProgress(int current, int total);
+
+  /// No description provided for @triviaPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'{score} pts'**
+  String triviaPoints(int score);
+
+  /// No description provided for @triviaSecondsLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{seconds} s'**
+  String triviaSecondsLeft(int seconds);
+
+  /// No description provided for @triviaGuessHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type the name…'**
+  String get triviaGuessHint;
+
+  /// No description provided for @triviaHintButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Hint · −{cost} pts'**
+  String triviaHintButton(int cost);
+
+  /// No description provided for @triviaHintsUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Hints {used}/{max} · −{penalty} pts on this question'**
+  String triviaHintsUsed(int used, int max, int penalty);
+
+  /// No description provided for @triviaBreakdownHints.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hint} other{{count} hints}}'**
+  String triviaBreakdownHints(int count);
+
+  /// No description provided for @triviaSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get triviaSkip;
+
+  /// No description provided for @triviaGuess.
+  ///
+  /// In en, this message translates to:
+  /// **'Guess'**
+  String get triviaGuess;
+
+  /// No description provided for @triviaLettersLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'The name has {count} letters'**
+  String triviaLettersLabel(int count);
+
+  /// No description provided for @triviaCorrect.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct!'**
+  String get triviaCorrect;
+
+  /// No description provided for @triviaTimeUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Time is up!'**
+  String get triviaTimeUp;
+
+  /// No description provided for @triviaWasNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'It was {number}'**
+  String triviaWasNumber(String number);
+
+  /// No description provided for @triviaBreakdownHit.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct answer'**
+  String get triviaBreakdownHit;
+
+  /// No description provided for @triviaBreakdownSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed bonus ({seconds} s)'**
+  String triviaBreakdownSpeed(int seconds);
+
+  /// No description provided for @triviaStreakReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Your streak of {streak} was reset. Keep trying!'**
+  String triviaStreakReset(int streak);
+
+  /// No description provided for @triviaNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get triviaNext;
+
+  /// No description provided for @triviaGameOver.
+  ///
+  /// In en, this message translates to:
+  /// **'GAME OVER'**
+  String get triviaGameOver;
+
+  /// No description provided for @triviaNewRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'★ New record!'**
+  String get triviaNewRecord;
+
+  /// No description provided for @triviaCorrectLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct'**
+  String get triviaCorrectLabel;
+
+  /// No description provided for @triviaCorrectOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{correct} of {total}'**
+  String triviaCorrectOf(int correct, int total);
+
+  /// No description provided for @triviaAchievementUnlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'ACHIEVEMENT UNLOCKED'**
+  String get triviaAchievementUnlocked;
+
+  /// No description provided for @triviaPlayAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Play again'**
+  String get triviaPlayAgain;
+
+  /// No description provided for @triviaSeeRanking.
+  ///
+  /// In en, this message translates to:
+  /// **'See ranking'**
+  String get triviaSeeRanking;
+
+  /// No description provided for @triviaBackHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get triviaBackHome;
+
+  /// No description provided for @triviaDotsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{correct} correct out of {total} questions'**
+  String triviaDotsLabel(int correct, int total);
+
+  /// No description provided for @triviaBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get triviaBack;
+
+  /// No description provided for @triviaRankingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your best games'**
+  String get triviaRankingSubtitle;
+
+  /// No description provided for @triviaNewTag.
+  ///
+  /// In en, this message translates to:
+  /// **'NEW'**
+  String get triviaNewTag;
+
+  /// No description provided for @triviaPodiumLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Place {position}: {score} points'**
+  String triviaPodiumLabel(int position, int score);
+
+  /// No description provided for @triviaRankingRowDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'{correct} of {total} correct · {date}'**
+  String triviaRankingRowDetail(int correct, int total, String date);
+
+  /// No description provided for @triviaRankingEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No games yet'**
+  String get triviaRankingEmptyTitle;
+
+  /// No description provided for @triviaRankingEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Play a game and your score will show up here.'**
+  String get triviaRankingEmptyMessage;
+
+  /// No description provided for @triviaUnlockedOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{unlocked} of {total} unlocked'**
+  String triviaUnlockedOf(int unlocked, int total);
+
+  /// No description provided for @triviaUnlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlocked'**
+  String get triviaUnlocked;
+
+  /// No description provided for @triviaLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
+  String get triviaLocked;
+
+  /// No description provided for @triviaProgressOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{current}/{target}'**
+  String triviaProgressOf(int current, int target);
+
+  /// No description provided for @triviaNoDataBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'OFFLINE'**
+  String get triviaNoDataBadge;
+
+  /// No description provided for @triviaNoDataTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough Pokémon yet'**
+  String get triviaNoDataTitle;
+
+  /// No description provided for @triviaNoDataMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline you can only play with Pokémon whose image is already saved. You need at least {required}. Connect and open Pokémon in the catalog to save them.'**
+  String triviaNoDataMessage(int required);
+
+  /// No description provided for @triviaNoDataProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{saved} of {required} available'**
+  String triviaNoDataProgress(int saved, int required);
+
+  /// No description provided for @triviaGoCatalog.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to catalog'**
+  String get triviaGoCatalog;
+
+  /// No description provided for @triviaRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get triviaRetry;
+
+  /// No description provided for @triviaNoDataNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Ranking and achievements stay available offline.'**
+  String get triviaNoDataNote;
+
+  /// No description provided for @triviaAchFirstGameName.
+  ///
+  /// In en, this message translates to:
+  /// **'First game'**
+  String get triviaAchFirstGameName;
+
+  /// No description provided for @triviaAchFirstGameDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish your first game'**
+  String get triviaAchFirstGameDesc;
+
+  /// No description provided for @triviaAchStreak5Name.
+  ///
+  /// In en, this message translates to:
+  /// **'Streak'**
+  String get triviaAchStreak5Name;
+
+  /// No description provided for @triviaAchStreak5Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Get {count} right in a row'**
+  String triviaAchStreak5Desc(int count);
+
+  /// No description provided for @triviaAchLightningName.
+  ///
+  /// In en, this message translates to:
+  /// **'Lightning'**
+  String get triviaAchLightningName;
+
+  /// No description provided for @triviaAchLightningDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer correctly in under {seconds} seconds'**
+  String triviaAchLightningDesc(int seconds);
+
+  /// No description provided for @triviaAchExpertName.
+  ///
+  /// In en, this message translates to:
+  /// **'Expert'**
+  String get triviaAchExpertName;
+
+  /// No description provided for @triviaAchExpertDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'{points} points in a single game'**
+  String triviaAchExpertDesc(int points);
+
+  /// No description provided for @triviaAchPerfectName.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect'**
+  String get triviaAchPerfectName;
+
+  /// No description provided for @triviaAchPerfectDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Get all {count} questions right'**
+  String triviaAchPerfectDesc(int count);
+
+  /// No description provided for @triviaAchNoHintsName.
+  ///
+  /// In en, this message translates to:
+  /// **'No hints'**
+  String get triviaAchNoHintsName;
+
+  /// No description provided for @triviaAchNoHintsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Get {count} or more right without hints'**
+  String triviaAchNoHintsDesc(int count);
+
+  /// No description provided for @triviaAchTrainerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Trainer'**
+  String get triviaAchTrainerName;
+
+  /// No description provided for @triviaAchTrainerDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Get {count} Pokémon right in total'**
+  String triviaAchTrainerDesc(int count);
+
+  /// No description provided for @triviaAchCollectorName.
+  ///
+  /// In en, this message translates to:
+  /// **'Collector'**
+  String get triviaAchCollectorName;
+
+  /// No description provided for @triviaAchCollectorDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Play {count} games'**
+  String triviaAchCollectorDesc(int count);
+
+  /// No description provided for @triviaAchievementsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Each achievement shows what you need to unlock it'**
+  String get triviaAchievementsHint;
+
+  /// No description provided for @triviaExitTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave the game?'**
+  String get triviaExitTitle;
+
+  /// No description provided for @triviaExitMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'If you leave now, this game won\'t be saved.'**
+  String get triviaExitMessage;
+
+  /// No description provided for @triviaExitStay.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep playing'**
+  String get triviaExitStay;
+
+  /// No description provided for @triviaExitLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get triviaExitLeave;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// No description provided for @settingsCatalogView.
+  ///
+  /// In en, this message translates to:
+  /// **'Catalog view'**
+  String get settingsCatalogView;
+
+  /// No description provided for @settingsLastSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Last sync'**
+  String get settingsLastSync;
+
+  /// No description provided for @settingsSyncNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync now'**
+  String get settingsSyncNow;
+
+  /// No description provided for @settingsSyncNeedsConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'You need a connection to sync.'**
+  String get settingsSyncNeedsConnection;
+
+  /// No description provided for @languageSpanish.
+  ///
+  /// In en, this message translates to:
+  /// **'Spanish'**
+  String get languageSpanish;
+
+  /// No description provided for @languageEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get languageEnglish;
+
+  /// No description provided for @settingsTestTools.
+  ///
+  /// In en, this message translates to:
+  /// **'Testing tools'**
+  String get settingsTestTools;
+
+  /// No description provided for @settingsOutageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The service shows as unavailable even with a network.'**
+  String get settingsOutageHint;
+
+  /// No description provided for @settingsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Pokédex and preferences'**
+  String get settingsSubtitle;
+
+  /// No description provided for @settingsSavedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Pokédex has saved'**
+  String get settingsSavedLabel;
+
+  /// No description provided for @settingsSavedUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Pokémon'**
+  String get settingsSavedUnit;
+
+  /// No description provided for @settingsLastSyncValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Last sync · {time}'**
+  String settingsLastSyncValue(String time);
+
+  /// No description provided for @favoritesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved on this phone · available offline'**
+  String get favoritesSubtitle;
+
+  /// No description provided for @favoritesSortLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by'**
+  String get favoritesSortLabel;
+
+  /// No description provided for @favoritesSortRecent.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent'**
+  String get favoritesSortRecent;
+
+  /// No description provided for @favoritesSortName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get favoritesSortName;
+
+  /// No description provided for @favoritesSortNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Number'**
+  String get favoritesSortNumber;
+
+  /// No description provided for @favoritesEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No favorites yet'**
+  String get favoritesEmptyTitle;
+
+  /// No description provided for @favoritesEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the heart on a Pokémon to save it here. Favorites work offline.'**
+  String get favoritesEmptyMessage;
+
+  /// No description provided for @favoritesEmptyAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore the Pokédex'**
+  String get favoritesEmptyAction;
+
+  /// No description provided for @favoritesUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get favoritesUndo;
+
+  /// No description provided for @favoritesRemovedSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} removed from favorites'**
+  String favoritesRemovedSnack(String name);
+
+  /// No description provided for @favoriteAddNamed.
+  ///
+  /// In en, this message translates to:
+  /// **'Add {name} to favorites'**
+  String favoriteAddNamed(String name);
+
+  /// No description provided for @favoriteRemoveNamed.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name} from favorites'**
+  String favoriteRemoveNamed(String name);
+
+  /// No description provided for @themeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get themeTitle;
+
+  /// No description provided for @themeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get themeSystem;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLight;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
+
+  /// No description provided for @onboardingSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get onboardingSkip;
+
+  /// No description provided for @onboardingNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get onboardingNext;
+
+  /// No description provided for @onboardingStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Get started'**
+  String get onboardingStart;
+
+  /// No description provided for @onboardingStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {current} of {total}'**
+  String onboardingStep(int current, int total);
+
+  /// No description provided for @onboardingTitle1.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore every Pokémon'**
+  String get onboardingTitle1;
+
+  /// No description provided for @onboardingBody1.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a card to see its types and stats. This one is just for practice.'**
+  String get onboardingBody1;
+
+  /// No description provided for @onboardingTitle2.
+  ///
+  /// In en, this message translates to:
+  /// **'Save your favorites'**
+  String get onboardingTitle2;
+
+  /// No description provided for @onboardingBody2.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the heart to save a Pokémon and find it later in Favorites.'**
+  String get onboardingBody2;
+
+  /// No description provided for @onboardingTitle3.
+  ///
+  /// In en, this message translates to:
+  /// **'See if you are online'**
+  String get onboardingTitle3;
+
+  /// No description provided for @onboardingBody3.
+  ///
+  /// In en, this message translates to:
+  /// **'The lens at the top changes with your connection. The app works the same without internet.'**
+  String get onboardingBody3;
+
+  /// No description provided for @onboardingTitle4.
+  ///
+  /// In en, this message translates to:
+  /// **'Play the trivia'**
+  String get onboardingTitle4;
+
+  /// No description provided for @onboardingBody4.
+  ///
+  /// In en, this message translates to:
+  /// **'Guess who the hidden Pokémon is and climb the ranking.'**
+  String get onboardingBody4;
+
+  /// No description provided for @onboardingWhereTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Where: “{tab}” tab'**
+  String onboardingWhereTab(String tab);
+
+  /// No description provided for @onboardingWhereTop.
+  ///
+  /// In en, this message translates to:
+  /// **'Where: at the top, in the status bar'**
+  String get onboardingWhereTop;
+
+  /// No description provided for @onboardingTryCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Try it: tap the card'**
+  String get onboardingTryCard;
+
+  /// No description provided for @onboardingTryHeart.
+  ///
+  /// In en, this message translates to:
+  /// **'Try it: tap the heart'**
+  String get onboardingTryHeart;
+
+  /// No description provided for @onboardingTryLens.
+  ///
+  /// In en, this message translates to:
+  /// **'Try it: tap the lens'**
+  String get onboardingTryLens;
+
+  /// No description provided for @onboardingTryQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Try it: tap the “?”'**
+  String get onboardingTryQuestion;
+
+  /// No description provided for @onboardingDoneCard.
+  ///
+  /// In en, this message translates to:
+  /// **'That easy! Every Pokémon in the Pokédex opens the same way.'**
+  String get onboardingDoneCard;
+
+  /// No description provided for @onboardingDoneHeart.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved! Your favorites show even without a connection.'**
+  String get onboardingDoneHeart;
+
+  /// No description provided for @onboardingDoneLens.
+  ///
+  /// In en, this message translates to:
+  /// **'That is how you know your data is up to date. Keep tapping to see the other states.'**
+  String get onboardingDoneLens;
+
+  /// No description provided for @onboardingDoneQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'It\'s Pikachu! In the trivia you will have to guess it.'**
+  String get onboardingDoneQuestion;
+
+  /// No description provided for @onboardingDemoType.
+  ///
+  /// In en, this message translates to:
+  /// **'Electric'**
+  String get onboardingDemoType;
+
+  /// No description provided for @onboardingDemoSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed'**
+  String get onboardingDemoSpeed;
+
+  /// No description provided for @onboardingDemoCardLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Practice card: Pikachu'**
+  String get onboardingDemoCardLabel;
+
+  /// No description provided for @onboardingDemoFavorite.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as favorite'**
+  String get onboardingDemoFavorite;
+
+  /// No description provided for @onboardingDemoUnfavorite.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from favorites'**
+  String get onboardingDemoUnfavorite;
+
+  /// No description provided for @onboardingDemoLensLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Practice lens: changes the state'**
+  String get onboardingDemoLensLabel;
+
+  /// No description provided for @onboardingDemoQuestionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden Pokémon: tap to reveal it'**
+  String get onboardingDemoQuestionLabel;
+
+  /// No description provided for @settingsShowIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Show introduction'**
+  String get settingsShowIntro;
+
+  /// No description provided for @detailTabMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Map'**
+  String get detailTabMap;
+
+  /// No description provided for @regionsNoGames.
+  ///
+  /// In en, this message translates to:
+  /// **'No data for this Pokémon in {region} games.'**
+  String regionsNoGames(String region);
+
+  /// No description provided for @regionAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{{region}: 1 release} other{{region}: {count} releases}}'**
+  String regionAvailable(int count, String region);
+
+  /// No description provided for @regionUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'{region}: no data'**
+  String regionUnavailable(String region);
+
+  /// No description provided for @regionsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No games saved for this Pokémon yet.'**
+  String get regionsEmpty;
+
+  /// No description provided for @regionsDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Counts the games where the Pokémon has recorded moves.'**
+  String get regionsDisclaimer;
+
+  /// No description provided for @regionUnova.
+  ///
+  /// In en, this message translates to:
+  /// **'Unova'**
+  String get regionUnova;
+
+  /// No description provided for @regionsMapLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Region map. Appears in {count} of {total} regions.'**
+  String regionsMapLabel(int count, int total);
+
+  /// No description provided for @regionPanelLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{region} · GENERATION {generation}'**
+  String regionPanelLabel(String region, String generation);
+
+  /// No description provided for @regionEntregas.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Appears in 1 release} other{Appears in {count} releases}}'**
+  String regionEntregas(int count);
+
+  /// No description provided for @regionStarters.
+  ///
+  /// In en, this message translates to:
+  /// **'Region starters: {names}'**
+  String regionStarters(String names);
 }
 
 class _AppLocalizationsDelegate

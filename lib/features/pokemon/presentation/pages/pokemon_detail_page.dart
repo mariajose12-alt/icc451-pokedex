@@ -6,6 +6,7 @@ import 'package:pokedex/features/pokemon/presentation/cubit/pokemon_detail_state
 import 'package:pokedex/features/pokemon/presentation/widgets/catalog_message_view.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_detail_content.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
+import 'package:pokedex/app/router/app_routes.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/type_chart_repository.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/pokemon_detail_repository.dart';
 import 'package:pokedex/features/pokemon/domain/repositories/pokemon_moves_repository.dart';
@@ -59,7 +60,7 @@ class PokemonDetailPage extends StatelessWidget {
               detailRepository: detailRepository,
               movesRepository: movesRepository,
               favoritesRepository: favoritesRepository,
-              onOpenPokemon: (id) => context.push('/pokemon/$id'),
+              onOpenPokemon: (id) => context.push(AppRoutes.pokemonDetail(id)),
             ),
           };
         },

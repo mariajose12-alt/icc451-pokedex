@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_detail_tab.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
 
-/// Barra con las pestañas del detalle (Resumen, Evolución, Combate, Movs.).
+/// Barra con las pestañas del detalle (Resumen, Evolución, Combate, Movs., Mapa).
 class PokemonDetailTabBar extends StatelessWidget {
   const PokemonDetailTabBar({
     required this.selected,
@@ -21,24 +21,26 @@ class PokemonDetailTabBar extends StatelessWidget {
       PokemonDetailTab.evolution => l10n.detailTabEvolution,
       PokemonDetailTab.combat => l10n.detailTabCombat,
       PokemonDetailTab.moves => l10n.detailTabMoves,
+      PokemonDetailTab.map => l10n.detailTabMap,
     };
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colors = context.pixel;
 
     // Material (y no ColoredBox): las pestañas usan InkWell, que necesita un
     // Material debajo para pintar el toque. También tapa el contenido que
     // pasa por detrás cuando la barra está fija.
     return Material(
-      color: PixelPalette.background,
+      color: colors.background,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: DecoratedBox(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border(
-              bottom: BorderSide(color: PixelPalette.panelBorder, width: 3),
+              bottom: BorderSide(color: colors.panelBorder, width: 3),
             ),
           ),
           child: Row(
@@ -75,6 +77,7 @@ class _TabButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colors = context.pixel;
 
     // El lector de pantalla dice "Resumen, botón, seleccionado". La selección
     // se comunica también con el fondo y la línea amarilla, no solo con color
@@ -88,10 +91,10 @@ class _TabButton extends StatelessWidget {
         onTap: onTap,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: selected ? PixelPalette.panelHigh : Colors.transparent,
+            color: selected ? colors.panelHigh : Colors.transparent,
             border: Border(
               bottom: BorderSide(
-                color: selected ? PixelPalette.accent : Colors.transparent,
+                color: selected ? colors.accent : Colors.transparent,
                 width: 5,
               ),
             ),
@@ -106,9 +109,7 @@ class _TabButton extends StatelessWidget {
                 child: Text(
                   label,
                   style: theme.textTheme.labelLarge?.copyWith(
-                    color: selected
-                        ? PixelPalette.text
-                        : PixelPalette.textMuted,
+                    color: selected ? colors.text : colors.textMuted,
                     fontVariations: const [FontVariation('wght', 700)],
                   ),
                 ),

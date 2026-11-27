@@ -11,4 +11,15 @@ abstract final class AppRoutes {
 
   /// Ruta completa del detalle de un Pokémon, p. ej. /catalog/25.
   static String pokemonDetail(int id) => '$catalog/$id';
+
+  // Trivia. Todas viven bajo /trivia, dentro de su propia pestaña.
+  static const String trivia = '/trivia';
+  static const String triviaPlay = '/trivia/play';
+  static const String triviaRanking = '/trivia/ranking';
+  static const String triviaAchievements = '/trivia/achievements';
+
+  static const String settings = '/settings';
+
+  /// Introducción animada. Vive fuera de las pestañas (RF-COM-08).
+  static const String onboarding = '/onboarding';
 }

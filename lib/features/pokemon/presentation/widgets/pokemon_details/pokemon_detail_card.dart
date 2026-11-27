@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 
-/// Tarjeta del detalle: fondo azul claro y borde de 2 px.
+/// Tarjeta del detalle: fondo resaltado y borde de 2 px.
 class PokemonDetailCard extends StatelessWidget {
   const PokemonDetailCard({
     required this.child,
@@ -14,11 +14,13 @@ class PokemonDetailCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.pixel;
+
     return DecoratedBox(
-      decoration: const BoxDecoration(
-        color: PixelPalette.panelHigh,
+      decoration: BoxDecoration(
+        color: colors.panelHigh,
         border: Border.fromBorderSide(
-          BorderSide(color: PixelPalette.panelBorder, width: 2),
+          BorderSide(color: colors.panelBorder, width: 2),
         ),
       ),
       child: Padding(padding: padding, child: child),

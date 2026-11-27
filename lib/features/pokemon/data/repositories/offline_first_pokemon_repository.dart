@@ -17,8 +17,11 @@ class OfflineFirstPokemonRepository implements PokemonRepository {
     this.catalogMaxAge = defaultCatalogMaxAge,
   });
 
-  /// Vigencia del catálogo (PS-03): pasado este tiempo se considera viejo.
-  static const Duration defaultCatalogMaxAge = Duration(hours: 24);
+  /// Vigencia del catálogo (PS-03): pasado este tiempo se considera viejo y
+  /// se vuelve a consultar PokeAPI (Online-Preferred). Es menor que el
+  /// intervalo periódico (15 min) para que cada comprobación periódica lo
+  /// encuentre vencido (OF-20).
+  static const Duration defaultCatalogMaxAge = Duration(minutes: 10);
 
   final PokemonLocalDataSource _local;
   final CatalogSyncCoordinator _sync;

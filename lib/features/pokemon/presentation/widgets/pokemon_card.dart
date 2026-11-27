@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/core/widgets/pixel_panel.dart';
+import 'package:pokedex/features/favorites/presentation/widgets/favorite_heart_button.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_image.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
@@ -7,12 +9,23 @@ import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/po
 
 import 'type_badge.dart';
 
-/// Tarjeta del Pokémon en modo lista: sprite a la izquierda y datos a la derecha.
+/// Tarjeta del Pokémon en modo lista: sprite a la izquierda, datos en medio y
+/// el corazón de favorito a la derecha.
 class PokemonCard extends StatelessWidget {
-  const PokemonCard({required this.pokemon, required this.onTap, super.key});
+  const PokemonCard({
+    required this.pokemon,
+    required this.onTap,
+    this.isFavorite = false,
+    this.onToggleFavorite,
+    super.key,
+  });
 
   final Pokemon pokemon;
   final VoidCallback onTap;
+  final bool isFavorite;
+
+  /// Si es null no se muestra el corazón.
+  final VoidCallback? onToggleFavorite;
 
   @override
   Widget build(BuildContext context) {
@@ -39,61 +52,82 @@ class PokemonCard extends StatelessWidget {
     // En el listado se usa el sprite pequeño (descarga mucho menos y cabe todo
     // el catálogo offline); el artwork oficial se reserva para el detalle.
     final imageUrl = pokemon.spriteUrl ?? pokemon.artworkUrl;
+    final favoriteCallback = onToggleFavorite;
 
-    return Semantics(
-      button: true,
+    return PixelPanel(
       onTap: onTap,
-      label: spokenLabel,
-      excludeSemantics: true,
-      child: PixelPanel(
-        onTap: onTap,
-        child: Row(
-          children: [
-            Hero(
-              // Misma etiqueta que en el detalle: Flutter une las dos imágenes.
-              tag: PokemonDetailImage.heroTag(pokemon.id),
-              child: SizedBox(
-                width: 80,
-                height: 80,
-                child: PokemonImage(
-                  url: imageUrl,
-                  iconSize: 40,
-                  memCacheWidth: 240,
-                ),
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      // Favorito: borde amarillo, se reconoce de un vistazo.
+      borderColor: isFavorite ? context.pixel.accent : null,
+      child: Row(
+        children: [
+          // El texto va en un bloque aparte para que el corazón siga siendo
+          // un botón independiente para los lectores de pantalla.
+          Expanded(
+            child: Semantics(
+              button: true,
+              onTap: onTap,
+              label: spokenLabel,
+              excludeSemantics: true,
+              child: Row(
                 children: [
-                  Text(
-                    number,
-                    style: theme.textTheme.labelMedium?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                      fontVariations: const [FontVariation('wght', 700)],
+                  Hero(
+                    // Misma etiqueta que en el detalle: Flutter une las dos
+                    // imágenes.
+                    tag: PokemonDetailImage.heroTag(pokemon.id),
+                    child: SizedBox(
+                      width: 80,
+                      height: 80,
+                      child: PokemonImage(
+                        url: imageUrl,
+                        iconSize: 40,
+                        memCacheWidth: 240,
+                      ),
                     ),
                   ),
-                  Text(
-                    name,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontVariations: const [FontVariation('wght', 700)],
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          number,
+                          style: theme.textTheme.labelMedium?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                            fontVariations: const [FontVariation('wght', 700)],
+                          ),
+                        ),
+                        Text(
+                          name,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontVariations: const [FontVariation('wght', 700)],
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Wrap(
+                          spacing: 4,
+                          runSpacing: 4,
+                          children: [
+                            for (final type in pokemon.types)
+                              TypeBadge(typeName: type.name),
+                          ],
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(height: 6),
-                  Wrap(
-                    spacing: 4,
-                    runSpacing: 4,
-                    children: [
-                      for (final type in pokemon.types)
-                        TypeBadge(typeName: type.name),
-                    ],
                   ),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+          if (favoriteCallback != null)
+            FavoriteHeartButton(
+              bare: true,
+              isFavorite: isFavorite,
+              label: isFavorite
+                  ? l10n.favoriteRemoveNamed(name)
+                  : l10n.favoriteAddNamed(name),
+              onPressed: favoriteCallback,
+            ),
+        ],
       ),
     );
   }

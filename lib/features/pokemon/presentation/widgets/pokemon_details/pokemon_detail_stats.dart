@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/features/pokemon/domain/entities/pokemon_stat.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
 
@@ -68,17 +68,18 @@ String _statName(AppLocalizations l10n, int statId) {
 
 /// Color de la barra según el valor. Es solo refuerzo visual: el valor y el
 /// porcentaje también están en texto (RNF-ACC-05).
-Color _barColor(int baseStat) {
+Color _barColor(PixelColors colors, int baseStat) {
   if (baseStat < 50) {
-    return PixelPalette.shell;
+    return colors.shell;
   }
   if (baseStat < 100) {
-    return PixelPalette.accent;
+    // Amarillo "de texto": en el tema claro es más oscuro y se ve en la barra.
+    return colors.accentText;
   }
   if (baseStat < 150) {
-    return PixelPalette.success;
+    return colors.success;
   }
-  return PixelPalette.lens;
+  return colors.lens;
 }
 
 /// Una fila: nombre, valor y porcentaje arriba; la barra debajo.
@@ -131,7 +132,10 @@ class _StatRow extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 4),
-            _StatBar(fraction: stat.fraction, color: _barColor(stat.baseStat)),
+            _StatBar(
+              fraction: stat.fraction,
+              color: _barColor(context.pixel, stat.baseStat),
+            ),
           ],
         ),
       ),
@@ -158,8 +162,8 @@ class _StatBar extends StatelessWidget {
       height: 14,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: PixelPalette.shadow,
-          border: Border.all(color: PixelPalette.panelBorder, width: 2),
+          color: context.pixel.shadow,
+          border: Border.all(color: context.pixel.panelBorder, width: 2),
         ),
         child: Align(
           alignment: Alignment.centerLeft,
@@ -196,9 +200,9 @@ class _TotalRow extends StatelessWidget {
     // MergeSemantics: el lector dice "Total, 534" de una vez.
     return MergeSemantics(
       child: DecoratedBox(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           border: Border(
-            top: BorderSide(color: PixelPalette.panelBorder, width: 2),
+            top: BorderSide(color: context.pixel.panelBorder, width: 2),
           ),
         ),
         child: Padding(
@@ -216,7 +220,7 @@ class _TotalRow extends StatelessWidget {
               Text(
                 '$total',
                 style: theme.textTheme.titleLarge?.copyWith(
-                  color: PixelPalette.accent,
+                  color: context.pixel.accentText,
                   fontVariations: const [FontVariation('wght', 700)],
                 ),
               ),

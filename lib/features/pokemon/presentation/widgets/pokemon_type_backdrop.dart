@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/core/theme/type_colors.dart';
 
 /// Fondo de color del header del detalle.
@@ -28,12 +28,14 @@ class PokemonTypeBackdrop extends StatelessWidget {
       colors.add(PokemonTypeColors.fallback.background);
     }
 
+    final pixel = context.pixel;
+
     return ExcludeSemantics(
       child: DecoratedBox(
         // Línea oscura debajo, para separar el header del resto del panel.
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           border: Border(
-            bottom: BorderSide(color: PixelPalette.panelBorder, width: 3),
+            bottom: BorderSide(color: pixel.panelBorder, width: 3),
           ),
         ),
         child: Row(

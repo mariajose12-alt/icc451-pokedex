@@ -4854,8 +4854,39 @@ class $TriviaResultsTable extends TriviaResults
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _totalQuestionsMeta = const VerificationMeta(
+    'totalQuestions',
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, score, correctAnswers, playedAt];
+  late final GeneratedColumn<int> totalQuestions = GeneratedColumn<int>(
+    'total_questions',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(10),
+  );
+  static const VerificationMeta _hintsUsedMeta = const VerificationMeta(
+    'hintsUsed',
+  );
+  @override
+  late final GeneratedColumn<int> hintsUsed = GeneratedColumn<int>(
+    'hints_used',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    score,
+    correctAnswers,
+    playedAt,
+    totalQuestions,
+    hintsUsed,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -4898,6 +4929,21 @@ class $TriviaResultsTable extends TriviaResults
     } else if (isInserting) {
       context.missing(_playedAtMeta);
     }
+    if (data.containsKey('total_questions')) {
+      context.handle(
+        _totalQuestionsMeta,
+        totalQuestions.isAcceptableOrUnknown(
+          data['total_questions']!,
+          _totalQuestionsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('hints_used')) {
+      context.handle(
+        _hintsUsedMeta,
+        hintsUsed.isAcceptableOrUnknown(data['hints_used']!, _hintsUsedMeta),
+      );
+    }
     return context;
   }
 
@@ -4923,6 +4969,14 @@ class $TriviaResultsTable extends TriviaResults
         DriftSqlType.dateTime,
         data['${effectivePrefix}played_at'],
       )!,
+      totalQuestions: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}total_questions'],
+      )!,
+      hintsUsed: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}hints_used'],
+      )!,
     );
   }
 
@@ -4938,11 +4992,15 @@ class TriviaResultEntry extends DataClass
   final int score;
   final int correctAnswers;
   final DateTime playedAt;
+  final int totalQuestions;
+  final int hintsUsed;
   const TriviaResultEntry({
     required this.id,
     required this.score,
     required this.correctAnswers,
     required this.playedAt,
+    required this.totalQuestions,
+    required this.hintsUsed,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -4951,6 +5009,8 @@ class TriviaResultEntry extends DataClass
     map['score'] = Variable<int>(score);
     map['correct_answers'] = Variable<int>(correctAnswers);
     map['played_at'] = Variable<DateTime>(playedAt);
+    map['total_questions'] = Variable<int>(totalQuestions);
+    map['hints_used'] = Variable<int>(hintsUsed);
     return map;
   }
 
@@ -4960,6 +5020,8 @@ class TriviaResultEntry extends DataClass
       score: Value(score),
       correctAnswers: Value(correctAnswers),
       playedAt: Value(playedAt),
+      totalQuestions: Value(totalQuestions),
+      hintsUsed: Value(hintsUsed),
     );
   }
 
@@ -4973,6 +5035,8 @@ class TriviaResultEntry extends DataClass
       score: serializer.fromJson<int>(json['score']),
       correctAnswers: serializer.fromJson<int>(json['correctAnswers']),
       playedAt: serializer.fromJson<DateTime>(json['playedAt']),
+      totalQuestions: serializer.fromJson<int>(json['totalQuestions']),
+      hintsUsed: serializer.fromJson<int>(json['hintsUsed']),
     );
   }
   @override
@@ -4983,6 +5047,8 @@ class TriviaResultEntry extends DataClass
       'score': serializer.toJson<int>(score),
       'correctAnswers': serializer.toJson<int>(correctAnswers),
       'playedAt': serializer.toJson<DateTime>(playedAt),
+      'totalQuestions': serializer.toJson<int>(totalQuestions),
+      'hintsUsed': serializer.toJson<int>(hintsUsed),
     };
   }
 
@@ -4991,11 +5057,15 @@ class TriviaResultEntry extends DataClass
     int? score,
     int? correctAnswers,
     DateTime? playedAt,
+    int? totalQuestions,
+    int? hintsUsed,
   }) => TriviaResultEntry(
     id: id ?? this.id,
     score: score ?? this.score,
     correctAnswers: correctAnswers ?? this.correctAnswers,
     playedAt: playedAt ?? this.playedAt,
+    totalQuestions: totalQuestions ?? this.totalQuestions,
+    hintsUsed: hintsUsed ?? this.hintsUsed,
   );
   TriviaResultEntry copyWithCompanion(TriviaResultsCompanion data) {
     return TriviaResultEntry(
@@ -5005,6 +5075,10 @@ class TriviaResultEntry extends DataClass
           ? data.correctAnswers.value
           : this.correctAnswers,
       playedAt: data.playedAt.present ? data.playedAt.value : this.playedAt,
+      totalQuestions: data.totalQuestions.present
+          ? data.totalQuestions.value
+          : this.totalQuestions,
+      hintsUsed: data.hintsUsed.present ? data.hintsUsed.value : this.hintsUsed,
     );
   }
 
@@ -5014,13 +5088,22 @@ class TriviaResultEntry extends DataClass
           ..write('id: $id, ')
           ..write('score: $score, ')
           ..write('correctAnswers: $correctAnswers, ')
-          ..write('playedAt: $playedAt')
+          ..write('playedAt: $playedAt, ')
+          ..write('totalQuestions: $totalQuestions, ')
+          ..write('hintsUsed: $hintsUsed')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, score, correctAnswers, playedAt);
+  int get hashCode => Object.hash(
+    id,
+    score,
+    correctAnswers,
+    playedAt,
+    totalQuestions,
+    hintsUsed,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -5028,7 +5111,9 @@ class TriviaResultEntry extends DataClass
           other.id == this.id &&
           other.score == this.score &&
           other.correctAnswers == this.correctAnswers &&
-          other.playedAt == this.playedAt);
+          other.playedAt == this.playedAt &&
+          other.totalQuestions == this.totalQuestions &&
+          other.hintsUsed == this.hintsUsed);
 }
 
 class TriviaResultsCompanion extends UpdateCompanion<TriviaResultEntry> {
@@ -5036,17 +5121,23 @@ class TriviaResultsCompanion extends UpdateCompanion<TriviaResultEntry> {
   final Value<int> score;
   final Value<int> correctAnswers;
   final Value<DateTime> playedAt;
+  final Value<int> totalQuestions;
+  final Value<int> hintsUsed;
   const TriviaResultsCompanion({
     this.id = const Value.absent(),
     this.score = const Value.absent(),
     this.correctAnswers = const Value.absent(),
     this.playedAt = const Value.absent(),
+    this.totalQuestions = const Value.absent(),
+    this.hintsUsed = const Value.absent(),
   });
   TriviaResultsCompanion.insert({
     this.id = const Value.absent(),
     required int score,
     required int correctAnswers,
     required DateTime playedAt,
+    this.totalQuestions = const Value.absent(),
+    this.hintsUsed = const Value.absent(),
   }) : score = Value(score),
        correctAnswers = Value(correctAnswers),
        playedAt = Value(playedAt);
@@ -5055,12 +5146,16 @@ class TriviaResultsCompanion extends UpdateCompanion<TriviaResultEntry> {
     Expression<int>? score,
     Expression<int>? correctAnswers,
     Expression<DateTime>? playedAt,
+    Expression<int>? totalQuestions,
+    Expression<int>? hintsUsed,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (score != null) 'score': score,
       if (correctAnswers != null) 'correct_answers': correctAnswers,
       if (playedAt != null) 'played_at': playedAt,
+      if (totalQuestions != null) 'total_questions': totalQuestions,
+      if (hintsUsed != null) 'hints_used': hintsUsed,
     });
   }
 
@@ -5069,12 +5164,16 @@ class TriviaResultsCompanion extends UpdateCompanion<TriviaResultEntry> {
     Value<int>? score,
     Value<int>? correctAnswers,
     Value<DateTime>? playedAt,
+    Value<int>? totalQuestions,
+    Value<int>? hintsUsed,
   }) {
     return TriviaResultsCompanion(
       id: id ?? this.id,
       score: score ?? this.score,
       correctAnswers: correctAnswers ?? this.correctAnswers,
       playedAt: playedAt ?? this.playedAt,
+      totalQuestions: totalQuestions ?? this.totalQuestions,
+      hintsUsed: hintsUsed ?? this.hintsUsed,
     );
   }
 
@@ -5093,6 +5192,12 @@ class TriviaResultsCompanion extends UpdateCompanion<TriviaResultEntry> {
     if (playedAt.present) {
       map['played_at'] = Variable<DateTime>(playedAt.value);
     }
+    if (totalQuestions.present) {
+      map['total_questions'] = Variable<int>(totalQuestions.value);
+    }
+    if (hintsUsed.present) {
+      map['hints_used'] = Variable<int>(hintsUsed.value);
+    }
     return map;
   }
 
@@ -5102,7 +5207,9 @@ class TriviaResultsCompanion extends UpdateCompanion<TriviaResultEntry> {
           ..write('id: $id, ')
           ..write('score: $score, ')
           ..write('correctAnswers: $correctAnswers, ')
-          ..write('playedAt: $playedAt')
+          ..write('playedAt: $playedAt, ')
+          ..write('totalQuestions: $totalQuestions, ')
+          ..write('hintsUsed: $hintsUsed')
           ..write(')'))
         .toString();
   }
@@ -5169,12 +5276,49 @@ class $TriviaAnswersTable extends TriviaAnswers
       'CHECK ("correct" IN (0, 1))',
     ),
   );
+  static const VerificationMeta _millisecondsUsedMeta = const VerificationMeta(
+    'millisecondsUsed',
+  );
+  @override
+  late final GeneratedColumn<int> millisecondsUsed = GeneratedColumn<int>(
+    'milliseconds_used',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _hintsUsedMeta = const VerificationMeta(
+    'hintsUsed',
+  );
+  @override
+  late final GeneratedColumn<int> hintsUsed = GeneratedColumn<int>(
+    'hints_used',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _pointsMeta = const VerificationMeta('points');
+  @override
+  late final GeneratedColumn<int> points = GeneratedColumn<int>(
+    'points',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
     triviaResultId,
     pokemonId,
     correct,
+    millisecondsUsed,
+    hintsUsed,
+    points,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -5218,6 +5362,27 @@ class $TriviaAnswersTable extends TriviaAnswers
     } else if (isInserting) {
       context.missing(_correctMeta);
     }
+    if (data.containsKey('milliseconds_used')) {
+      context.handle(
+        _millisecondsUsedMeta,
+        millisecondsUsed.isAcceptableOrUnknown(
+          data['milliseconds_used']!,
+          _millisecondsUsedMeta,
+        ),
+      );
+    }
+    if (data.containsKey('hints_used')) {
+      context.handle(
+        _hintsUsedMeta,
+        hintsUsed.isAcceptableOrUnknown(data['hints_used']!, _hintsUsedMeta),
+      );
+    }
+    if (data.containsKey('points')) {
+      context.handle(
+        _pointsMeta,
+        points.isAcceptableOrUnknown(data['points']!, _pointsMeta),
+      );
+    }
     return context;
   }
 
@@ -5243,6 +5408,18 @@ class $TriviaAnswersTable extends TriviaAnswers
         DriftSqlType.bool,
         data['${effectivePrefix}correct'],
       )!,
+      millisecondsUsed: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}milliseconds_used'],
+      )!,
+      hintsUsed: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}hints_used'],
+      )!,
+      points: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}points'],
+      )!,
     );
   }
 
@@ -5258,11 +5435,17 @@ class TriviaAnswersEntry extends DataClass
   final int triviaResultId;
   final int pokemonId;
   final bool correct;
+  final int millisecondsUsed;
+  final int hintsUsed;
+  final int points;
   const TriviaAnswersEntry({
     required this.id,
     required this.triviaResultId,
     required this.pokemonId,
     required this.correct,
+    required this.millisecondsUsed,
+    required this.hintsUsed,
+    required this.points,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -5271,6 +5454,9 @@ class TriviaAnswersEntry extends DataClass
     map['trivia_result_id'] = Variable<int>(triviaResultId);
     map['pokemon_id'] = Variable<int>(pokemonId);
     map['correct'] = Variable<bool>(correct);
+    map['milliseconds_used'] = Variable<int>(millisecondsUsed);
+    map['hints_used'] = Variable<int>(hintsUsed);
+    map['points'] = Variable<int>(points);
     return map;
   }
 
@@ -5280,6 +5466,9 @@ class TriviaAnswersEntry extends DataClass
       triviaResultId: Value(triviaResultId),
       pokemonId: Value(pokemonId),
       correct: Value(correct),
+      millisecondsUsed: Value(millisecondsUsed),
+      hintsUsed: Value(hintsUsed),
+      points: Value(points),
     );
   }
 
@@ -5293,6 +5482,9 @@ class TriviaAnswersEntry extends DataClass
       triviaResultId: serializer.fromJson<int>(json['triviaResultId']),
       pokemonId: serializer.fromJson<int>(json['pokemonId']),
       correct: serializer.fromJson<bool>(json['correct']),
+      millisecondsUsed: serializer.fromJson<int>(json['millisecondsUsed']),
+      hintsUsed: serializer.fromJson<int>(json['hintsUsed']),
+      points: serializer.fromJson<int>(json['points']),
     );
   }
   @override
@@ -5303,6 +5495,9 @@ class TriviaAnswersEntry extends DataClass
       'triviaResultId': serializer.toJson<int>(triviaResultId),
       'pokemonId': serializer.toJson<int>(pokemonId),
       'correct': serializer.toJson<bool>(correct),
+      'millisecondsUsed': serializer.toJson<int>(millisecondsUsed),
+      'hintsUsed': serializer.toJson<int>(hintsUsed),
+      'points': serializer.toJson<int>(points),
     };
   }
 
@@ -5311,11 +5506,17 @@ class TriviaAnswersEntry extends DataClass
     int? triviaResultId,
     int? pokemonId,
     bool? correct,
+    int? millisecondsUsed,
+    int? hintsUsed,
+    int? points,
   }) => TriviaAnswersEntry(
     id: id ?? this.id,
     triviaResultId: triviaResultId ?? this.triviaResultId,
     pokemonId: pokemonId ?? this.pokemonId,
     correct: correct ?? this.correct,
+    millisecondsUsed: millisecondsUsed ?? this.millisecondsUsed,
+    hintsUsed: hintsUsed ?? this.hintsUsed,
+    points: points ?? this.points,
   );
   TriviaAnswersEntry copyWithCompanion(TriviaAnswersCompanion data) {
     return TriviaAnswersEntry(
@@ -5325,6 +5526,11 @@ class TriviaAnswersEntry extends DataClass
           : this.triviaResultId,
       pokemonId: data.pokemonId.present ? data.pokemonId.value : this.pokemonId,
       correct: data.correct.present ? data.correct.value : this.correct,
+      millisecondsUsed: data.millisecondsUsed.present
+          ? data.millisecondsUsed.value
+          : this.millisecondsUsed,
+      hintsUsed: data.hintsUsed.present ? data.hintsUsed.value : this.hintsUsed,
+      points: data.points.present ? data.points.value : this.points,
     );
   }
 
@@ -5334,13 +5540,24 @@ class TriviaAnswersEntry extends DataClass
           ..write('id: $id, ')
           ..write('triviaResultId: $triviaResultId, ')
           ..write('pokemonId: $pokemonId, ')
-          ..write('correct: $correct')
+          ..write('correct: $correct, ')
+          ..write('millisecondsUsed: $millisecondsUsed, ')
+          ..write('hintsUsed: $hintsUsed, ')
+          ..write('points: $points')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, triviaResultId, pokemonId, correct);
+  int get hashCode => Object.hash(
+    id,
+    triviaResultId,
+    pokemonId,
+    correct,
+    millisecondsUsed,
+    hintsUsed,
+    points,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -5348,7 +5565,10 @@ class TriviaAnswersEntry extends DataClass
           other.id == this.id &&
           other.triviaResultId == this.triviaResultId &&
           other.pokemonId == this.pokemonId &&
-          other.correct == this.correct);
+          other.correct == this.correct &&
+          other.millisecondsUsed == this.millisecondsUsed &&
+          other.hintsUsed == this.hintsUsed &&
+          other.points == this.points);
 }
 
 class TriviaAnswersCompanion extends UpdateCompanion<TriviaAnswersEntry> {
@@ -5356,17 +5576,26 @@ class TriviaAnswersCompanion extends UpdateCompanion<TriviaAnswersEntry> {
   final Value<int> triviaResultId;
   final Value<int> pokemonId;
   final Value<bool> correct;
+  final Value<int> millisecondsUsed;
+  final Value<int> hintsUsed;
+  final Value<int> points;
   const TriviaAnswersCompanion({
     this.id = const Value.absent(),
     this.triviaResultId = const Value.absent(),
     this.pokemonId = const Value.absent(),
     this.correct = const Value.absent(),
+    this.millisecondsUsed = const Value.absent(),
+    this.hintsUsed = const Value.absent(),
+    this.points = const Value.absent(),
   });
   TriviaAnswersCompanion.insert({
     this.id = const Value.absent(),
     required int triviaResultId,
     required int pokemonId,
     required bool correct,
+    this.millisecondsUsed = const Value.absent(),
+    this.hintsUsed = const Value.absent(),
+    this.points = const Value.absent(),
   }) : triviaResultId = Value(triviaResultId),
        pokemonId = Value(pokemonId),
        correct = Value(correct);
@@ -5375,12 +5604,18 @@ class TriviaAnswersCompanion extends UpdateCompanion<TriviaAnswersEntry> {
     Expression<int>? triviaResultId,
     Expression<int>? pokemonId,
     Expression<bool>? correct,
+    Expression<int>? millisecondsUsed,
+    Expression<int>? hintsUsed,
+    Expression<int>? points,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (triviaResultId != null) 'trivia_result_id': triviaResultId,
       if (pokemonId != null) 'pokemon_id': pokemonId,
       if (correct != null) 'correct': correct,
+      if (millisecondsUsed != null) 'milliseconds_used': millisecondsUsed,
+      if (hintsUsed != null) 'hints_used': hintsUsed,
+      if (points != null) 'points': points,
     });
   }
 
@@ -5389,12 +5624,18 @@ class TriviaAnswersCompanion extends UpdateCompanion<TriviaAnswersEntry> {
     Value<int>? triviaResultId,
     Value<int>? pokemonId,
     Value<bool>? correct,
+    Value<int>? millisecondsUsed,
+    Value<int>? hintsUsed,
+    Value<int>? points,
   }) {
     return TriviaAnswersCompanion(
       id: id ?? this.id,
       triviaResultId: triviaResultId ?? this.triviaResultId,
       pokemonId: pokemonId ?? this.pokemonId,
       correct: correct ?? this.correct,
+      millisecondsUsed: millisecondsUsed ?? this.millisecondsUsed,
+      hintsUsed: hintsUsed ?? this.hintsUsed,
+      points: points ?? this.points,
     );
   }
 
@@ -5413,6 +5654,15 @@ class TriviaAnswersCompanion extends UpdateCompanion<TriviaAnswersEntry> {
     if (correct.present) {
       map['correct'] = Variable<bool>(correct.value);
     }
+    if (millisecondsUsed.present) {
+      map['milliseconds_used'] = Variable<int>(millisecondsUsed.value);
+    }
+    if (hintsUsed.present) {
+      map['hints_used'] = Variable<int>(hintsUsed.value);
+    }
+    if (points.present) {
+      map['points'] = Variable<int>(points.value);
+    }
     return map;
   }
 
@@ -5422,7 +5672,227 @@ class TriviaAnswersCompanion extends UpdateCompanion<TriviaAnswersEntry> {
           ..write('id: $id, ')
           ..write('triviaResultId: $triviaResultId, ')
           ..write('pokemonId: $pokemonId, ')
-          ..write('correct: $correct')
+          ..write('correct: $correct, ')
+          ..write('millisecondsUsed: $millisecondsUsed, ')
+          ..write('hintsUsed: $hintsUsed, ')
+          ..write('points: $points')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $TriviaAchievementsTable extends TriviaAchievements
+    with TableInfo<$TriviaAchievementsTable, TriviaAchievementEntry> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TriviaAchievementsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _unlockedAtMeta = const VerificationMeta(
+    'unlockedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> unlockedAt = GeneratedColumn<DateTime>(
+    'unlocked_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, unlockedAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'trivia_achievements';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<TriviaAchievementEntry> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('unlocked_at')) {
+      context.handle(
+        _unlockedAtMeta,
+        unlockedAt.isAcceptableOrUnknown(data['unlocked_at']!, _unlockedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_unlockedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  TriviaAchievementEntry map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TriviaAchievementEntry(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      unlockedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}unlocked_at'],
+      )!,
+    );
+  }
+
+  @override
+  $TriviaAchievementsTable createAlias(String alias) {
+    return $TriviaAchievementsTable(attachedDatabase, alias);
+  }
+}
+
+class TriviaAchievementEntry extends DataClass
+    implements Insertable<TriviaAchievementEntry> {
+  final String id;
+  final DateTime unlockedAt;
+  const TriviaAchievementEntry({required this.id, required this.unlockedAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['unlocked_at'] = Variable<DateTime>(unlockedAt);
+    return map;
+  }
+
+  TriviaAchievementsCompanion toCompanion(bool nullToAbsent) {
+    return TriviaAchievementsCompanion(
+      id: Value(id),
+      unlockedAt: Value(unlockedAt),
+    );
+  }
+
+  factory TriviaAchievementEntry.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return TriviaAchievementEntry(
+      id: serializer.fromJson<String>(json['id']),
+      unlockedAt: serializer.fromJson<DateTime>(json['unlockedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'unlockedAt': serializer.toJson<DateTime>(unlockedAt),
+    };
+  }
+
+  TriviaAchievementEntry copyWith({String? id, DateTime? unlockedAt}) =>
+      TriviaAchievementEntry(
+        id: id ?? this.id,
+        unlockedAt: unlockedAt ?? this.unlockedAt,
+      );
+  TriviaAchievementEntry copyWithCompanion(TriviaAchievementsCompanion data) {
+    return TriviaAchievementEntry(
+      id: data.id.present ? data.id.value : this.id,
+      unlockedAt: data.unlockedAt.present
+          ? data.unlockedAt.value
+          : this.unlockedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TriviaAchievementEntry(')
+          ..write('id: $id, ')
+          ..write('unlockedAt: $unlockedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, unlockedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TriviaAchievementEntry &&
+          other.id == this.id &&
+          other.unlockedAt == this.unlockedAt);
+}
+
+class TriviaAchievementsCompanion
+    extends UpdateCompanion<TriviaAchievementEntry> {
+  final Value<String> id;
+  final Value<DateTime> unlockedAt;
+  final Value<int> rowid;
+  const TriviaAchievementsCompanion({
+    this.id = const Value.absent(),
+    this.unlockedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  TriviaAchievementsCompanion.insert({
+    required String id,
+    required DateTime unlockedAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       unlockedAt = Value(unlockedAt);
+  static Insertable<TriviaAchievementEntry> custom({
+    Expression<String>? id,
+    Expression<DateTime>? unlockedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (unlockedAt != null) 'unlocked_at': unlockedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  TriviaAchievementsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? unlockedAt,
+    Value<int>? rowid,
+  }) {
+    return TriviaAchievementsCompanion(
+      id: id ?? this.id,
+      unlockedAt: unlockedAt ?? this.unlockedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (unlockedAt.present) {
+      map['unlocked_at'] = Variable<DateTime>(unlockedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TriviaAchievementsCompanion(')
+          ..write('id: $id, ')
+          ..write('unlockedAt: $unlockedAt, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -5798,10 +6268,13 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $FavoritesTable favorites = $FavoritesTable(this);
   late final $TriviaResultsTable triviaResults = $TriviaResultsTable(this);
   late final $TriviaAnswersTable triviaAnswers = $TriviaAnswersTable(this);
+  late final $TriviaAchievementsTable triviaAchievements =
+      $TriviaAchievementsTable(this);
   late final $SyncMetadataTable syncMetadata = $SyncMetadataTable(this);
   late final CatalogoDao catalogoDao = CatalogoDao(this as AppDatabase);
   late final DetalleDao detalleDao = DetalleDao(this as AppDatabase);
   late final FavoritesDao favoritesDao = FavoritesDao(this as AppDatabase);
+  late final TriviaDao triviaDao = TriviaDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -5824,6 +6297,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     favorites,
     triviaResults,
     triviaAnswers,
+    triviaAchievements,
     syncMetadata,
   ];
   @override
@@ -10605,6 +11079,8 @@ typedef $$TriviaResultsTableCreateCompanionBuilder =
       required int score,
       required int correctAnswers,
       required DateTime playedAt,
+      Value<int> totalQuestions,
+      Value<int> hintsUsed,
     });
 typedef $$TriviaResultsTableUpdateCompanionBuilder =
     TriviaResultsCompanion Function({
@@ -10612,6 +11088,8 @@ typedef $$TriviaResultsTableUpdateCompanionBuilder =
       Value<int> score,
       Value<int> correctAnswers,
       Value<DateTime> playedAt,
+      Value<int> totalQuestions,
+      Value<int> hintsUsed,
     });
 
 final class $$TriviaResultsTableReferences
@@ -10671,6 +11149,16 @@ class $$TriviaResultsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<int> get totalQuestions => $composableBuilder(
+    column: $table.totalQuestions,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get hintsUsed => $composableBuilder(
+    column: $table.hintsUsed,
+    builder: (column) => ColumnFilters(column),
+  );
+
   Expression<bool> triviaAnswersRefs(
     Expression<bool> Function($$TriviaAnswersTableFilterComposer f) f,
   ) {
@@ -10725,6 +11213,16 @@ class $$TriviaResultsTableOrderingComposer
     column: $table.playedAt,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<int> get totalQuestions => $composableBuilder(
+    column: $table.totalQuestions,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get hintsUsed => $composableBuilder(
+    column: $table.hintsUsed,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$TriviaResultsTableAnnotationComposer
@@ -10749,6 +11247,14 @@ class $$TriviaResultsTableAnnotationComposer
 
   GeneratedColumn<DateTime> get playedAt =>
       $composableBuilder(column: $table.playedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get totalQuestions => $composableBuilder(
+    column: $table.totalQuestions,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get hintsUsed =>
+      $composableBuilder(column: $table.hintsUsed, builder: (column) => column);
 
   Expression<T> triviaAnswersRefs<T extends Object>(
     Expression<T> Function($$TriviaAnswersTableAnnotationComposer a) f,
@@ -10808,11 +11314,15 @@ class $$TriviaResultsTableTableManager
                 Value<int> score = const Value.absent(),
                 Value<int> correctAnswers = const Value.absent(),
                 Value<DateTime> playedAt = const Value.absent(),
+                Value<int> totalQuestions = const Value.absent(),
+                Value<int> hintsUsed = const Value.absent(),
               }) => TriviaResultsCompanion(
                 id: id,
                 score: score,
                 correctAnswers: correctAnswers,
                 playedAt: playedAt,
+                totalQuestions: totalQuestions,
+                hintsUsed: hintsUsed,
               ),
           createCompanionCallback:
               ({
@@ -10820,11 +11330,15 @@ class $$TriviaResultsTableTableManager
                 required int score,
                 required int correctAnswers,
                 required DateTime playedAt,
+                Value<int> totalQuestions = const Value.absent(),
+                Value<int> hintsUsed = const Value.absent(),
               }) => TriviaResultsCompanion.insert(
                 id: id,
                 score: score,
                 correctAnswers: correctAnswers,
                 playedAt: playedAt,
+                totalQuestions: totalQuestions,
+                hintsUsed: hintsUsed,
               ),
           withReferenceMapper: (p0) => p0
               .map(
@@ -10891,6 +11405,9 @@ typedef $$TriviaAnswersTableCreateCompanionBuilder =
       required int triviaResultId,
       required int pokemonId,
       required bool correct,
+      Value<int> millisecondsUsed,
+      Value<int> hintsUsed,
+      Value<int> points,
     });
 typedef $$TriviaAnswersTableUpdateCompanionBuilder =
     TriviaAnswersCompanion Function({
@@ -10898,6 +11415,9 @@ typedef $$TriviaAnswersTableUpdateCompanionBuilder =
       Value<int> triviaResultId,
       Value<int> pokemonId,
       Value<bool> correct,
+      Value<int> millisecondsUsed,
+      Value<int> hintsUsed,
+      Value<int> points,
     });
 
 final class $$TriviaAnswersTableReferences
@@ -10961,6 +11481,21 @@ class $$TriviaAnswersTableFilterComposer
 
   ColumnFilters<bool> get correct => $composableBuilder(
     column: $table.correct,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get millisecondsUsed => $composableBuilder(
+    column: $table.millisecondsUsed,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get hintsUsed => $composableBuilder(
+    column: $table.hintsUsed,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get points => $composableBuilder(
+    column: $table.points,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -11030,6 +11565,21 @@ class $$TriviaAnswersTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<int> get millisecondsUsed => $composableBuilder(
+    column: $table.millisecondsUsed,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get hintsUsed => $composableBuilder(
+    column: $table.hintsUsed,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get points => $composableBuilder(
+    column: $table.points,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   $$TriviaResultsTableOrderingComposer get triviaResultId {
     final $$TriviaResultsTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -11091,6 +11641,17 @@ class $$TriviaAnswersTableAnnotationComposer
 
   GeneratedColumn<bool> get correct =>
       $composableBuilder(column: $table.correct, builder: (column) => column);
+
+  GeneratedColumn<int> get millisecondsUsed => $composableBuilder(
+    column: $table.millisecondsUsed,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get hintsUsed =>
+      $composableBuilder(column: $table.hintsUsed, builder: (column) => column);
+
+  GeneratedColumn<int> get points =>
+      $composableBuilder(column: $table.points, builder: (column) => column);
 
   $$TriviaResultsTableAnnotationComposer get triviaResultId {
     final $$TriviaResultsTableAnnotationComposer composer = $composerBuilder(
@@ -11171,11 +11732,17 @@ class $$TriviaAnswersTableTableManager
                 Value<int> triviaResultId = const Value.absent(),
                 Value<int> pokemonId = const Value.absent(),
                 Value<bool> correct = const Value.absent(),
+                Value<int> millisecondsUsed = const Value.absent(),
+                Value<int> hintsUsed = const Value.absent(),
+                Value<int> points = const Value.absent(),
               }) => TriviaAnswersCompanion(
                 id: id,
                 triviaResultId: triviaResultId,
                 pokemonId: pokemonId,
                 correct: correct,
+                millisecondsUsed: millisecondsUsed,
+                hintsUsed: hintsUsed,
+                points: points,
               ),
           createCompanionCallback:
               ({
@@ -11183,11 +11750,17 @@ class $$TriviaAnswersTableTableManager
                 required int triviaResultId,
                 required int pokemonId,
                 required bool correct,
+                Value<int> millisecondsUsed = const Value.absent(),
+                Value<int> hintsUsed = const Value.absent(),
+                Value<int> points = const Value.absent(),
               }) => TriviaAnswersCompanion.insert(
                 id: id,
                 triviaResultId: triviaResultId,
                 pokemonId: pokemonId,
                 correct: correct,
+                millisecondsUsed: millisecondsUsed,
+                hintsUsed: hintsUsed,
+                points: points,
               ),
           withReferenceMapper: (p0) => p0
               .map(
@@ -11264,6 +11837,175 @@ typedef $$TriviaAnswersTableProcessedTableManager =
       (TriviaAnswersEntry, $$TriviaAnswersTableReferences),
       TriviaAnswersEntry,
       PrefetchHooks Function({bool triviaResultId, bool pokemonId})
+    >;
+typedef $$TriviaAchievementsTableCreateCompanionBuilder =
+    TriviaAchievementsCompanion Function({
+      required String id,
+      required DateTime unlockedAt,
+      Value<int> rowid,
+    });
+typedef $$TriviaAchievementsTableUpdateCompanionBuilder =
+    TriviaAchievementsCompanion Function({
+      Value<String> id,
+      Value<DateTime> unlockedAt,
+      Value<int> rowid,
+    });
+
+class $$TriviaAchievementsTableFilterComposer
+    extends Composer<_$AppDatabase, $TriviaAchievementsTable> {
+  $$TriviaAchievementsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get unlockedAt => $composableBuilder(
+    column: $table.unlockedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$TriviaAchievementsTableOrderingComposer
+    extends Composer<_$AppDatabase, $TriviaAchievementsTable> {
+  $$TriviaAchievementsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get unlockedAt => $composableBuilder(
+    column: $table.unlockedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$TriviaAchievementsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $TriviaAchievementsTable> {
+  $$TriviaAchievementsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get unlockedAt => $composableBuilder(
+    column: $table.unlockedAt,
+    builder: (column) => column,
+  );
+}
+
+class $$TriviaAchievementsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $TriviaAchievementsTable,
+          TriviaAchievementEntry,
+          $$TriviaAchievementsTableFilterComposer,
+          $$TriviaAchievementsTableOrderingComposer,
+          $$TriviaAchievementsTableAnnotationComposer,
+          $$TriviaAchievementsTableCreateCompanionBuilder,
+          $$TriviaAchievementsTableUpdateCompanionBuilder,
+          (
+            TriviaAchievementEntry,
+            BaseReferences<
+              _$AppDatabase,
+              $TriviaAchievementsTable,
+              TriviaAchievementEntry
+            >,
+          ),
+          TriviaAchievementEntry,
+          PrefetchHooks Function()
+        > {
+  $$TriviaAchievementsTableTableManager(
+    _$AppDatabase db,
+    $TriviaAchievementsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$TriviaAchievementsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$TriviaAchievementsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$TriviaAchievementsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> unlockedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TriviaAchievementsCompanion(
+                id: id,
+                unlockedAt: unlockedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime unlockedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => TriviaAchievementsCompanion.insert(
+                id: id,
+                unlockedAt: unlockedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$TriviaAchievementsTable, TriviaAchievementEntry>(
+                    table,
+                  ),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $TriviaAchievementsTable,
+                    TriviaAchievementEntry
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$TriviaAchievementsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $TriviaAchievementsTable,
+      TriviaAchievementEntry,
+      $$TriviaAchievementsTableFilterComposer,
+      $$TriviaAchievementsTableOrderingComposer,
+      $$TriviaAchievementsTableAnnotationComposer,
+      $$TriviaAchievementsTableCreateCompanionBuilder,
+      $$TriviaAchievementsTableUpdateCompanionBuilder,
+      (
+        TriviaAchievementEntry,
+        BaseReferences<
+          _$AppDatabase,
+          $TriviaAchievementsTable,
+          TriviaAchievementEntry
+        >,
+      ),
+      TriviaAchievementEntry,
+      PrefetchHooks Function()
     >;
 typedef $$SyncMetadataTableCreateCompanionBuilder =
     SyncMetadataCompanion Function({
@@ -11503,6 +12245,8 @@ class $AppDatabaseManager {
       $$TriviaResultsTableTableManager(_db, _db.triviaResults);
   $$TriviaAnswersTableTableManager get triviaAnswers =>
       $$TriviaAnswersTableTableManager(_db, _db.triviaAnswers);
+  $$TriviaAchievementsTableTableManager get triviaAchievements =>
+      $$TriviaAchievementsTableTableManager(_db, _db.triviaAchievements);
   $$SyncMetadataTableTableManager get syncMetadata =>
       $$SyncMetadataTableTableManager(_db, _db.syncMetadata);
 }

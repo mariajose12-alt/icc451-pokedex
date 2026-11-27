@@ -99,33 +99,11 @@ class _CatalogResultsState extends State<CatalogResults> {
             constraints: const BoxConstraints(maxWidth: 720),
             child: Column(
               children: [
-                // Barra de herramientas: lupa y filtros a la izquierda,
-                // selector Cuadrícula/Lista a la derecha.
+                // Barra de herramientas: búsqueda y botón «Filtros». La vista
+                // (cuadrícula o lista) se elige dentro de la hoja de filtros.
                 CatalogToolbar(
                   initialText: widget.initialText,
-                  trailing: SegmentedButton<CatalogViewMode>(
-                    showSelectedIcon: false,
-                    style: const ButtonStyle(
-                      // Objetivo táctil de 48 dp (RNF-ACC-03).
-                      minimumSize: WidgetStatePropertyAll(Size(48, 48)),
-                    ),
-                    segments: [
-                      ButtonSegment<CatalogViewMode>(
-                        value: CatalogViewMode.grid,
-                        icon: const Icon(Icons.grid_view),
-                        tooltip: l10n.viewGrid,
-                      ),
-                      ButtonSegment<CatalogViewMode>(
-                        value: CatalogViewMode.list,
-                        icon: const Icon(Icons.view_list),
-                        tooltip: l10n.viewList,
-                      ),
-                    ],
-                    selected: <CatalogViewMode>{mode},
-                    onSelectionChanged: (selection) {
-                      _changeMode(selection.first);
-                    },
-                  ),
+                  onViewModeChanged: _changeMode,
                 ),
                 // Filtros aplicados y aviso de catálogo parcial.
                 const CatalogActiveFilters(),
@@ -199,6 +177,9 @@ class _CatalogResultsState extends State<CatalogResults> {
                                   final item = pokemon[index];
                                   return PokemonCard(
                                     pokemon: item,
+                                    isFavorite: favoritos.contains(item.id),
+                                    onToggleFavorite: () =>
+                                        unawaited(repository.toggle(item.id)),
                                     onTap: () => context.push(
                                       AppRoutes.pokemonDetail(item.id),
                                     ),

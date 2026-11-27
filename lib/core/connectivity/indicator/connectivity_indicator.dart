@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:pokedex/core/theme/pixel_palette.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
 
 import '../service_availability.dart';
@@ -12,12 +12,10 @@ import 'pokedex_lights.dart';
 /// Indicador global de conectividad (PF §7), con forma de lente y luces
 /// de Pokédex. Va fijo arriba en el AppShell.
 class ConnectivityIndicator extends StatelessWidget {
-  const ConnectivityIndicator({this.trailing, super.key});
+  const ConnectivityIndicator({this.onBack, super.key});
 
-  /// Widget opcional al final de la banda (por ejemplo, el menú de tres
-  /// puntos). Va fuera del texto que leen los lectores de pantalla, para
-  /// seguir siendo un botón independiente.
-  final Widget? trailing;
+  /// Si no es null, se muestra una flecha de volver en lugar de la lente.
+  final VoidCallback? onBack;
 
   @override
   Widget build(BuildContext context) {
@@ -77,66 +75,96 @@ class ConnectivityIndicator extends StatelessWidget {
           }
         }
 
-        // Paso 4: dibujar. El lector de pantalla lee una sola frase (IND-05)
-        // y avisa cuando cambia (liveRegion).
-        return Semantics(
-          container: true,
-          liveRegion: true,
-          label: l10n.indicatorSemantics(title, detail),
-          child: ExcludeSemantics(
-            child: Material(
-              // Rojo de la carcasa de la Pokédex.
-              color: PixelPalette.shell,
-              child: DecoratedBox(
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: PixelPalette.shellDark, width: 4),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 10,
-                  ),
-                  child: Row(
-                    children: [
-                      // Lente: su icono dice el estado; late al sincronizar.
-                      PokedexLens(icon: icon, pulsing: isSyncing),
-                      const SizedBox(width: 14),
-                      // Con el texto al 200 % esta columna se parte en líneas
-                      // y no se pierde contenido (RNF-ACC-04).
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+        // Paso 4: dibujar. La frase de estado la lee el lector de pantalla
+        // como una sola (IND-05) y avisa cuando cambia (liveRegion).
+        // La flecha y el menú quedan fuera de esa frase: son botones aparte.
+        final hasBack = onBack != null;
+        // La barra es la carcasa roja: sus textos son blancos en ambos temas.
+        final colors = context.pixel;
+
+        return Material(
+          // Rojo de la carcasa de la Pokédex.
+          color: colors.shell,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: colors.shellDark, width: 4),
+              ),
+            ),
+            child: Padding(
+              // Con flecha, menos margen a la izquierda: el botón ya mide 48 dp.
+              padding: EdgeInsets.fromLTRB(hasBack ? 4 : 16, 10, 8, 10),
+              child: Row(
+                children: [
+                  // Flecha sola, sin fondo (RNF-ACC: área táctil de 48 dp).
+                  if (hasBack)
+                    IconButton(
+                      tooltip: l10n.detailBack,
+                      onPressed: onBack,
+                      iconSize: 28,
+                      color: colors.onShell,
+                      icon: const Icon(Icons.arrow_back),
+                    ),
+                  Expanded(
+                    child: Semantics(
+                      container: true,
+                      liveRegion: true,
+                      label: l10n.indicatorSemantics(title, detail),
+                      child: ExcludeSemantics(
+                        child: Row(
                           children: [
-                            Row(
-                              children: [
-                                PokedexLeds(lit: lit),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: Text(
-                                    title,
-                                    style: textTheme.titleSmall?.copyWith(
-                                      color: PixelPalette.text,
-                                      fontWeight: FontWeight.bold,
+                            // Lente: su icono dice el estado; late al sincronizar.
+                            // Si hay flecha, el lugar es de ella y el icono
+                            // del estado pasa junto al título.
+                            if (!hasBack) ...[
+                              PokedexLens(icon: icon, pulsing: isSyncing),
+                              const SizedBox(width: 14),
+                            ],
+                            // Con el texto al 200 % esta columna se parte en
+                            // líneas y no se pierde contenido (RNF-ACC-04).
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      if (hasBack) ...[
+                                        Icon(
+                                          icon,
+                                          size: 18,
+                                          color: colors.onShell,
+                                        ),
+                                        const SizedBox(width: 6),
+                                      ],
+                                      PokedexLeds(lit: lit),
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: Text(
+                                          title,
+                                          style: textTheme.titleSmall?.copyWith(
+                                            color: colors.onShell,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    detail,
+                                    style: textTheme.bodySmall?.copyWith(
+                                      color: colors.onShell,
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              detail,
-                              style: textTheme.bodySmall?.copyWith(
-                                color: PixelPalette.text,
+                                ],
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
           ),

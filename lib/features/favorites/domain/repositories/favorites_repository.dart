@@ -1,3 +1,5 @@
+import 'package:pokedex/features/pokemon/domain/entities/pokemon.dart';
+
 /// Favoritos del usuario (RF-FAV-01). Solo lee de la base local y escribe en
 /// ella: no hay red de por medio.
 abstract interface class FavoritesRepository {
@@ -9,4 +11,8 @@ abstract interface class FavoritesRepository {
 
   /// Agrega o quita. Devuelve el estado nuevo: true si quedó como favorito.
   Future<bool> toggle(int pokemonId);
+
+  /// Favoritos completos (con tipos e imágenes), el más reciente primero.
+  /// Lee solo de la base local: funciona sin conexión (RF-FAV-03).
+  Stream<List<Pokemon>> watchFavorites();
 }

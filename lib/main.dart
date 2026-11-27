@@ -29,7 +29,12 @@ import 'features/pokemon/domain/repositories/pokemon_detail_repository.dart';
 import 'features/pokemon/domain/repositories/pokemon_repository.dart';
 import 'features/pokemon/domain/repositories/pokemon_moves_repository.dart';
 import 'features/pokemon/domain/repositories/type_chart_repository.dart';
+import 'features/settings/data/repositories/drift_saved_pokemon_repository.dart';
+import 'features/settings/domain/repositories/saved_pokemon_repository.dart';
 import 'features/settings/presentation/cubit/locale_cubit.dart';
+import 'features/settings/presentation/cubit/theme_mode_cubit.dart';
+import 'features/onboarding/data/repositories/preferences_onboarding_repository.dart';
+import 'features/onboarding/domain/repositories/onboarding_repository.dart';
 import 'core/database/app_database.dart';
 import 'core/sync/drift_sync_info_source.dart';
 import 'core/sync/sync_status.dart';
@@ -40,6 +45,11 @@ import 'features/pokemon/data/sync/catalog_sync_coordinator.dart';
 
 import 'package:flutter/foundation.dart' show kDebugMode;
 
+import 'features/trivia/data/datasources/local/trivia_image_cache.dart';
+import 'features/trivia/data/datasources/local/trivia_local_datasource.dart';
+import 'features/trivia/data/repositories/offline_first_trivia_repository.dart';
+import 'features/trivia/domain/repositories/trivia_repository.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -49,6 +59,9 @@ Future<void> main() async {
   // Preferencias del usuario
   final preferences = await SharedPreferences.getInstance();
   getIt.registerSingleton<SharedPreferences>(preferences);
+  getIt.registerSingleton<OnboardingRepository>(
+    PreferencesOnboardingRepository(preferences: preferences),
+  );
 
   getIt.registerSingleton<CatalogQueryStore>(
     CatalogQueryStore(preferences: getIt<SharedPreferences>()),
@@ -121,6 +134,15 @@ Future<void> main() async {
     OfflineFirstFavoritesRepository(dao: database.favoritesDao),
   );
 
+  // Trivia: la base local y las imágenes ya guardadas; sin red no se descarga.
+  getIt.registerSingleton<TriviaRepository>(
+    OfflineFirstTriviaRepository(
+      local: TriviaLocalDataSource(dao: database.triviaDao),
+      connectivity: getIt<ConnectivityMonitor>(),
+      images: const PersistentTriviaImageCache(),
+    ),
+  );
+
   // Detalle bajo demanda (PA-02, OF-20): lee de la base y la red solo escribe.
   final detailLocal = PokemonDetailLocalDataSource(dao: database.detalleDao);
   getIt.registerSingleton<PokemonDetailRepository>(
@@ -140,6 +162,11 @@ Future<void> main() async {
     ),
   );
 
+  // Ajustes: cuántos Pokémon hay guardados y sprites para la decoración.
+  getIt.registerSingleton<SavedPokemonRepository>(
+    DriftSavedPokemonRepository(dao: database.catalogoDao),
+  );
+
   // Programador: decide cuándo se actualiza solo (reconexión y periódica).
   // Va al final porque necesita el monitor y el repositorio ya registrados.
   final scheduler = CatalogSyncScheduler(
@@ -149,5 +176,10 @@ Future<void> main() async {
   getIt.registerSingleton<CatalogSyncScheduler>(scheduler);
   scheduler.start();
 
-  runApp(PokedexApp(localeCubit: LocaleCubit(preferences: preferences)));
+  runApp(
+    PokedexApp(
+      localeCubit: LocaleCubit(preferences: preferences),
+      themeModeCubit: ThemeModeCubit(preferences: preferences),
+    ),
+  );
 }
