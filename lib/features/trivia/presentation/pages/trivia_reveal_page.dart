@@ -126,13 +126,20 @@ class TriviaRevealPage extends StatelessWidget {
                                 children: [
                                   _Row(
                                     l10n.triviaBreakdownHit,
-                                    '+${data.pointsEarned - data.speedBonus}',
+                                    '+${data.basePoints}',
                                   ),
                                   const SizedBox(height: 4),
                                   _Row(
                                     l10n.triviaBreakdownSpeed(data.secondsUsed),
                                     '+${data.speedBonus}',
                                   ),
+                                  if (data.hintPenalty > 0) ...[
+                                    const SizedBox(height: 4),
+                                    _Row(
+                                      l10n.triviaBreakdownHints(data.hintCount),
+                                      '−${data.hintPenalty}',
+                                    ),
+                                  ],
                                 ],
                               )
                             : Text(

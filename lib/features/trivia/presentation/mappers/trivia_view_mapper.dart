@@ -83,6 +83,9 @@ TriviaQuestionData questionData(TriviaGameQuestion state) {
     nameLength: normalizeAnswer(state.question.name).length,
     revealedLetters: state.revealedLetters,
     imageUrl: state.question.imageUrl,
+    hintsUsed: state.hintsUsed,
+    maxHints: TriviaRules.maxHintsPerQuestion,
+    hintPenalty: state.hintsUsed * TriviaRules.hintPenalty,
   );
 }
 
@@ -92,7 +95,10 @@ TriviaRevealData revealData(TriviaGameRevealed state) {
     totalQuestions: state.total,
     score: state.score,
     pointsEarned: state.points.total,
+    basePoints: state.points.base,
     speedBonus: state.points.speedBonus,
+    hintCount: state.points.hintPenalty ~/ TriviaRules.hintPenalty,
+    hintPenalty: state.points.hintPenalty,
     secondsUsed: (state.millisecondsUsed / 1000).round(),
     streakLost: state.streakLost,
     pokemonNumber: state.question.nationalDexNumber,

@@ -92,4 +92,46 @@ void main() {
     expect(data.single.target, 1000);
     expect(data.single.name, isNotEmpty);
   });
+
+  test('la pregunta informa las pistas usadas y lo que restan', () {
+    const state = TriviaGameQuestion(
+      question: _question,
+      index: 0,
+      total: 10,
+      millisecondsLeft: 12000,
+      hintsUsed: 2,
+      revealedLetters: 'mr',
+      score: 0,
+      streak: 0,
+    );
+
+    final data = questionData(state);
+
+    expect(data.hintsUsed, 2);
+    expect(data.maxHints, 3);
+    expect(data.hintPenalty, 40);
+  });
+
+  test('la revelación separa acierto, rapidez y pistas', () {
+    final state = TriviaGameRevealed(
+      question: _question,
+      index: 0,
+      total: 5,
+      outcome: TriviaOutcome.correct,
+      points: const QuestionScore(base: 100, speedBonus: 30, hintPenalty: 40),
+      score: 90,
+      streak: 1,
+      history: const [true],
+      millisecondsUsed: 6000,
+      streakLost: 0,
+    );
+
+    final data = revealData(state);
+
+    expect(data.pointsEarned, 90);
+    expect(data.basePoints, 100);
+    expect(data.speedBonus, 30);
+    expect(data.hintCount, 2);
+    expect(data.hintPenalty, 40);
+  });
 }

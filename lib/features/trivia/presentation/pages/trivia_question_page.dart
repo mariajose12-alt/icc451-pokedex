@@ -5,6 +5,7 @@ import 'package:pokedex/features/trivia/presentation/widgets/trivia_button.dart'
 import 'package:pokedex/features/trivia/presentation/widgets/trivia_parts.dart';
 import 'package:pokedex/features/trivia/presentation/widgets/trivia_answer_boxes.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 
 /// Pregunta: silueta, tiempo, casillas de letras y campo para el nombre
 /// (RF-TRV-01, RF-TRV-02). Solo muestra lo que recibe.
@@ -111,33 +112,57 @@ class TriviaQuestionPage extends StatelessWidget {
                         hintLetters: data.revealedLetters,
                         onSubmit: onGuess,
                       ),
+                      // Lo que cuestan las pistas, a la vista.
+                      if (data.hintsUsed > 0) ...[
+                        const SizedBox(height: 10),
+                        Text(
+                          l10n.triviaHintsUsed(
+                            data.hintsUsed,
+                            data.maxHints,
+                            data.hintPenalty,
+                          ),
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: context.pixel.accentText,
+                            fontVariations: const [FontVariation('wght', 700)],
+                          ),
+                        ),
+                      ],
                       const SizedBox(height: 16),
+                      // La pista va arriba y sola, para no confundirla con
+                      // Saltar. Con las 3 usadas se apaga.
+                      TriviaButton(
+                        label: l10n.triviaHintButton(20),
+                        kind: TriviaButtonKind.secondary,
+                        height: 48,
+                        onPressed: data.hintsUsed >= data.maxHints
+                            ? null
+                            : onHint,
+                      ),
+                      const SizedBox(height: 12),
+                      // Saltar a la izquierda, más angosto; Enviar a la
+                      // derecha, más ancho. Con hueco entre los dos.
                       Row(
                         children: [
                           Expanded(
-                            child: TriviaButton(
-                              label: l10n.triviaHintButton(20),
-                              kind: TriviaButtonKind.secondary,
-                              height: 48,
-                              onPressed: onHint,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
+                            flex: 2,
                             child: TriviaButton(
                               label: l10n.triviaSkip,
                               kind: TriviaButtonKind.secondary,
-                              height: 48,
+                              height: 54,
                               onPressed: onSkip,
                             ),
                           ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            flex: 3,
+                            child: TriviaButton(
+                              label: l10n.triviaGuess,
+                              height: 54,
+                              onPressed: onGuess,
+                            ),
+                          ),
                         ],
-                      ),
-                      const SizedBox(height: 20),
-                      TriviaButton(
-                        label: l10n.triviaGuess,
-                        height: 54,
-                        onPressed: onGuess,
                       ),
                     ],
                   ),

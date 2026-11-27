@@ -648,6 +648,22 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String triviaHintsUsed(int used, int max, int penalty) {
+    return 'Hints $used/$max · −$penalty pts on this question';
+  }
+
+  @override
+  String triviaBreakdownHints(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hints',
+      one: '1 hint',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get triviaSkip => 'Skip';
 
   @override

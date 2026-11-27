@@ -27,7 +27,7 @@ class TriviaButton extends StatelessWidget {
     final primary = kind == TriviaButtonKind.primary;
     final textColor = primary ? colors.onAccent : colors.text;
 
-    return Semantics(
+    final button = Semantics(
       button: true,
       enabled: onPressed != null,
       child: Padding(
@@ -73,5 +73,8 @@ class TriviaButton extends StatelessWidget {
         ),
       ),
     );
+
+    // Sin acción se ve apagado.
+    return Opacity(opacity: onPressed == null ? 0.5 : 1, child: button);
   }
 }

@@ -1208,6 +1208,18 @@ abstract class AppLocalizations {
   /// **'Hint · −{cost} pts'**
   String triviaHintButton(int cost);
 
+  /// No description provided for @triviaHintsUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Hints {used}/{max} · −{penalty} pts on this question'**
+  String triviaHintsUsed(int used, int max, int penalty);
+
+  /// No description provided for @triviaBreakdownHints.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hint} other{{count} hints}}'**
+  String triviaBreakdownHints(int count);
+
   /// No description provided for @triviaSkip.
   ///
   /// In en, this message translates to:

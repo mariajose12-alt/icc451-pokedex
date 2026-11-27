@@ -1,4 +1,5 @@
 import 'package:pokedex/features/trivia/presentation/widgets/trivia_parts.dart';
+import 'package:pokedex/features/trivia/domain/entities/trivia_rules.dart';
 
 /// Datos de cada pantalla de la trivia. Son simples: las pantallas solo los
 /// muestran. Más adelante los llenará el motor de la trivia.
@@ -29,6 +30,9 @@ class TriviaQuestionData {
     required this.nameLength,
     required this.revealedLetters,
     required this.imageUrl,
+    this.hintsUsed = 0,
+    this.maxHints = TriviaRules.maxHintsPerQuestion,
+    this.hintPenalty = 0,
   });
 
   final int questionNumber;
@@ -41,6 +45,11 @@ class TriviaQuestionData {
   final int nameLength;
   final String revealedLetters;
   final String? imageUrl;
+
+  /// Pistas usadas, máximo permitido y puntos que restan en esta pregunta.
+  final int hintsUsed;
+  final int maxHints;
+  final int hintPenalty;
 }
 
 class TriviaRevealData {
@@ -57,6 +66,9 @@ class TriviaRevealData {
     required this.typeNames,
     required this.imageUrl,
     required this.dots,
+    this.basePoints = TriviaRules.basePoints,
+    this.hintCount = 0,
+    this.hintPenalty = 0,
   });
 
   final int questionNumber;
@@ -73,6 +85,13 @@ class TriviaRevealData {
   final List<String> typeNames;
   final String? imageUrl;
   final List<AnswerDotState> dots;
+
+  /// Puntos base del acierto (sin bonus ni pistas).
+  final int basePoints;
+
+  /// Pistas usadas y puntos que restaron.
+  final int hintCount;
+  final int hintPenalty;
 }
 
 class TriviaResultData {
