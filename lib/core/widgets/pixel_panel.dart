@@ -8,12 +8,16 @@ class PixelPanel extends StatelessWidget {
     required this.child,
     this.onTap,
     this.padding = const EdgeInsets.all(12),
+    this.borderColor,
     super.key,
   });
 
   final Widget child;
   final VoidCallback? onTap;
   final EdgeInsetsGeometry padding;
+
+  /// Color del borde. Si es null, el borde normal del tema.
+  final Color? borderColor;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +37,10 @@ class PixelPanel extends StatelessWidget {
           color: colors.panel,
           clipBehavior: Clip.antiAlias,
           shape: RoundedRectangleBorder(
-            side: BorderSide(color: colors.panelBorder, width: 3),
+            side: BorderSide(
+              color: borderColor ?? colors.panelBorder,
+              width: 3,
+            ),
           ),
           child: InkWell(
             onTap: onTap,

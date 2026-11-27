@@ -5,6 +5,7 @@ import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_image.dart
 import 'package:pokedex/l10n/app_localizations.dart';
 import 'package:pokedex/features/pokemon/presentation/widgets/pokemon_details/pokemon_detail_image.dart';
 import 'package:pokedex/features/favorites/presentation/widgets/favorite_heart_button.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 
 import 'type_badge.dart';
 
@@ -52,6 +53,8 @@ class PokemonGridCard extends StatelessWidget {
 
     return PixelPanel(
       onTap: onTap,
+      // Favorito: borde amarillo, se reconoce de un vistazo.
+      borderColor: isFavorite ? context.pixel.accent : null,
       padding: const EdgeInsets.fromLTRB(8, 8, 8, 10),
       child: Stack(
         fit: StackFit.expand,
@@ -112,6 +115,7 @@ class PokemonGridCard extends StatelessWidget {
               top: -8,
               right: -8,
               child: FavoriteHeartButton(
+                bare: true,
                 isFavorite: isFavorite,
                 label: isFavorite
                     ? l10n.favoriteRemoveNamed(name)

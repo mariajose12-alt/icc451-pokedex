@@ -201,6 +201,38 @@ class AppLocalizationsEs extends AppLocalizations {
   String get catalogClearFilter => 'Limpiar';
 
   @override
+  String get catalogFiltersTitle => 'Filtros y vista';
+
+  @override
+  String get catalogFiltersButton => 'Filtros';
+
+  @override
+  String catalogFiltersActive(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Filtros: $count activos',
+      one: 'Filtros: 1 activo',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get catalogViewLabel => 'Vista';
+
+  @override
+  String catalogShowResults(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ver $count resultados',
+      one: 'Ver 1 resultado',
+      zero: 'Sin resultados',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get debugSimulateOutage => 'Simular caída de la API (solo pruebas)';
 
   @override

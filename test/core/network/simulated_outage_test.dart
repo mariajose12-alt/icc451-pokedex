@@ -48,28 +48,14 @@ void main() {
 
     // Tocar el interruptor activa la caída.
     await tester.tap(find.byType(Switch));
-    // Abrir el menú y elegir la opción.
-    await tester.tap(find.byIcon(Icons.more_vert));
-    await tester.pumpAndSettle();
-
-    final opcion = find.text('Simular caída de la API (solo pruebas)');
-    await tester.ensureVisible(opcion);
-    await tester.pumpAndSettle();
-    await tester.tap(opcion);
-    await tester.pumpAndSettle();
+    await tester.pump();
     expect(simulator.value, isTrue);
     expect(tester.widget<Switch>(find.byType(Switch)).value, isTrue);
 
     // Otra vez: se apaga.
     await tester.tap(find.byType(Switch));
-    await tester.tap(find.byIcon(Icons.more_vert));
-    await tester.pumpAndSettle();
-
-    final opcionDeNuevo = find.text('Simular caída de la API (solo pruebas)');
-    await tester.ensureVisible(opcionDeNuevo);
-    await tester.pumpAndSettle();
-    await tester.tap(opcionDeNuevo);
-    await tester.pumpAndSettle();
+    await tester.pump();
     expect(simulator.value, isFalse);
+    expect(tester.widget<Switch>(find.byType(Switch)).value, isFalse);
   });
 }

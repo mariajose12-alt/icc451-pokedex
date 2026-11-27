@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedex/core/theme/pixel_colors.dart';
 import 'package:pokedex/features/pokemon/presentation/bloc/catalog_bloc.dart';
 import 'package:pokedex/features/pokemon/presentation/bloc/catalog_event.dart';
 import 'package:pokedex/l10n/app_localizations.dart';
@@ -7,10 +8,17 @@ import 'package:pokedex/l10n/app_localizations.dart';
 /// Barra de búsqueda por nombre (RF-CAT-03).
 /// Solo envía el texto al Bloc: el debounce vive en el Bloc.
 class CatalogSearchField extends StatefulWidget {
-  const CatalogSearchField({required this.initialText, super.key});
+  const CatalogSearchField({
+    required this.initialText,
+    this.padding = const EdgeInsets.fromLTRB(16, 8, 16, 8),
+    super.key,
+  });
 
   /// Texto con el que empieza la barra (el último criterio guardado).
   final String initialText;
+
+  /// Espacio alrededor de la barra.
+  final EdgeInsetsGeometry padding;
 
   @override
   State<CatalogSearchField> createState() => _CatalogSearchFieldState();
@@ -34,9 +42,16 @@ class _CatalogSearchFieldState extends State<CatalogSearchField> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colors = context.pixel;
+
+    // Borde grueso y recto, como el resto de la interfaz pixelada.
+    OutlineInputBorder borde(Color color) => OutlineInputBorder(
+      borderRadius: BorderRadius.zero,
+      borderSide: BorderSide(color: color, width: 3),
+    );
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+      padding: widget.padding,
       child: TextField(
         controller: _controller,
         onChanged: _enviar,
@@ -44,7 +59,16 @@ class _CatalogSearchFieldState extends State<CatalogSearchField> {
         decoration: InputDecoration(
           hintText: l10n.catalogSearchHint,
           prefixIcon: const Icon(Icons.search),
-          border: const OutlineInputBorder(),
+          filled: true,
+          fillColor: colors.background,
+          isDense: true,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 12,
+          ),
+          border: borde(colors.panelBorder),
+          enabledBorder: borde(colors.panelBorder),
+          focusedBorder: borde(colors.accentText),
           suffixIcon: ValueListenableBuilder<TextEditingValue>(
             valueListenable: _controller,
             builder: (context, value, _) {

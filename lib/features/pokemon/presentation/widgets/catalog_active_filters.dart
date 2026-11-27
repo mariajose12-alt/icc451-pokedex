@@ -96,12 +96,23 @@ class _CatalogActiveFiltersState extends State<CatalogActiveFilters> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Wrap(
-                    spacing: 6,
-                    runSpacing: 6,
-                    crossAxisAlignment: WrapCrossAlignment.center,
+                  Row(
                     children: [
-                      ...chips,
+                      // Los chips se desplazan de lado; el botón no se mueve.
+                      Expanded(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              for (final chip in chips)
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 6),
+                                  child: chip,
+                                ),
+                            ],
+                          ),
+                        ),
+                      ),
                       TextButton(
                         onPressed: () => _aplicar(
                           context,

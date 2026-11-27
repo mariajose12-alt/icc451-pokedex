@@ -199,6 +199,38 @@ class AppLocalizationsEn extends AppLocalizations {
   String get catalogClearFilter => 'Clear';
 
   @override
+  String get catalogFiltersTitle => 'Filters and view';
+
+  @override
+  String get catalogFiltersButton => 'Filters';
+
+  @override
+  String catalogFiltersActive(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Filters: $count active',
+      one: 'Filters: 1 active',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get catalogViewLabel => 'View';
+
+  @override
+  String catalogShowResults(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Show $count results',
+      one: 'Show 1 result',
+      zero: 'No results',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get debugSimulateOutage => 'Simulate API outage (testing only)';
 
   @override

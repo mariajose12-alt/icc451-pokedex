@@ -440,6 +440,36 @@ abstract class AppLocalizations {
   /// **'Clear'**
   String get catalogClearFilter;
 
+  /// No description provided for @catalogFiltersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters and view'**
+  String get catalogFiltersTitle;
+
+  /// No description provided for @catalogFiltersButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get catalogFiltersButton;
+
+  /// No description provided for @catalogFiltersActive.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Filters: 1 active} other{Filters: {count} active}}'**
+  String catalogFiltersActive(int count);
+
+  /// No description provided for @catalogViewLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get catalogViewLabel;
+
+  /// No description provided for @catalogShowResults.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No results} =1{Show 1 result} other{Show {count} results}}'**
+  String catalogShowResults(int count);
+
   /// No description provided for @debugSimulateOutage.
   ///
   /// In en, this message translates to:
